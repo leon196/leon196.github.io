@@ -74,6 +74,11 @@ a:active { text-decoration: underline; color: black; font-weight: bold; }
 	background: black url("../images/sign.png") no-repeat center;
 }
 
+.Empty
+{
+	background: gray;
+}
+
 .VirtualManchot {background: url("../gifs/VirtualManchot.gif") no-repeat center; background-size: cover; }
 .TalkingHeads {background: url("../gifs/TalkingHeads.gif") no-repeat center; background-size: cover; }
 .OhoPlant {background: url("../gifs/OhoPlant.gif") no-repeat center; background-size: cover; }
