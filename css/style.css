@@ -1,0 +1,95 @@
+body
+{
+	background: white;
+}
+
+a:link { text-decoration: underline; color: black; font-weight: bold; }
+a:visited { text-decoration: underline; color: black; font-weight: bold; }
+a:hover { text-decoration: underline; color: black; font-weight: bold; }
+a:active { text-decoration: underline; color: black; font-weight: bold; }
+
+.case
+{
+	height:300px;
+	border: solid 4px white;
+}
+
+.case-container
+{
+	width: 100%;
+	height: 100%;
+}
+
+.case-container:hover .title { display: block; }
+.case-container:hover .description { display: block; }
+.case-container:hover .buttons { display: block; }
+
+@media screen and (min-width: 768px) {
+    .title, .description, .buttons {
+		display: none;
+    }
+}
+
+.title
+{
+	padding: 8px;
+    font: 20px sans-serif;
+    font-weight: bold;
+	color: black;
+	background: url('../images/halfW.png');
+	float: left;
+	position: absolute;
+	left:0px;
+	right:0px;
+}
+
+.date 
+{
+	padding: 8px;
+    font: 14px arial, sans-serif;
+	float: right;
+}
+
+.description
+{
+	margin-top: 8px;
+    font: 12px arial, sans-serif;
+}
+
+.buttons
+{
+	clear: both;
+	margin-top: 8px;
+}
+
+.button
+{
+	margin-right: 8px;
+    font: 18px arial, sans-serif;
+	float: left;
+}
+
+.Contact
+{
+	background: black url("../images/sign.png") no-repeat center;
+}
+
+.VirtualManchot {background: url("../gifs/VirtualManchot.gif") no-repeat center; background-size: cover; }
+.TalkingHeads {background: url("../gifs/TalkingHeads.gif") no-repeat center; background-size: cover; }
+.OhoPlant {background: url("../gifs/OhoPlant.gif") no-repeat center; background-size: cover; }
+.Octree {background: url("../gifs/Octree.gif") no-repeat center; background-size: cover; }
+.TheSaltPlease {background: url("../gifs/TheSaltPlease.gif") no-repeat center; background-size: cover; }
+.Tetra {background: url("../gifs/Tetra.gif") no-repeat center; background-size: cover; }
+.NoControlStory {background: black url("../images/NoControlStory_Page_01.jpg") no-repeat center top; background-size: cover; }
+.W {background: black url("../gifs/W.gif") no-repeat center; background-size: cover; }
+.VJ {background: black url("../gifs/VJ.gif") no-repeat center; background-size: cover; }
+.PixelSurgeon {background: url("../gifs/PixelSurgeon.gif") no-repeat center; background-size: cover; }
+.PuzzleProtein {background: url("../gifs/PuzzleProtein.gif") no-repeat center; background-size: cover; }
+.ShitHappens {background: url("../gifs/ShitHappens.gif") no-repeat center; background-size: cover; }
+.SpaceWorder {background: url("../gifs/SpaceWorder.gif") no-repeat center; background-size: cover; }
+.Syval {background: url("../gifs/Syval.gif") no-repeat center; background-size: cover; }
+.Groots {background: url("../gifs/Groots.gif") no-repeat center; background-size: cover; }
+.OhoPlant2 {background: url("../gifs/OhoPlant2.gif") no-repeat center; background-size: cover; }
+.Raymarching {background: url("../gifs/Raymarching.gif") no-repeat center; background-size: cover; }
+.GPU {background: url("../gifs/GPU.gif") no-repeat center; background-size: cover; }
+.Isochrone {background: url("../gifs/Isochrone.gif") no-repeat center; background-size: cover; }
