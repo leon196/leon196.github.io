@@ -1,0 +1,1 @@
+find -name "*.gif" -exec gifsicle {} --optimize -O3 --colors 32 -o ../gifsOpti/{} \;
