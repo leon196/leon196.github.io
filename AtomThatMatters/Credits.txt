@@ -1,0 +1,30 @@
+Babek Team :
+
+	Leon Denise, Game Design, Developer, 3D artist (http://poly.gonum.free.fr/)
+
+	Hannes Delbeke, 2D, 3D and FX artist, and a little bit of code (hannesdelbeke.blogspot.com)
+
+	Adrien Albertini, Developer
+
+	Aurelia Binetti, 2D artist
+
+
+Music :
+
+	Subterrestrial (http://www.jamendo.com/fr/list/a106751/echotron?autoplay=1#)
+
+
+Inspirations :
+
+	Katamari Damacy
+	
+	The Void from Benjamin Nuel
+
+
+Thanks to :
+
+	Kawenga (http://www.kawenga.org/) : The place where it was made, hosted by great people!
+
+	Guillaume Martin (Block That Matters) : thanks to support us and the game (and the inspiration for the name) !
+
+	Antoine Berry : for code tricks

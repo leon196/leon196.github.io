@@ -3,14 +3,56 @@ body
 	background: white;
 }
 
-a:link { text-decoration: underline; color: black; font-weight: bold; }
-a:visited { text-decoration: underline; color: black; font-weight: bold; }
-a:hover { text-decoration: underline; color: black; font-weight: bold; }
-a:active { text-decoration: underline; color: black; font-weight: bold; }
+a:link { 
+	text-decoration: underline; 
+	color: black; 
+	font-weight: bold; 
+}
+a:visited { 
+	text-decoration: underline; 
+	color: black; 
+	font-weight: bold; 
+}
+a:hover { 
+	text-decoration: underline; 
+	font-weight: bold;
+	color: #ff7707; 
+	text-shadow: 1px 1px 0px black;
+}
+a:active { 
+	text-decoration: underline; 
+	font-weight: bold;
+	color: #ff7707; 
+	text-shadow: 2px 2px 0px black;
+}
 
 .case
 {
 	height:300px;
+	border: solid 4px white;
+}
+
+.caseTierHeight
+{
+	height:33vh;
+	border: solid 4px white;
+}
+
+.caseTwoTierHeight
+{
+	height:66vh;
+	border: solid 4px white;	
+}
+
+.caseHalfHeight
+{
+	height:50vh;
+	border: solid 4px white;
+}
+
+.caseQuartHeight
+{
+	height:25vh;
 	border: solid 4px white;
 }
 
@@ -25,7 +67,7 @@ a:active { text-decoration: underline; color: black; font-weight: bold; }
 .case-container:hover .buttons { display: block; }
 
 @media screen and (min-width: 768px) {
-    .title, .description, .buttons {
+    .case-container .title, .case-container .description, .case-container .buttons {
 		display: none;
     }
 }
@@ -64,12 +106,12 @@ a:active { text-decoration: underline; color: black; font-weight: bold; }
 
 .button
 {
-	margin-right: 8px;
+	padding: 4px;
     font: 18px arial, sans-serif;
 	float: left;
 }
 
-.Contact
+.Leon
 {
 	background: black url("../images/sign.png") no-repeat center;
 }
@@ -98,4 +140,62 @@ a:active { text-decoration: underline; color: black; font-weight: bold; }
 .Raymarching {background: url("../gifs/Raymarching.gif") no-repeat center; background-size: cover; }
 .GPU {background: url("../gifs/GPU.gif") no-repeat center; background-size: cover; }
 .Isochrone {background: url("../gifs/Isochrone.gif") no-repeat center; background-size: cover; }
+.AtomThatMatters {background: url("../gifs/AtomThatMatters.gif") no-repeat center; background-size: cover; }
+
 .More {background: url("../gifs/More.gif") no-repeat center; background-size: cover; }
+
+.B1 { background: url("../gifs/more/B1.gif") no-repeat center; background-size: cover; }
+.B2 { background: url("../gifs/more/B2.gif") no-repeat center; background-size: cover; }
+.B3 { background: url("../gifs/more/B3.gif") no-repeat center; background-size: cover; }
+.B4 { background: url("../gifs/more/B4.gif") no-repeat center; background-size: cover; }
+.B5 { background: url("../gifs/more/B5.gif") no-repeat center; background-size: cover; }
+.B6 { background: url("../gifs/more/B6.gif") no-repeat center; background-size: cover; }
+.B9 { background: url("../gifs/more/B9.gif") no-repeat center; background-size: cover; }
+.B10 { background: url("../gifs/more/B10.gif") no-repeat center; background-size: cover; }
+.B11 { background: url("../gifs/more/B11.gif") no-repeat center; background-size: cover; }
+.B14 { background: url("../gifs/more/B14.gif") no-repeat center; background-size: cover; }
+.B15 { background: url("../gifs/more/B15.gif") no-repeat center; background-size: cover; }
+
+.P5 { background: url("../gifs/more/P5.gif") no-repeat center; background-size: cover; }
+.P6 { background: url("../gifs/more/P6.gif") no-repeat center; background-size: cover; }
+.P0 { background: url("../gifs/more/P0.gif") no-repeat center; background-size: cover; }
+.P7 { background: url("../gifs/more/P7.gif") no-repeat center; background-size: cover; }
+.P8 { background: url("../gifs/more/P8.gif") no-repeat center; background-size: cover; }
+.P1 { background: url("../gifs/more/P1.gif") no-repeat center; background-size: cover; }
+.P4 { background: url("../gifs/more/P4.gif") no-repeat center; background-size: cover; }
+.P3 { background: url("../gifs/more/P3.gif") no-repeat center; background-size: cover; }
+
+.L1 { background: url("../gifs/more/L1.gif") no-repeat center; background-size: cover; }
+.L2 { background: url("../gifs/more/L2.gif") no-repeat center; background-size: cover; }
+.L3 { background: url("../gifs/more/L3b.gif") no-repeat center; background-size: cover; }
+.L4 { background: url("../gifs/more/L4.gif") no-repeat center; background-size: cover; }
+.L5 { background: url("../gifs/more/L5.gif") no-repeat center; background-size: cover; }
+
+.K2 { background: url("../gifs/more/K2.gif") no-repeat center; background-size: cover; }
+.Kebab { background: url("../gifs/more/Kebab.gif") no-repeat center; background-size: cover; }
+.O1 { background: url("../gifs/more/O1.gif") no-repeat center; background-size: cover; }
+.O2 { background: url("../gifs/more/O2.gif") no-repeat center; background-size: cover; }
+.W1 { background: url("../gifs/more/W1.gif") no-repeat center; background-size: cover; }
+.W2 { background: url("../gifs/more/W2.gif") no-repeat center; background-size: cover; }
+.W3 { background: url("../gifs/more/W3.gif") no-repeat center; background-size: cover; }
+.W4 { background: url("../gifs/more/W4.gif") no-repeat center; background-size: cover; }
+.H1 { background: url("../gifs/more/H1.gif") no-repeat center; background-size: cover; }
+.K1 { background: url("../gifs/more/K1.gif") no-repeat center; background-size: cover; }
+
+.VJ1 { background: url("../gifs/more/VJ1.gif") no-repeat center; background-size: cover; }
+.VJ2 { background: url("../gifs/more/VJ2.gif") no-repeat center; background-size: cover; }
+.VJ3 { background: url("../gifs/more/VJ3.gif") no-repeat center; background-size: cover; }
+.VJ4 { background: url("../gifs/more/VJ4.gif") no-repeat center; background-size: cover; }
+.VJ5 { background: url("../gifs/more/VJ5.gif") no-repeat center; background-size: cover; }
+
+.R1 { background: url("../gifs/more/R1.gif") no-repeat center; background-size: cover; }
+.R2 { background: url("../gifs/more/R2.gif") no-repeat center; background-size: cover; }
+.R5 { background: url("../gifs/more/R5.gif") no-repeat center; background-size: cover; }
+.R6 { background: url("../gifs/more/R6.gif") no-repeat center; background-size: cover; }
+.R7 { background: url("../gifs/more/R7.gif") no-repeat center; background-size: cover; }
+.R8 { background: url("../gifs/more/R8.gif") no-repeat center; background-size: cover; }
+.R9 { background: url("../gifs/more/R9b.gif") no-repeat center; background-size: cover; }
+.R12 { background: url("../gifs/more/R12.gif") no-repeat center; background-size: cover; }
+.R15 { background: url("../gifs/more/R15.gif") no-repeat center; background-size: cover; }
+.R16 { background: url("../gifs/more/R16.gif") no-repeat center; background-size: cover; }
+.R17 { background: url("../gifs/more/R17.gif") no-repeat center; background-size: cover; }

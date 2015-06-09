@@ -1,0 +1,164 @@
+{
+    "levels" : [
+        {
+            "circles" : [
+                {
+                    "anchorX" : 0,
+                    "anchorY" : 0,
+                    "countDots" : 12,
+                    "ratioRadius" : 0.5,
+                    "ratioAngle" : 0
+                },
+                {
+                    "anchorX" : 0,
+                    "anchorY" : 0,
+                    "countDots" : 12,
+                    "ratioRadius" : 0.66666666666666666666666666666666,
+                    "ratioAngle" : 0
+                },
+                {
+                    "anchorX" : 0,
+                    "anchorY" : 0,
+                    "countDots" : 12,
+                    "ratioRadius" : 0.83333333333333333333333333333333,
+                    "ratioAngle" : 0
+                },
+                {   
+                    "anchorX" : 0,
+                    "anchorY" : 0,
+                    "countDots" : 12,
+                    "ratioRadius" : 1,
+                    "ratioAngle" : 0
+                }
+            ]
+        },
+        {
+            "circles" : [
+                {
+                    "anchorX" : 0,
+                    "anchorY" : -1,
+                    "countDots" : 6,
+                    "ratioRadius" : 0.333333333333333333333333333333333,
+                    "ratioAngle" : 0.08333333333333333333333333333333
+                },
+                {
+                    "anchorX" : 0,
+                    "anchorY" : 1,
+                    "countDots" : 6,
+                    "ratioRadius" : 0.333333333333333333333333333333333,
+                    "ratioAngle" : 0.08333333333333333333333333333333
+                },
+                {
+                    "anchorX" : -1,
+                    "anchorY" : 0,
+                    "countDots" : 6,
+                    "ratioRadius" : 0.5,
+                    "ratioAngle" : 0
+                },
+                {
+                    "anchorX" : 1,
+                    "anchorY" : 0,
+                    "countDots" : 6,
+                    "ratioRadius" : 0.5,
+                    "ratioAngle" : 0
+                }
+            ]
+        },
+        {
+            "circles" : [
+                {
+                    "anchorX" : 0,
+                    "anchorY" : -1,
+                    "countDots" : 6,
+                    "ratioRadius" : 0.25,
+                    "ratioAngle" : 0.08333333333333333333333333333333
+                },
+                {
+                    "anchorX" : 0,
+                    "anchorY" : 1,
+                    "countDots" : 6,
+                    "ratioRadius" : 0.25,
+                    "ratioAngle" : 0.08333333333333333333333333333333
+                },
+                {
+                    "anchorX" : 0,
+                    "anchorY" : 0,
+                    "countDots" : 12,
+                    "ratioRadius" : 0.5,
+                    "ratioAngle" : 0
+                },
+                {
+                    "anchorX" : 0,
+                    "anchorY" : 0,
+                    "countDots" : 12,
+                    "ratioRadius" : 1,
+                    "ratioAngle" : 0
+                }
+            ]
+        },
+        {
+            "circles" : [
+                {
+                    "anchorX" : -1,
+                    "anchorY" : 0,
+                    "countDots" : 6,
+                    "ratioRadius" : 0.5,
+                    "ratioAngle" : 0
+                },
+                {
+                    "anchorX" : 1,
+                    "anchorY" : 0,
+                    "countDots" : 6,
+                    "ratioRadius" : 0.5,
+                    "ratioAngle" : 0
+                },
+                {
+                    "anchorX" : 0,
+                    "anchorY" : -1,
+                    "countDots" : 6,
+                    "ratioRadius" : 0.58,
+                    "ratioAngle" : 0.08333333333333333333333333333333
+                },
+                {
+                    "anchorX" : 0,
+                    "anchorY" : 1,
+                    "countDots" : 6,
+                    "ratioRadius" : 0.58,
+                    "ratioAngle" : 0.08333333333333333333333333333333
+                }
+            ]
+        },
+        {
+            "circles" : [
+                {
+                    "anchorX" : 0,
+                    "anchorY" : 0,
+                    "countDots" : 12,
+                    "ratioRadius" : 0.3,
+                    "ratioAngle" : 0
+                },
+                {
+                    "anchorX" : 0,
+                    "anchorY" : 0,
+                    "countDots" : 12,
+                    "ratioRadius" : 0.4,
+                    "ratioAngle" : 0
+                },
+                {
+                    "anchorX" : 0,
+                    "anchorY" : -0.5,
+                    "countDots" : 12,
+                    "ratioRadius" : 0.8,
+                    "ratioAngle" : 0
+                },
+                {
+                    "anchorX" : 0,
+                    "anchorY" : 0.5,
+                    "countDots" : 12,
+                    "ratioRadius" : 0.8,
+                    "ratioAngle" : 0
+                }
+            ]
+        }
+    ]
+}
