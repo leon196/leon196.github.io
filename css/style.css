@@ -26,9 +26,15 @@ a:active {
 	text-shadow: 2px 2px 0px black;
 }
 
-.case
+.case300
 {
-	height:300px;
+	height: 300px;
+	border: solid 4px white;
+}
+
+.case400
+{
+	height: 400px;
 	border: solid 4px white;
 }
 
