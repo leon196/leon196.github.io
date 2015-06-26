@@ -65,7 +65,6 @@ define( ["three", "container"], function ( THREE, container )
 				{
 					if (input.mouse.pressed)
 					{
-						console.log(input.mouse.button)
 						if (input.mouse.button === 0)
 						{
 							input.mouse.ratio.x += (ratio.x - input.mouse.lastRatio.x) / input.mouse.wheel;
