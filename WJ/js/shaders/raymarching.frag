@@ -2,14 +2,9 @@
 // thank to @uint9 -> http://9bitscience.blogspot.fr/2013/07/raymarching-distance-fields_14.html
 
 #include utils.glsl
+#include uniforms.glsl
 
 varying vec2 vUv;
-uniform vec2 bufferSize;
-uniform vec2 screenSize;
-uniform vec2 mouse;
-uniform sampler2D picture;
-uniform sampler2D video;
-uniform sampler2D fbo;
 
 // Raymarching
 const float rayEpsilon = 0.001;
@@ -26,8 +21,6 @@ vec3 up = vec3(0, 1, 0);
 // Animation
 vec2 uvScale1 = vec2(2.0);
 vec2 uvScale2 = vec2(2.0);
-float terrainHeight = 0.9;
-float sphereRadius = 0.9;
 float translationSpeed = 0.4;
 float rotationSpeed = 0.1;
 
@@ -38,7 +31,8 @@ vec3 shadowColor = vec3(0.1, 0, 0);
 void main()
 {
     // Ray from UV
-    vec2 uv = vUv.xy * 2.0 - 1.0;
+    vec2 uv = gl_FragCoord.xy / screenSize.xy * 2.0 - 1.0;
+    // vec2 uv = vUv * 2.0 - 1.0;
     uv.x *= screenSize.x / screenSize.y;
     vec3 ray = normalize(front + right * uv.x + up * uv.y);
     
