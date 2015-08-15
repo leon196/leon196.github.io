@@ -31,7 +31,7 @@ var Drawer = function()
 		layerWhite.addChild(graphW)
 	}
 
-	this.showBull = true
+	this.showBubble = true
 	this.debug = false
 
  	this.Clear = function ()
@@ -42,15 +42,6 @@ var Drawer = function()
 		this.graphicsWhite.beginFill(0xffffff)
 		this.graphicsBlack.beginFill(0x000000)
 	}
-
- 	this.Bull = function (x, y, radius)
- 	{
- 		if (this.showBull)
- 		{
-			this.graphicsBlack.drawCircle(x, y + BULL_OUTLINE / 2, radius + BULL_OUTLINE)
-			this.graphicsWhite.drawCircle(x, y, radius)
-		}
- 	}
 
  	this.Line = function (pos, dir, thinckness, color)
  	{
