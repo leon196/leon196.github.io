@@ -1,10 +1,10 @@
 
-define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager', 'settings', 'base/utils', 'base/point'], function(PIXI, Phylactere, renderer, Manager, Settings, Utils, Point){
+define(['../lib/pixi', '../settings', '../core/renderer', '../core/manager',
+'../element/phylactere', '../base/utils', '../base/point'],
+function(PIXI, Settings, renderer, Manager, Phylactere, Utils, Point){
   var Thinker = function ()
   {
     Phylactere.call(this)
-
-    this.css = { min:Settings.MIN_SIZE, max:Settings.MAX_SIZE, font: 'Shadows Into Light', fill: '#020202', align: 'left' }
 
     this.timeStart = 0
     this.timeDelay = Settings.SPAWN_DURATION + Math.random() * Settings.SPAWN_DURATION
@@ -25,17 +25,11 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager', 'settings', 'b
       // this.target.y = this.y
       // this.anchor.x = this.x
       // this.anchor.y = this.y
-      this.targetScale = 0.01
+      this.targetScale = 0.1
+      this.avoidScale = 0.1
 
-      // this.avoidScale = 0
-      this.SetSize(50)
+      this.SetSize(Settings.THINKER_SIZE)
       this.SpawnBubbleLetters(Settings.MIN_SPAWN_BUBBLE + Math.floor(Math.random() * (Settings.MAX_SPAWN_BUBBLE - Settings.MIN_SPAWN_BUBBLE)))
-
-      for (var i = 0; i < this.boidList.length; ++i)
-      {
-        this.boidList[i].x = this.x
-        this.boidList[i].y = this.y
-      }
 
       this.timeStart = Manager.timeElapsed
     }

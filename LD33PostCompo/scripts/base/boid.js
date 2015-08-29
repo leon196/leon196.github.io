@@ -1,5 +1,7 @@
 
-define(['lib/pixi', 'base/renderer', 'base/point', 'settings', 'base/utils', 'manager'], function(PIXI, renderer, Point, Settings, Utils, Manager)
+define(['../lib/pixi', '../settings', '../core/renderer', '../core/manager',
+'../base/point', '../base/utils'],
+function(PIXI, Settings, renderer, Manager, Point, Utils)
 {
 	var Boid = function()
 	{
@@ -54,13 +56,11 @@ define(['lib/pixi', 'base/renderer', 'base/point', 'settings', 'base/utils', 'ma
 		this.Grow = function (current)
 		{
 			this.size += Settings.SIZE_DELTA
-			Manager.drawer.redraw(Manager.boidList.indexOf(this))
 		}
 
 		this.Shrink = function (current)
 		{
 			this.size = Math.max(Settings.SIZE_DEAD, this.size - Settings.SIZE_DELTA)
-			Manager.drawer.redraw(current)
 		}
 
 		this.Rumble = function ()
