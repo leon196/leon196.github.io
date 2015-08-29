@@ -17,12 +17,6 @@ define(['../settings', '../core/manager', '../core/renderer',
     {
       var boid = Manager.boidList[current]
 
-      if (boid.phylactere) {
-        if (Utils.distanceBetween(boid, boid.phylactere) - boid.size - boid.phylactere.size < Settings.MIN_DIST_TO_ABSORB) {
-          boid.SetDarkness(boid.phylactere.darkness)
-        }
-      }
-
       Logic.vectorNear.x = Logic.vectorNear.y = 0
       Logic.vectorGlobal.x = Logic.vectorGlobal.y = 0
       Logic.vectorAvoid.x = Logic.vectorAvoid.y = 0
@@ -32,8 +26,8 @@ define(['../settings', '../core/manager', '../core/renderer',
       var boidBiggerAndNear = boid;
       var globalCount = 0
       var nearCount = 0
-      // var neighborDarkness = 0
-      // var neighborDarknessCount = 0
+      var neighborDarkness = 0
+      var neighborDarknessCount = 0
       for (var other = 0; other < Manager.boidList.length; ++other) {
         if (current != other) {
           var boidOther = Manager.boidList[other]
@@ -59,21 +53,9 @@ define(['../settings', '../core/manager', '../core/renderer',
           // var shouldAbsorb = (boid.isPlayer && !boidOther.isPlayer) || (!boid.isPlayer && boidOther.isPlayer)
           if (dist < Settings.MIN_DIST_TO_ABSORB){// && boid.size < boidOther.size) {
             Logic.BalanceOfPower(boid, boidOther)
-            // neighborDarkness += boidOther.darkness
-            // ++neighborDarknessCount
           }
         }
       }
-
-      // if (neighborDarknessCount != 0) {
-      //   neighborDarkness = neighborDarkness / neighborDarknessCount
-      //   if (neighborDarkness < boid.darkness) {
-      //     boid.SetDarkness(boid.darkness - Settings.DARKNESS_SPEED)
-      //   }
-      //   else if (neighborDarkness > boid.darkness) {
-      //     boid.SetDarkness(boid.darkness + Settings.DARKNESS_SPEED)
-      //   }
-      // }
 
       if (globalCount != 0) {
         Logic.vectorGlobal.x = Logic.vectorGlobal.x / globalCount - boid.x
@@ -138,8 +120,7 @@ define(['../settings', '../core/manager', '../core/renderer',
           boid.isPlayer = false
           Manager.player.boidList.splice(indexCurrent, 1)
           if (nearestThinker) {
-            nearestThinker.boidList.push(boid)
-            boid.phylactere = nearestThinker
+            nearestThinker.Absorb(boid)
           }
         }
       }
@@ -148,8 +129,7 @@ define(['../settings', '../core/manager', '../core/renderer',
         if (indexCurrent != -1) {
           boid.isPlayer = true
           boid.phylactere.boidList.splice(indexCurrent, 1)
-          Manager.player.boidList.push(boid)
-          boid.phylactere = Manager.player
+          Manager.player.Absorb(boid)
         }
       }
     }
@@ -157,7 +137,7 @@ define(['../settings', '../core/manager', '../core/renderer',
 
   Logic.BalanceOfPower = function (boid, boidOther)
   {
-    if (boid instanceof Phylactere == false && boidOther instanceof Phylactere == false) {
+    // if (boid instanceof Phylactere == false && boidOther instanceof Phylactere == false) {
       var dist = Utils.distanceBetween(boid, boidOther)
       var ratio = boid.size / boidOther.size
       if (boid.size < boidOther.size) {
@@ -180,7 +160,7 @@ define(['../settings', '../core/manager', '../core/renderer',
           }
         }
       }
-    }
+    // }
   }
 
   return Logic
