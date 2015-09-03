@@ -1,6 +1,7 @@
 
 define(['../lib/pixi', '../settings', '../core/manager',
-'../element/phylactere', '../element/letter', '../base/point'], function(PIXI, Settings, Manager, Phylactere, Letter, Point){
+'../element/phylactere', '../element/letter', '../base/point', '../color'],
+function(PIXI, Settings, Manager, Phylactere, Letter, Point, Color){
   var Player = function ()
   {
     Phylactere.call(this)
@@ -10,20 +11,27 @@ define(['../lib/pixi', '../settings', '../core/manager',
       this.x = Manager.mouse.x
       this.y = Manager.mouse.y
       this.isPlayer = true
-      this.SetDarkness(1)
-      this.SetSize(Settings.THINKER_SIZE)
+      this.SetColorness(1)
+      this.SetColor(Color.Player)
       this.avoidScale = 0.05
       this.friction = 0.8
       this.targetScale = 1
       Manager.AddBoid(this)
 
-      this.SpawnBubbleLetters(8)
+      // this.SpawnBubbleLetters(8)
       for (var i = 0; i < this.boidList.length; ++i)
       {
-        this.boidList[i].SetDarkness(1)
+        this.boidList[i].SetColorness(1)
         this.boidList[i].avoidScale = this.avoidScale
       }
     }
+
+		this.Absorb = function (boid)
+		{
+			boid.phylactere = this
+			boid.unknown = false
+			this.boidList.push(boid)
+		}
 
     this.Update = function ()
     {

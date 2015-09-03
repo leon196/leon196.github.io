@@ -1,123 +1,135 @@
 
 define(['../settings', '../core/renderer', '../core/manager', '../core/logic', '../core/keyboard',
-'../base/color', '../base/point', '../base/utils',
+'../color', '../base/point', '../base/utils', '../core/level', '../core/animation', '../core/transition',
 '../element/player', '../element/thinker', '../element/letter', '../element/phylactere', '../element/message'],
 function(Settings, renderer, Manager, Logic, Keyboard,
-	Color, Point, Utils,
+	Color, Point, Utils, Level, Animation, Transition,
 	Player, Thinker, Letter, Phylactere, Message)
 {
-	const GAME_STATE_INTRO = 0
-	const GAME_STATE_PLAY = 1
-	const GAME_STATE_OVER = 2
-
 	var Game = function ()
 	{
-		this.gameState = GAME_STATE_INTRO
+		this.gameState = Settings.GAME_STATE_INTRO
 		this.pause = false
 
-		this.message
+		this.Init = function()
+		{
+			var messageTitle = new Message('CHOUPICHOUP', 30)
+			Manager.AddMessage(messageTitle, renderer.width / 2, renderer.height / 4, '0xFCFCFC')
 
-		this.timeSpawnStart = 0
-		this.timeSpawnDelay = Settings.SPAWN_DELAY + Math.random() * Settings.SPAWN_DELAY
+			var messageSubtitle = new Message('a game by Leon\n \nfor Ludum Dare #33\nand Oujevipo #2', 15)
+			Manager.AddMessage(messageSubtitle, renderer.width / 2, renderer.height / 2, '0xFCFCFC')
 
-		this.Init = function() {
-			// this.message = this.SpawnMessage('Coucou')
-			this.StartGame()
-			this.gameState = GAME_STATE_PLAY
+			var messagePlay = new Message('Play', 20)
+			Manager.AddMessage(messagePlay, renderer.width / 2, renderer.height * 3 / 4, '0xfc0c0c')
+			messagePlay.SetButton(function () {
+				if (Manager.game.gameState != Settings.GAME_STATE_TRANSITION) {
+		    	Manager.game.gameState = Settings.GAME_STATE_TRANSITION
+					Transition.StartOut()
+					Animation.Add(Transition.delayOut, Transition.UpdateOut,
+						function() {
+								Manager.RemoveMessage(messageTitle)
+								Manager.RemoveMessage(messageSubtitle)
+								Manager.RemoveMessage(messagePlay)
+								Manager.game.StartGame()
+								Manager.game.gameState = Settings.GAME_STATE_PLAY
+								Transition.StartIn()
+								Animation.Add(2, Transition.UpdateIn)
+						})
+					}
+			})
 		}
 
-		this.StartGame = function() {
+		this.StartGame = function()
+		{
 			Manager.player = new Player()
 			Manager.player.Init()
-			this.SpawnThinker(renderer.width / 4, renderer.height / 2, '#FCFCFC')
-			this.SpawnThinker(renderer.width * 2 / 4, renderer.height / 2, '#FCFCFC')
-			this.SpawnThinker(renderer.width * 3 / 4, renderer.height / 2, '#FCFCFC')
+			Level.SpawnLevel()
 		}
 
-		this.SpawnMessage = function (text) {
-			var message = new Message(text)
-			message.x = renderer.width / 2
-			message.y = renderer.height / 2
-			message.Init()
-			message.Update()
-			return message
-		}
+		this.StartWinning = function ()
+		{
+			Manager.game.gameState = Settings.GAME_STATE_TRANSITION
+			Transition.StartOut()
 
-		this.SpawnThinker = function (x,y,color) {
-		  var thinker = new Thinker()
-			thinker.color = color
-			thinker.SetDarkness(thinker.darkness - Settings.DARKNESS_SPEED)
-			thinker.anchorX = x
-			thinker.anchorY = y
-			thinker.Init()
-			thinker.Update()
-			Manager.AddThinker(thinker)
-			return thinker
+			Animation.Add(Transition.delayOut, Transition.UpdateOut,
+				function() {
+					if (Level.HasMore()) {
+				    Manager.ClearAll()
+						++Level.currentLevel
+						Manager.game.StartGame()
+						Manager.game.gameState = Settings.GAME_STATE_PLAY
+						Transition.StartNext()
+						Animation.Add(2, Transition.UpdateIn)
+					}
+				})
 		}
 
 		this.Update = function ()
 		{
-		    Manager.timeElapsed = new Date() / 1000 - Manager.timeStarted;
-		    Manager.Update()
+	    Manager.timeElapsed = new Date() / 1000 - Manager.timeStarted;
+	    Manager.Update()
+			Animation.Update()
 
-				if (Keyboard.P.down)
+			switch (this.gameState)
+			{
+				case Settings.GAME_STATE_INTRO:
 				{
-					this.pause = !this.pause
-					Keyboard.P.down = false
-				}
-
-				switch (this.gameState)
-				{
-					case GAME_STATE_INTRO:
+					if (this.pause == false)
 					{
-						if (this.pause == false)
-						{
-							// Update boids
-							this.message.Update()
-							Logic.Update()
+				    for (var i = 0; i < Manager.messageList.length; ++i) {
+							var message = Manager.messageList[i]
+							message.Update()
 						}
-
-						break;
+						Logic.Update()
 					}
 
-					case GAME_STATE_PLAY:
-					{
-						if (this.pause == false)
-						{
-							// Update Player
-					    Manager.player.Update()
-					    Manager.player.SetDarkness(Manager.player.darkness + Settings.DARKNESS_SPEED)
-
-				    	// Update thinkers
-					    var nearestThinker = null
-					    for (var i = 0; i < Manager.thinkerList.length; ++i) {
-					      var thinker = Manager.thinkerList[i]
-					      thinker.SetDarkness(thinker.darkness - Settings.DARKNESS_SPEED)
-					      thinker.Update()
-					      if (nearestThinker) {
-					        if (Utils.distanceBetween(nearestThinker, Manager.player) > Utils.distanceBetween(thinker, Manager.player)) {
-					          nearestThinker = thinker
-					        }
-					      } else {
-					        nearestThinker = thinker
-					      }
-					    }
-
-							// Update boids
-							Logic.Update(nearestThinker)
-						}
-						break;
-					}
-
-					default: {}
+					break;
 				}
 
-		    // Spawn elements
-		    // if (this.timeSpawnStart + this.timeSpawnDelay < Manager.timeElapsed) {
-		    // 	this.SpawnThinker()
-		    // 	this.timeSpawnStart = Manager.timeElapsed
-		    // 	this.timeSpawnDelay = Settings.SPAWN_DELAY + Math.random() * Settings.SPAWN_DELAY
-		    // }
+				case Settings.GAME_STATE_TRANSITION:
+				{
+					Logic.Update()
+					break;
+				}
+
+				case Settings.GAME_STATE_PLAY:
+				{
+					if (Keyboard.P.down)
+					{
+						this.pause = !this.pause
+						Keyboard.P.down = false
+					}
+					if (this.pause == false)
+					{
+				    Manager.player.Update()
+
+						var thinkersAreSatisfied = true
+				    var nearestThinker = null
+				    for (var i = 0; i < Manager.thinkerList.length; ++i) {
+				      var thinker = Manager.thinkerList[i]
+				      thinker.Update()
+							if (thinker.satisfied == false) {
+								thinkersAreSatisfied = false
+							}
+							if (nearestThinker) {
+				        if (Utils.distanceBetween(nearestThinker, Manager.player) > Utils.distanceBetween(thinker, Manager.player)) {
+				          nearestThinker = thinker
+				        }
+				      } else {
+				        nearestThinker = thinker
+				      }
+				    }
+
+						Logic.Update(nearestThinker)
+
+						if (thinkersAreSatisfied) {
+							this.StartWinning()
+						}
+					}
+					break;
+				}
+				default: { break; }
+			}
 		}
 	}
 

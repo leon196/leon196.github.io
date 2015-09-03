@@ -1,18 +1,31 @@
 
-define(['../lib/pixi', '../settings', '../core/renderer', '../core/manager', '../core/game', '../core/keyboard',
-'../base/point', '../base/utils', '../base/color', '../base/boid', '../gui/button', '../gui/interface',
+define(['../lib/pixi', '../lib/jquery', '../settings', '../core/renderer',
+'../core/manager', '../core/game', '../core/keyboard', '../core/level',
+'../base/point', '../base/utils', '../color', '../base/boid', '../gui/button', '../gui/interface',
 '../element/letter', '../element/phylactere', '../element/thinker', '../element/player'],
-function(PIXI, Settings, renderer, Manager, Game, Keyboard,
+function(PIXI, $, Settings, renderer, Manager, Game, Keyboard, Level,
 	Point, Utils, Color, Boid, Button, Interface,
 	Letter, Phylactere, Thinker, Player)
 {
 	var Engine = {}
 
+	Engine.assetToLoad = [
+		// Images
+		'images/heads.png', 'images/poof.png',
+		// Fonts
+		'fonts/EmojiSymbols-Regular.woff', 'fonts/DK Liquid Embrace.woff',
+		// Json
+		'scripts/levels.json'	]
+
 	// Asset loader
-	Engine.assetToLoad = ['images/heads.png', 'images/poof.png', 'fonts/EmojiSymbols-Regular.woff']
 	for (var i = 0; i < Engine.assetToLoad.length; ++i) { PIXI.loader.add(Engine.assetToLoad[i]) }
-	Engine.ImageLoaded = function () { Engine.Init() }
-	PIXI.loader.once('complete', Engine.ImageLoaded).load();
+	PIXI.loader.once('complete', function () {
+		$.getJSON( "scripts/levels.json", function( data ) {
+			Level.data = data
+			Engine.Init()
+			console.log(data)
+		});
+	}).load();
 
 	Engine.Init = function ()
 	{

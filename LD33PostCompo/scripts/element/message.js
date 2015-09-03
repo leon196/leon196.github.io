@@ -1,12 +1,19 @@
 
 define(['../core/renderer', '../core/manager',
-'../base/boid', '../element/letter'],
-function(renderer, Manager, Boid, Letter)
+'../settings', '../base/boid', '../element/letter', '../base/Utils'],
+function(renderer, Manager, Settings, Boid, Letter, Utils)
 {
-	var Message = function(text, style)
+	var Message = function(text, size, color)
 	{
 		// Message is root boid
 		Boid.call(this)
+
+		this.size = 30
+		this.color = "0xfcfcfc"
+		if (typeof size !== "undefined") { this.size = size }
+		if (typeof color !== "undefined") { this.color = color }
+
+		this.isButton = false
 
 		// The list of letter boids that make the message
 		this.boidList = []
@@ -19,7 +26,6 @@ function(renderer, Manager, Boid, Letter)
 		// Display params
 		this.offsetX = 0
 		this.offsetY = 0
-		this.letterSize = 32
 
 		this.Init = function ()
 		{
@@ -35,18 +41,22 @@ function(renderer, Manager, Boid, Letter)
 					if (wordLetters[idxLetter] != '︎' )
 					{
 						// Boid Creation
-						var letter = new Letter(wordLetters[idxLetter], style)
+						var letter = new Letter(wordLetters[idxLetter])
 						letter.x = this.x
 						letter.y = this.y
 
 						// Letter logic
 						letter.indexLine = idxLine
 						letter.indexLetter = idxLetter
-						letter.isFromMessage = true
 
 						letter.targetScale = 0.1
-						letter.avoidScale = 0
-						letter.SetSize(this.letterSize)
+						letter.avoidScale = 0.01
+						letter.SetColor(this.color)
+						letter.SetSize(this.size)
+
+						if (wordLetters[idxLetter] == " ") {
+							letter.SetBubbleVisible(false)
+						}
 
 						// Add to update stack and display
 						Manager.AddBoid(letter)
@@ -77,27 +87,11 @@ function(renderer, Manager, Boid, Letter)
 				}
 
 				// Setup message grid position
-				boid.gridX = lineWidth - this.lineWidthList[currentLine] + this.letterSize / 2
-				boid.gridY = boid.indexLine * this.letterSize * 2 - this.letterSize * this.lines.length / 2
+				boid.gridX = lineWidth - this.lineWidthList[currentLine] / 2 + this.size / 2
+				boid.gridY = boid.indexLine * this.size / 2 - this.size * this.lines.length / 2
 
 				// Increment
-				lineWidth += boid.size * 2
-			}
-		}
-
-		this.Update = function ()
-		{
-			this.UpdateTargets()
-		}
-
-		this.UpdateTargets = function ()
-		{
-			// Orbit around phylactere root boid
-			for (var i = 0; i < this.boidList.length; ++i)
-			{
-				var boid = this.boidList[i]
-				boid.target.x = boid.gridX + this.GetX()
-				boid.target.y = boid.gridY + this.GetY()
+				lineWidth += boid.size
 			}
 		}
 
@@ -109,6 +103,51 @@ function(renderer, Manager, Boid, Letter)
 		this.GetY = function ()
 		{
 			return this.y + this.offsetY
+		}
+
+		this.Update = function ()
+		{
+			this.UpdateTargets()
+		}
+
+		this.UpdateTargets = function ()
+		{
+			for (var i = 0; i < this.boidList.length; ++i)
+			{
+				var boid = this.boidList[i]
+				boid.target.x = boid.gridX + this.x
+				boid.target.y = boid.gridY + this.y
+				if (this.isButton == false) {
+					if (Utils.distanceBetween(boid, Manager.mouse) < 60) {
+						// boid.BounceAt(Manager.mouse.x, Manager.mouse.y, 10)
+						boid.target.x += (boid.x - Manager.mouse.x) * 2
+						boid.target.y += (boid.y - Manager.mouse.y) * 2
+					}
+				}
+				else {
+					if (Utils.distanceBetween(boid, Manager.mouse) < 60) {
+						boid.SetColorness(boid.colorness + Settings.COLORNESS_SPEED)
+					}
+					else {
+						boid.SetColorness(boid.colorness - Settings.COLORNESS_SPEED)
+					}
+				}
+			}
+		}
+
+		this.SetButton = function (callback)
+		{
+			this.isButton = true
+			for (var i = 0; i < this.boidList.length; ++i)
+			{
+				var boid = this.boidList[i]
+				boid.bubbleFront.interactive = boid.bubbleFront.buttonMode = true
+				boid.bubbleColor.interactive = boid.bubbleColor.buttonMode = true
+				boid.textFront.interactive = boid.textFront.buttonMode = true
+				boid.bubbleFront.on('mousedown', callback).on('touchstart', callback)
+				boid.bubbleColor.on('mousedown', callback).on('touchstart', callback)
+				boid.textFront.on('mousedown', callback).on('touchstart', callback)
+			}
 		}
 	}
 

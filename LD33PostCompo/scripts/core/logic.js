@@ -1,7 +1,7 @@
 
 define(['../settings', '../core/manager', '../core/renderer',
 '../element/phylactere',
-'../base/utils', '../base/point', '../base/color'], function(Settings, Manager, renderer, Phylactere, Utils, Point, Color)
+'../base/utils', '../base/point', '../color'], function(Settings, Manager, renderer, Phylactere, Utils, Point, Color)
 {
   var Logic = {}
 
@@ -17,6 +17,8 @@ define(['../settings', '../core/manager', '../core/renderer',
     {
       var boid = Manager.boidList[current]
 
+      boid.UpdateDisplay()
+
       Logic.vectorNear.x = Logic.vectorNear.y = 0
       Logic.vectorGlobal.x = Logic.vectorGlobal.y = 0
       Logic.vectorAvoid.x = Logic.vectorAvoid.y = 0
@@ -26,18 +28,22 @@ define(['../settings', '../core/manager', '../core/renderer',
       var boidBiggerAndNear = boid;
       var globalCount = 0
       var nearCount = 0
-      var neighborDarkness = 0
-      var neighborDarknessCount = 0
+      var neighborColorness = 0
+      var neighborColornessCount = 0
       for (var other = 0; other < Manager.boidList.length; ++other) {
         if (current != other) {
           var boidOther = Manager.boidList[other]
 
           // Avoid
-          var dist = Utils.distanceBetween(boid, boidOther) - (boid.size + boidOther.size)
-          if (dist < Settings.BULL_COLLISION_BIAS)
+          var distance = Utils.distanceBetween(boid, boidOther)
+          var dist = distance - (boid.size + boidOther.size)
+          if (dist < Settings.COLLISION_BIAS)
           {
-            Logic.vectorAvoid.x += boid.x - boidOther.x
-            Logic.vectorAvoid.y += boid.y - boidOther.y
+            var avoidX = boid.x - boidOther.x
+            var avoidY = boid.y - boidOther.y
+            var angle = Math.atan2(avoidY, avoidX)
+            Logic.vectorAvoid.x += Math.cos(angle) * Math.max(distance, boid.size + boidOther.size)
+            Logic.vectorAvoid.y += Math.sin(angle) * Math.max(distance, boid.size + boidOther.size)
           }
           // Follow Near
           if (dist < Settings.MIN_DIST_TO_FOLLOW) {
@@ -49,6 +55,7 @@ define(['../settings', '../core/manager', '../core/renderer',
           Logic.vectorGlobal.x += boidOther.x
           Logic.vectorGlobal.y += boidOther.y
           ++globalCount
+
           // Absorb
           // var shouldAbsorb = (boid.isPlayer && !boidOther.isPlayer) || (!boid.isPlayer && boidOther.isPlayer)
           if (dist < Settings.MIN_DIST_TO_ABSORB){// && boid.size < boidOther.size) {
@@ -56,6 +63,8 @@ define(['../settings', '../core/manager', '../core/renderer',
           }
         }
       }
+
+      Logic.CheckColorness(boid, nearestThinker)
 
       if (globalCount != 0) {
         Logic.vectorGlobal.x = Logic.vectorGlobal.x / globalCount - boid.x
@@ -91,47 +100,6 @@ define(['../settings', '../core/manager', '../core/renderer',
         boid.x = Utils.clamp(boid.x, 0, renderer.width)
         boid.y = Utils.clamp(boid.y, 0, renderer.height)
       }
-
-      // Collision with player
-      // else {
-      //
-      // 	if (Manager.player.circleCollision(boid))
-      // 	{
-      // 		boid.BounceFromBoid(Manager.player)
-      // 		Logic.BalanceOfPower(boid, Manager.player)
-      // 	}
-      // 	else {
-      // 		for (var c = 0; c < Manager.player.boidList.length; ++c) {
-      // 			var collider = Manager.player.boidList[c]
-      // 			if (collider.circleCollision(boid)) {
-      // 				// Bounce collision
-      // 				boid.BounceFromBoid(collider)
-      // 				Logic.BalanceOfPower(boid, Manager.player)
-      // 				break;
-      // 			}
-      // 		}
-      // 	}
-      // }
-
-      // Check darkness
-      if (boid.isPlayer && boid.darkness <= 0) {
-        var indexCurrent = Manager.player.boidList.indexOf(boid)
-        if (indexCurrent != -1) {
-          boid.isPlayer = false
-          Manager.player.boidList.splice(indexCurrent, 1)
-          if (nearestThinker) {
-            nearestThinker.Absorb(boid)
-          }
-        }
-      }
-      else if (boid.isPlayer == false && boid.darkness >= 1 && boid.phylactere) {
-        var indexCurrent = boid.phylactere.boidList.indexOf(boid)
-        if (indexCurrent != -1) {
-          boid.isPlayer = true
-          boid.phylactere.boidList.splice(indexCurrent, 1)
-          Manager.player.Absorb(boid)
-        }
-      }
     }
   }
 
@@ -140,27 +108,51 @@ define(['../settings', '../core/manager', '../core/renderer',
     // if (boid instanceof Phylactere == false && boidOther instanceof Phylactere == false) {
       var dist = Utils.distanceBetween(boid, boidOther)
       var ratio = boid.size / boidOther.size
-      if (boid.size < boidOther.size) {
+      var currentRange = boid.GetRange()
+      var otherRange = boidOther.GetRange()
+      if (currentRange < otherRange) {
         if (boid.phylactere) {
-          if (boid.darkness > boidOther.darkness) {
-            boid.SetDarkness(boid.darkness - Settings.DARKNESS_SPEED / ratio)
+          if (boid.colorness > boidOther.colorness) {
+            boid.SetColorness(boid.colorness - Settings.COLORNESS_SPEED / ratio)
           }
-          else if (boid.darkness < boidOther.darkness) {
-            boid.SetDarkness(boid.darkness + Settings.DARKNESS_SPEED / ratio)
+          else if (boid.colorness < boidOther.colorness) {
+            boid.SetColorness(boid.colorness + Settings.COLORNESS_SPEED / ratio)
           }
         }
       }
-      else {
+      else if (currentRange > otherRange) {
         if (boidOther.phylactere) {
-          if (boid.darkness < boidOther.darkness) {
-            boidOther.SetDarkness(boidOther.darkness - Settings.DARKNESS_SPEED * ratio)
+          if (boid.colorness < boidOther.colorness) {
+            boidOther.SetColorness(boidOther.colorness - Settings.COLORNESS_SPEED * ratio)
           }
-          else if (boid.darkness > boidOther.darkness) {
-            boidOther.SetDarkness(boidOther.darkness + Settings.DARKNESS_SPEED * ratio)
+          else if (boid.colorness > boidOther.colorness) {
+            boidOther.SetColorness(boidOther.colorness + Settings.COLORNESS_SPEED * ratio)
           }
         }
       }
     // }
+  }
+
+  Logic.CheckColorness = function (boid, nearestThinker)
+  {
+    if (boid.isPlayer && boid.colorness <= 0 && boid.phylactere) {
+      var indexCurrent = Manager.player.boidList.indexOf(boid)
+      if (indexCurrent != -1) {
+        boid.isPlayer = false
+        Manager.player.boidList.splice(indexCurrent, 1)
+        if (nearestThinker) {
+          nearestThinker.Absorb(boid)
+        }
+      }
+    }
+    else if (boid.isPlayer == false && boid.colorness >= 1 && boid.phylactere) {
+      var indexCurrent = boid.phylactere.boidList.indexOf(boid)
+      if (indexCurrent != -1) {
+        boid.isPlayer = true
+        boid.phylactere.boidList.splice(indexCurrent, 1)
+        Manager.player.Absorb(boid)
+      }
+    }
   }
 
   return Logic
