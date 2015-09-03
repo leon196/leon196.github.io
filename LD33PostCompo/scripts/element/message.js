@@ -1,6 +1,6 @@
 
 define(['../core/renderer', '../core/manager',
-'../settings', '../base/boid', '../element/letter', '../base/Utils'],
+'../settings', '../base/boid', '../element/letter', '../base/utils'],
 function(renderer, Manager, Settings, Boid, Letter, Utils)
 {
 	var Message = function(text, size, color)
