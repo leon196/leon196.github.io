@@ -1,9 +1,15 @@
 
-define(['base/utils'], function(Utils)
+define(['../scripts/base/utils'], function(Utils)
 {
   var Color = {}
 
-  Color.Devil = "#F32B1B"
+  Color.Player = "0x0c0c0c"
+  Color.Unknown = "0x3c3c3c"
+
+  Color.Background = 0xf8ca7c
+
+  Color.textFront = "0x0c0c0c"
+  Color.textBack = "0xfcfcfc"
 
   Color.GRID_HEX = 0xFF3434
   Color.GRID_STR = '#FF3434'
