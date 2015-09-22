@@ -73,8 +73,7 @@ function(PIXI, Render, Mouse, Keyboard, Utils, Global, Animation)
 
     //Render.getFilter().pixelSize = 1.0 + Math.ceil(Engine.mouse.x * 8 / Engine.getWidth())
 
-    Render.getFilter().mouseX = Mouse.x / Engine.getWidth();
-    Render.getFilter().mouseY = Mouse.y / Engine.getHeight();
+    Render.getFilter().mouse = Mouse
   }
 
   Engine.getWidth = function () { return window.innerWidth }

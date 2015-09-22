@@ -1,3 +1,5 @@
+// From http://nuclear.mutantstargoat.com/articles/sdr_fract/
+
 precision mediump float;
 
 #define PI 3.141592653589
@@ -27,7 +29,7 @@ const int iter = 20;
 void main(void)
 {
   vec2 z;
-  vec2 c = uMouse;
+  vec2 c = vec2(0.0);//uMouse / uResolution * 2.0 - 1.0;
   z.x = 3.0 * (vTextureCoord.x - 0.5);
   z.y = 2.0 * (vTextureCoord.y - 0.5);
   int ii = 0;
