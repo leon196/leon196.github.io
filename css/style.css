@@ -1,6 +1,7 @@
 body
 {
 	background: white;
+	padding: 4px;
 }
 
 a:link { 
@@ -24,6 +25,12 @@ a:active {
 	font-weight: bold;
 	color: #ff7707; 
 	text-shadow: 2px 2px 0px black;
+}
+
+.case200
+{
+	height: 200px;
+	border: solid 4px white;
 }
 
 .case300
@@ -117,14 +124,30 @@ a:active {
 	float: left;
 }
 
-.Leon
+.slash
 {
-	background: black url("../images/sign.png") no-repeat center;
+	padding: 0 5px;
+	display: inline-block;
+}
+
+.center
+{
+	text-align: center;
+}
+
+.big
+{
+	font-size: 32px;
 }
 
 .Empty
 {
 	background: gray;
+}
+
+.Leon
+{
+	background: url("../images/signInv.png") no-repeat center;
 }
 
 .VirtualManchot {background: url("../gifs/VirtualManchot.gif") no-repeat center; background-size: cover; }
@@ -147,6 +170,13 @@ a:active {
 .GPU {background: url("../gifs/GPU.gif") no-repeat center; background-size: cover; }
 .Isochrone {background: url("../gifs/Isochrone.gif") no-repeat center; background-size: cover; }
 .AtomThatMatters {background: url("../gifs/AtomThatMatters.gif") no-repeat center; background-size: cover; }
+.Myst {background: url("../gifs/TributeToMyst.gif") no-repeat center; background-size: cover; }
+.DingDong {background: url("../gifs/DingDong.gif") no-repeat center; background-size: cover; }
+.Choupichoup {background: url("../gifs/Choupichoup.gif") no-repeat center; background-size: cover; }
+.LightPath {background: url("../gifs/LightPath.gif") no-repeat center; background-size: cover; }
+.TimeDisplacement {background: url("../gifs/TimeDisplacement.gif") no-repeat center; background-size: cover; }
+.ZooMachines2014 {background: url("../images/ZooMachines2014.png") no-repeat center; background-size: cover; background-color: black; }
+.ZooMachines2015 {background: url("../images/ZooMachines2015.png") no-repeat center; background-size: cover; }
 
 .More {background: url("../gifs/More.gif") no-repeat center; background-size: cover; }
 
