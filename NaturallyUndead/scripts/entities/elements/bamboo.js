@@ -9,7 +9,6 @@ function Bamboo (curve)
 
 	this.setCurve = function (value, shouldLoop) { 
 		shouldLoop = shouldLoop || 0;
-		console.log(shouldLoop);
 		this.shader.uniforms.u_curve = value; 
 		this.shader.uniforms.u_curveLoop = shouldLoop; 
 	};

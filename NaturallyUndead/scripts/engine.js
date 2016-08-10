@@ -3,10 +3,12 @@ var engine = {};
 
 var State = { Loading: 0, LoadingFadeOut: 1, Intro: 2, Test: 3 };
 engine.state = State.Loading;
+engine.isReady = false;
 
 var loadingScene, introScene, testScene;
 var gl, m4 = twgl.m4;
 var planetVideo;
+var assetsIsLoaded = false;
 
 engine.init = function ()
 {
@@ -19,27 +21,24 @@ engine.init = function ()
 	loadingScene.init();
 	blender.init();
 
-	// planetVideo = new Video("assets/videos/planet.mp4", false);
-
 	requestAnimationFrame(render);
 
-	assets.loadDirectory("assets/");
+	loadAssets();
 };
 
 function render (time) 
 {
 	requestAnimationFrame(render);
 
-	if (!assets.loaded) {
-		if (assets.areLoaded()) {// && planetVideo.isLoaded()) {
-			assets.loaded = true;
-			assets.addHeaderToShaders();
-			loadingScene.loaded();
+	if (!engine.isReady & assetsIsLoaded) 
+	{
+		engine.isReady = true;
+		addHeaderToShaders();
+		loadingScene.loaded();
 
-			testScene = new TestScene();
-			introScene = new IntroScene();
-			mainScene = new MainScene();
-		}
+		testScene = new TestScene();
+		introScene = new IntroScene();
+		mainScene = new MainScene();
 	}
 
 	twgl.resizeCanvasToDisplaySize(gl.canvas);
@@ -52,7 +51,7 @@ function render (time)
 		case State.Loading: {
 			loadingScene.update();
 
-			if (assets.loaded && loadingScene.cooldown.isOver()) {
+			if (engine.isReady && loadingScene.cooldown.isOver()) {
 				loadingScene = null;
 				// introScene.init();
 				// engine.state = State.Intro;

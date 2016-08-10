@@ -46,8 +46,9 @@ function loadFiles(files, callback, callbackProgress) {
 				// make sure we only call this once!
 				return callbackOnce(err);
 			}
-
-			loadedFiles[file] = content;
+			var fileNameArray = file.split('/');
+			var fileName = fileNameArray[Math.max(0, fileNameArray.length - 1)];
+			loadedFiles[fileName] = content;
 			--numToLoad;
 			if (callbackProgress) {
 				callbackProgress(1 - numToLoad / files.length);
