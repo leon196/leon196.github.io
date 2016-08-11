@@ -21,15 +21,15 @@ function LoadingScene ()
 		this.cube.displayType = gl.LINES;
 		this.addEntity(this.cube);
 
-		this.loadingText = text.makeText("assets loading...", "monospace", 40, 0.005);
-		this.loadedText = text.makeText("assets loaded!", "monospace", 40, 0.005);
+		this.loadingText = text.makeSimpleText("assets loading...", "monospace", 40, [0.005, 0.005]);
+		this.loadedText = text.makeSimpleText("assets loaded!", "monospace", 40, [0.005, 0.005]);
 		this.text = new Entity (
 			createPlane(), 
 			"precision mediump float; attribute vec4 a_position; attribute vec2 a_texcoord; uniform mat4 u_view; varying vec2 v_uv; void main() { v_uv = vec2(a_texcoord.x, 1. - a_texcoord.y); gl_Position = u_view * a_position; }", 
 			"precision mediump float; uniform sampler2D u_texture; uniform float u_alpha; varying vec2 v_uv; void main () { vec4 color = texture2D(u_texture, v_uv); color.a *= u_alpha; gl_FragColor = color; }", { 
 				u_view: m4.identity(),
 				u_texture: this.loadingText.texture,
-				u_alpha: 0,
+				u_alpha: 1,
 			}
 		);
 		this.text.scale = this.loadingText.scale;

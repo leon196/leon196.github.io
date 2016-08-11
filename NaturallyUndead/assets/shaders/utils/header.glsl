@@ -109,3 +109,39 @@ vec3 rotateZ(vec3 p, float angle)
 	float s = sin(angle);
 	return vec3(c*p.x+s*p.y, -s*p.x+c*p.y, p.z);
 }
+
+
+
+vec2 lightDirection (sampler2D bitmap, vec2 uv, vec2 dimension)
+{ 
+  vec2 force = vec2(0.0, 0.0);
+  vec3 c = texture2D(bitmap, uv).rgb;
+  float l = luminance(c);
+
+  c = texture2D(bitmap, uv + vec2(-1.0, 0.0) / dimension).rgb;
+  force.x += luminance(c) - l;
+
+  c = texture2D(bitmap, uv + vec2(1.0, 0.0) / dimension).rgb;
+  force.x += l - luminance(c);
+
+  c = texture2D(bitmap, uv + vec2(0.0, -1.0) / dimension).rgb;
+  force.y += luminance(c) - l;
+
+  c = texture2D(bitmap, uv + vec2(0.0, 1.0) / dimension).rgb;
+  force.y += l - luminance(c);
+
+  c = texture2D(bitmap, uv + vec2(-1.0, -1.0) / dimension).rgb;
+  force += luminance(c) - l;
+
+  c = texture2D(bitmap, uv + vec2(-1.0, 1.0) / dimension).rgb;
+  force += l - luminance(c);
+
+  c = texture2D(bitmap, uv + vec2(1.0, -1.0) / dimension).rgb;
+  force += luminance(c) - l;
+
+  c = texture2D(bitmap, uv + vec2(1.0, 1.0) / dimension).rgb;
+  force += l - luminance(c);
+
+  return force;
+  // return normalize(force);
+}

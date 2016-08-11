@@ -14,10 +14,10 @@ function MainScene ()
 		this.vegetation.position = blender.getVector3("VegetationAction", "location");
 		this.vegetation.orientation = blender.getRotation("VegetationAction");
 
-		this.bush = new Bush([8,8,8]);
-		this.bush.setVoxelSize(1.);
-		this.bush.setLeafSize([0.3, 4.]);
-		this.bush.setDisplacementScale([0.5, 0.1, 0.5]);
+		this.bush = new Bush([16,16,16]);
+		this.bush.setVoxelSize(0.5);
+		this.bush.setLeafSize([1.2, 16.]);
+		this.bush.setDisplacementScale([4, 0.1, 4]);
 		this.bush.setNoiseScale([0.5, 0.5, 0.5]);
 
 		this.currentCurve = 1;
@@ -55,6 +55,21 @@ function MainScene ()
 
 		this.butterflies = new Butterflies();
 
+		this.painting = new Painting(createQuads(gl, 128, 128, { x: 0.5, y: 0.5 }));
+		this.painting.setSize([0.04, 0.08]);
+		this.paintingFrame = new FrameBuffer();
+		this.paintingFrame.createBuffer(gl, gl.drawingBufferWidth, gl.drawingBufferHeight, 1);
+
+		// this.textTitle = new CoolText("Naturally\nUndead\nEvoke 2016", 0, 7);//, ["rgb(0,250,0)", "rgb(250,0,0)", "white"]);
+		this.textTitle2 = new CoolText("Naturally\nUndead\nEvoke 2016", 115, 12);//, ["rgb(0,250,0)", "rgb(250,0,0)", "white"]);
+		this.textCredits1 = new CoolText("Visual by\nPONK\nMusic by\nDOK", 127, 12);
+		this.textCredits2 = new CoolText("Skull scanned by\nDoug Boyer from\nDuke University", 139, 12);
+		this.textArray = [];
+		// this.textArray.push(this.textTitle);
+		this.textArray.push(this.textTitle2);
+		this.textArray.push(this.textCredits1);
+		this.textArray.push(this.textCredits2);
+
 		// this.video = new Video("assets/videos/dance1.mp4");
 		// this.opticalFlow = new OpticalFlow();
 
@@ -67,6 +82,7 @@ function MainScene ()
 		this.addEntity(this.butterflies);
 		this.addEntity(this.vegetation);
 		// this.addEntity(this.bush);
+		// this.addEntity(this.text);
 		// this.addEntity(this.targetBush);
 		// this.addEntity(this.targetBoids);
 
@@ -141,12 +157,32 @@ function MainScene ()
 		// vegetation
 		var targetVegetation = blender.evaluate("TargetVegetationAction", "location", this.time);
 		this.vegetation.setTarget(targetVegetation);
+		this.vegetation.position = blender.evaluate("VegetationAction", "location", this.time);
+		var orientationVegetation = blender.evaluate("VegetationAction", "rotation_euler", this.time);
+		orientationVegetation[0] -= Math.PI * 0.5;
+		this.vegetation.orientation = orientationVegetation;
 		// this.vegetation.setTarget(this.butterflies.getTarget());
 		// this.targetBush.position = targetVegetation;
 
 		// planetVideo.update(this.cooldown.elapsed);
 
+		// bush
+		// var bushTargetAngle = this.time * 0.2;
+		// var bushTargetRadius = 1;
+		// this.bush.setValue(blender.evaluate("BushValueAction", "location", this.time)[0]);
+		// this.bush.setTarget([Math.cos(bushTargetAngle) * 4, 0, Math.sin(bushTargetAngle) * 4]);
+
 		this.draw();
+
+		// TEXTS
+		twgl.bindFramebufferInfo(gl, this.paintingFrame.getFrameBuffer());
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		for (var i = 0; i < this.textArray.length; ++i) {
+			this.textArray[i].drawText(this.time);
+		}
+		twgl.bindFramebufferInfo(gl, null);
+		this.painting.draw(this.paintingFrame.getTexture(), this.time);
+
 		// this.opticalFlow.draw(planetVideo, this.camera);
 	};
 }

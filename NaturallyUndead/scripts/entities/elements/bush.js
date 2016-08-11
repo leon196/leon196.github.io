@@ -27,6 +27,7 @@ function Bush (gridSize)
 	this.setDisplacementScale 	= function (value) { this.shader.uniforms.u_displacementScale = value; };
 	this.setNoiseScale 					= function (value) { this.shader.uniforms.u_noiseRange = value; };
 	this.setTarget 							= function (value) { this.shader.uniforms.u_target = value; };
+	this.setValue 							= function (value) { this.shader.uniforms.u_value = value; };
 }
 
 Bush.prototype = Object.create(Entity.prototype);

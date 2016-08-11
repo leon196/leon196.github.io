@@ -29,7 +29,7 @@ function Scene ()
 		}
 
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
+		
 		this.time = (Date.now() - this.start) / 1000;
 		this.cooldown.update(this.time);
 		this.camera.update();

@@ -3,7 +3,6 @@ attribute vec3 a_position;
 attribute vec2 a_texcoord;
 
 uniform sampler2D u_video;
-uniform sampler2D u_opticalFlow;
 uniform vec2 u_resolution;
 uniform vec2 u_size;
 uniform mat4 u_view;
@@ -16,17 +15,26 @@ varying vec2 v_texcoord;
 void main ()
 {
 	vec2 uv = a_position.xy * 0.5 + 0.5;
+	uv.y = 1. - uv.y;
 	vec4 videoColor = texture2D(u_video, uv);
-	vec4 motionColor = texture2D(u_opticalFlow, uv);
-	float lum = (videoColor.r + videoColor.g + videoColor.b) / 3.0;
+	// vec4 motionColor = texture2D(u_opticalFlow, uv);
 
-	// float angle = rgb2hsv(videoColor.rgb).r * 3.1416 * 2.;
-	// vec2 direction = vec2(cos(angle), sin(angle));
-	vec2 direction = normalize(motionColor.xy);
+	vec3 color = videoColor.rgb;// * (dot(direction, vec2(0,-1)) * 0.25 + 0.75);
+	// vec3 color = hsv2rgb(vec3(mod(abs(angle / (3.1416 * 2.)), 1.), 0.8, 0.8));
+	 // + vec3(u_time, u_time * 2., 0)
+	float lum = rgb2hsv(color).b;
+	// float lum = (videoColor.r + videoColor.g + videoColor.b) / 3.0;
+
+	float angle = lum * 3.1416 * 2. + noiseIQ(vec3(uv, 1) * 40.) * 3.1416 + u_time * 0.2;
+	// float angle = rgb2hsv(videoColor.rgb).r * 3.1416 * 2.;// + noiseIQ(vec3(uv, 1) * 40.) * 3.1416;// + u_time;
+	vec2 direction = vec2(cos(angle), sin(angle));
+	// vec2 direction = normalize(motionColor.xy);
+	// vec2 direction = normalize(vec2(0,1) + lightDirection(u_video, uv, u_resolution));
 
 	vec2 coord = a_texcoord;
-	coord.x = coord.x * 2. - 1.;
-	vec2 size = u_size * (length(motionColor.xy) * 0.25 + lum);
+	coord = coord * 2. - 1.;
+	// vec2 size = u_size * (length(motionColor.xy) * 0.25 + lum);
+	vec2 size = u_size * (1. - clamp(lum, 0.0, 0.6)) * smoothstep(0.0, 0.1, lum);
 
 	vec4 position = vec4(a_position.xy, 0, 1);
 	float aspect = u_resolution.y / u_resolution.x;
@@ -48,8 +56,10 @@ void main ()
 	right.x *= aspect;
 	displacement.x *= aspect;
 
-	v_color = videoColor;
+	// color.rgb *= coord.y;
+
+	v_color = vec4(color, 1);
 	v_texcoord = a_texcoord;
 
-	gl_Position = vec4(u_view * position) + up + right + displacement;
+	gl_Position = vec4(u_view * position) + up + right + displacement + forward;
 }

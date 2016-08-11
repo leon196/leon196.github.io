@@ -59,7 +59,7 @@ function IntroScene ()
 		this.painting.setSize([this.leafSize[0] * this.cooldownFadeIn.ratio, this.leafSize[1] * this.cooldownFadeIn.ratio]);
 
 		planetVideo.update(this.cooldown.elapsed);
-		this.painting.draw(planetVideo, this.camera, this.time);
+		this.painting.drawVideo(planetVideo, this.camera, this.time);
 	};
 }
 

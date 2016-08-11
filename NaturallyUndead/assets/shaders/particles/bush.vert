@@ -13,6 +13,7 @@ uniform float u_ground;
 uniform vec3 u_target;
 uniform vec3 u_gridSize;
 uniform float u_voxelSize;
+uniform float u_value;
 uniform vec2 u_leafSize;
 uniform vec3 u_displacementScale;
 uniform vec3 u_noiseRange;
@@ -63,8 +64,8 @@ void main ()
 	coord.x = coord.x * 2. - 1.;
 
 	position = (u_view * vec4(position.xyz, 1));
-	position.xyz += up * coord.x * leafSize.x;
-	position.xyz += right * coord.y * leafSize.y;
+	position.xyz += up * coord.x * leafSize.x * u_value;
+	position.xyz += right * coord.y * leafSize.y * u_value;
 
 	v_color = vec4(color, 1);
 	gl_Position = position;

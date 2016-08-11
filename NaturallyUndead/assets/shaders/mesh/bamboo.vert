@@ -37,8 +37,8 @@ void main ()
 	float _PlanarScale = 0.05 * mix(sin(a_ratio * 3.1416), 1., u_curveLoop);
 	float _CurveResolution = 32.;
 
-	float ratio = clamp(forwardCurve / 254. - 1. + u_curveRatio * 2., 0., 1.);
-	ratio = mix(ratio, mod(abs(forwardCurve / 254. - u_time * 0.1), 1.), u_curveLoop);
+	float ratio = clamp(forwardCurve / 253. - 1. + u_curveRatio * 2., 0., 1.);
+	ratio = mix(ratio, mod(abs(forwardCurve / 253. - u_time * 0.1), 1.), u_curveLoop);
 
 	// the actual clamped ratio position on the curve
 	// float ratio = mod(abs(forwardCurve + u_curveRatio), 1.0);
