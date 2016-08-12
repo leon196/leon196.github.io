@@ -88,7 +88,7 @@ function CoolText (message, start, delay, colors)
 	this.text = text.makeText(message, "monospace", 16, [0.0075, 0.02], colors);
 	this.shader.uniforms.u_texture = this.text.texture;
 	// this.scale = this.text.scale;
-	this.scale = [12, 12];
+	this.scale = [12, 12, 12];
 
 	this.camera = {target:[0,0,0], position:[0,0,0], viewProjection:m4.identity()};
 
