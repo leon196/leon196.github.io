@@ -54,8 +54,13 @@ void main ()
 	// displacement *= ratio * 3. * luminance(a_color.rgb) * smoothstep(0.5, 1., ratio);
 	// position.xyz += displacement;
 
+	// vec2 pulse = vec2(sin(u_time * 8. + noiseIQ(a_normal) * 10.) * 0.5 + 0.5);
+	// pulse.x *= 2.0;
+	// pulse *= 0.3;
+	// pulse += vec2(1.0);
+
 	// cycle
-	vec2 size = u_leafSize * (1.0 - ratio) * (light * 0.5 + 1.0);//smoothstep(0., 0.25, ratio) * (1. - smoothstep(0.9, 1., ratio));
+	vec2 size = u_leafSize * (1.0 - ratio) * (light * 0.5 + 1.0);// * pulse;// * (sin(u_time * 10.) * 0.5 + 0.5);//smoothstep(0., 0.25, ratio) * (1. - smoothstep(0.9, 1., ratio));
 	// size = mix(size, size * light, u_followTarget);
 
 	position = (u_view * vec4(position.xyz, 1));

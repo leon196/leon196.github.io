@@ -9,6 +9,8 @@ var loadingScene, introScene, testScene;
 var gl, m4 = twgl.m4;
 var planetVideo;
 var assetsIsLoaded = false;
+var music;
+var musicIsReady = false;
 
 engine.init = function ()
 {
@@ -21,6 +23,12 @@ engine.init = function ()
 	loadingScene.init();
 	blender.init();
 
+	music = document.getElementById("music");
+	music.oncanplaythrough = function() {
+		musicIsReady = true;
+	};
+	music.load();
+
 	requestAnimationFrame(render);
 
 	loadAssets();
@@ -30,7 +38,7 @@ function render (time)
 {
 	requestAnimationFrame(render);
 
-	if (!engine.isReady & assetsIsLoaded) 
+	if (!engine.isReady && assetsIsLoaded && musicIsReady) 
 	{
 		engine.isReady = true;
 		addHeaderToShaders();
@@ -57,8 +65,10 @@ function render (time)
 				// engine.state = State.Intro;
 				// testScene.init();
 				// engine.state = State.Test;
+				music.play();
 				mainScene.init();
 				engine.state = State.Main;
+				// audioAnalyser = new AudioAnalyser();
 			}
 			break;
 		}

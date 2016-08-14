@@ -1,13 +1,13 @@
 
 function Painting (bufferArray, vertexShader)
 {
-	bufferArray = bufferArray || createQuads(gl, 128, 128, { x: 0.5, y: 0 });
+	bufferArray = bufferArray || createQuads(gl, 512, 512, { x: 0.5, y: 0 });
 	Entity.call(this, bufferArray, assets[vertexShader || "painting.vert"], assets["painting.frag"], {
 		u_framebuffer: 0,
 		u_videoResolution: [1,1],
 		u_resolution: [1,1],
 		u_video: 0,
-		u_size: [0.06, 0.2],
+		u_size: [0.1, 0.2],
 		u_splashRatio: 0,
 		u_view: m4.identity(),
 		u_time: 0

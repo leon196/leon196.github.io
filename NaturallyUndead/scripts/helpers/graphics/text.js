@@ -88,7 +88,7 @@ function CoolText (message, start, delay, colors)
 	this.text = text.makeText(message, "monospace", 16, [0.0075, 0.02], colors);
 	this.shader.uniforms.u_texture = this.text.texture;
 	// this.scale = this.text.scale;
-	this.scale = [12, 12, 12];
+	this.scale = [8, 8, 8];
 
 	this.camera = {target:[0,0,0], position:[0,0,0], viewProjection:m4.identity()};
 
@@ -100,7 +100,10 @@ function CoolText (message, start, delay, colors)
 		// if (this.started == false && this.start <= elapsed) {
 			var ratio = Math.max(0, Math.min(1, (elapsed - this.start) / this.delay));
 			if (ratio < 1) {
-				ratio = smoothstep(0, 0.4, ratio) * (1 - smoothstep(0.7, 1.0, ratio));
+				// ratio = Math.sin(elapsed * 0.2) * 0.5 + 0.5;
+				ratio = smoothstep(0, 0.4, ratio) * (1 - smoothstep(0.6, 1.0, ratio));
+				// ratio = Math.sin(elapsed) * 0.5 + 0.5;
+				// ratio = smoothstep(0, 0.4, ratio) * (1 - smoothstep(0.7, 1.0, ratio));
 				// this.text.position[1] = Math.sin(this.time * 0.1);
 				this.shader.uniforms.u_alpha = ratio;
 				this.draw(this.camera, elapsed);

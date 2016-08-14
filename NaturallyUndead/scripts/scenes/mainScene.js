@@ -61,14 +61,27 @@ function MainScene ()
 		this.paintingFrame.createBuffer(gl, gl.drawingBufferWidth, gl.drawingBufferHeight, 1);
 
 		// this.textTitle = new CoolText("Naturally\nUndead\nEvoke 2016", 0, 7);//, ["rgb(0,250,0)", "rgb(250,0,0)", "white"]);
-		this.textTitle2 = new CoolText("Naturally\nUndead\nEvoke 2016", 115, 12);//, ["rgb(0,250,0)", "rgb(250,0,0)", "white"]);
-		this.textCredits1 = new CoolText("Visual by\nPONK\nMusic by\nDOK", 127, 12);
-		this.textCredits2 = new CoolText("Skull scanned by\nDoug Boyer from\nDuke University", 139, 12);
+		this.textTitle2 = new CoolText("Naturally\nUndead\nEvoke 2016", 100, 8);//, ["rgb(0,250,0)", "rgb(250,0,0)", "white"]);
+		this.textCredits1 = new CoolText("Visual by\nPONK\nMusic by\nDOK", 108, 8);
+		// this.textCredits2 = new CoolText("Skull scanned by\nDoug Boyer from\nDuke University", 169, 12);
+		this.textCredits3 = new CoolText("First Demo Ever", 116, 8);
+		this.textCredits4 = new CoolText("Still LJ Fairlight\nConspiracy\nASD Mercury\nrgba Farbrausch", 124, 6);
+		this.textCredits5 = new CoolText("Cocoon Xmen\nPoobrain\nLNX Triple A\nOne Studio Off\nRazor 1911", 130, 6);
+		this.textCredits6 = new CoolText("Cyclades\nThe Cybernetics\nSt Connexion \nThe Overlanders\nYoyoST The Mysfits\nSector One", 136, 6);
+		this.textCredits7 = new CoolText("No Extra TMP STIron\nFLUSH TRSI\nSOS SOosoWsKy\nThe Tourist Phaazon", 142, 6);
+		this.textCredits8 = new CoolText("We Love You", 148, 6);
+		
 		this.textArray = [];
 		// this.textArray.push(this.textTitle);
 		this.textArray.push(this.textTitle2);
 		this.textArray.push(this.textCredits1);
-		this.textArray.push(this.textCredits2);
+		this.textArray.push(this.textCredits3);
+		this.textArray.push(this.textCredits4);
+		this.textArray.push(this.textCredits5);
+		this.textArray.push(this.textCredits6);
+		this.textArray.push(this.textCredits7);
+		this.textArray.push(this.textCredits8);
+		// this.textArray.push(this.textCredits;
 
 		// this.video = new Video("assets/videos/dance1.mp4");
 		// this.opticalFlow = new OpticalFlow();
@@ -85,8 +98,13 @@ function MainScene ()
 		// this.addEntity(this.text);
 		// this.addEntity(this.targetBush);
 		// this.addEntity(this.targetBoids);
+		// this.textTest = new CoolText("Text", 3 * 60 + 10, 1000);
+		// this.textArray.push(this.textTest);
 
-		this.time = 0;
+		this.time = 0;//3 * 60 + 10;
+		// console.log(music.currentTime);
+		// music.currentTime = 40;
+		// console.log(music.currentTime);
 		this.start = Date.now() - this.time * 1000;
 	};
 
@@ -161,6 +179,8 @@ function MainScene ()
 		var orientationVegetation = blender.evaluate("VegetationAction", "rotation_euler", this.time);
 		orientationVegetation[0] -= Math.PI * 0.5;
 		this.vegetation.orientation = orientationVegetation;
+
+		this.vegetation.shader.uniforms.u_value = blender.evaluate("VegetationValueAction", "location", this.time)[0];
 		// this.vegetation.setTarget(this.butterflies.getTarget());
 		// this.targetBush.position = targetVegetation;
 

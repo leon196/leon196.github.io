@@ -25,28 +25,43 @@ void main ()
 	float lum = rgb2hsv(color).b;
 	// float lum = (videoColor.r + videoColor.g + videoColor.b) / 3.0;
 
-	float angle = lum * 3.1416 * 2. + noiseIQ(vec3(uv, 1) * 40.) * 3.1416 + u_time * 0.2;
+	float angle = lum * 3.1416 * 2. + noiseIQ(vec3(uv, 1) * 40.) * 3.1416;// + u_time * 0.2;
 	// float angle = rgb2hsv(videoColor.rgb).r * 3.1416 * 2.;// + noiseIQ(vec3(uv, 1) * 40.) * 3.1416;// + u_time;
 	vec2 direction = vec2(cos(angle), sin(angle));
 	// vec2 direction = normalize(motionColor.xy);
 	// vec2 direction = normalize(vec2(0,1) + lightDirection(u_video, uv, u_resolution));
 
+	float ratioStyle = (1. - clamp(lum, 0.0, 0.6)) * smoothstep(0.0, 0.1, lum);
+
 	vec2 coord = a_texcoord;
 	coord = coord * 2. - 1.;
 	// vec2 size = u_size * (length(motionColor.xy) * 0.25 + lum);
-	vec2 size = u_size * (1. - clamp(lum, 0.0, 0.6)) * smoothstep(0.0, 0.1, lum);
+	vec2 size = u_size * ratioStyle;
 
 	vec4 position = vec4(a_position.xy, 0, 1);
+
 	float aspect = u_resolution.y / u_resolution.x;
 
 	vec2 fragcoord = vec4(u_view * position).xy;
-	vec4 displacement = vec4(normalize(fragcoord), 0, 0);
-	displacement.xy += direction;
-	fragcoord.x /= aspect;
+	// vec4 displacement = vec4(normalize(fragcoord), 0, 0);
+	// displacement.xy = direction.xy * 0.1;
+	// float ratioFall = mod(u_time + angle, 1.);
+	vec2 center = fragcoord.xy;
+	// vec4 displacement = vec4(normalize(direction + vec2(0,-5)),0,0);
+	// vec4 displacement = vec4(0,-1,0,0);
+	// displacement *= ratioFall * 0.3 * smoothstep(0.8, 1.0, noiseIQ(vec3(uv * 100., 1) + vec3(u_time, 0, 0)));
+	// fragcoord.x /= aspect;
 	float ratio = u_splashRatio * step(length(fragcoord) * 0.5, u_splashRatio);
-	displacement *= ratio;
+	// displacement *= ratio;
 	size *= 1. - smoothstep(0.75, 1., u_splashRatio);
+	// size *= (1. - ratioFall);
+	// ratioFall = range(0., 0.1, 0.8, 1., ratioFall);
+	// size *= ratioFall;
 	// size *= (1. + ratio * 2.) * (1. - smoothstep(0.75, 1., u_splashRatio));
+	// float ratioRatio = mix(ratioStyle, 1. - )
+	// position.xy += displacement.xy * smoothstep(0.5, 1.0, lum);
+	// position.xy += displacement.xy * (1. - sin(ratioStyle * 3.1416));
+
 
 	vec4 up = vec4(direction * coord.y * size.y, 0, 0);
 	vec4 right = vec4(vec2(direction.y, -direction.x) * coord.x * size.x, 0, 0);
@@ -54,12 +69,13 @@ void main ()
 
 	up.x *= aspect;
 	right.x *= aspect;
-	displacement.x *= aspect;
+	// displacement.x *= aspect;
 
 	// color.rgb *= coord.y;
 
+	// v_color = vec4(1);
 	v_color = vec4(color, 1);
 	v_texcoord = a_texcoord;
 
-	gl_Position = vec4(u_view * position) + up + right + displacement + forward;
+	gl_Position = vec4(u_view * position) + up + right + forward;// + displacement;
 }

@@ -38,5 +38,5 @@ function AudioAnalyser ()
 		self.startMusic();
 	});
 
-	this.streamSource.setSource('sounds/02 Realise.mp3');
+	this.streamSource.setSource('assets/music.wav');
 }

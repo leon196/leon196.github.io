@@ -20,7 +20,7 @@ canvas
 	height:100%;
 }
 
-video
+video, audio
 {
   display: none;
 }

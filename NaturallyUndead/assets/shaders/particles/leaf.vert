@@ -11,6 +11,7 @@ uniform mat4 u_world;
 uniform vec3 u_target;
 uniform float u_top;
 uniform float u_ground;
+uniform float u_value;
 uniform vec2 u_leafSize;
 
 varying vec2 v_texCoord;
@@ -53,7 +54,13 @@ void main ()
 	// size = mix(0., size, ratio);//1. - smoothstep(u_ground, u_top, anch.y + (u_top - u_ground) * sin(u_time * 2.)));
 
 	// cycle
-	vec2 size = u_leafSize * smoothstep(0., 0.25, ratio) * (1. - smoothstep(0.9, 1., ratio));
+	vec2 pulse = vec2(sin(u_time * 8. + noiseIQ(a_normal) * 10.) * 0.5 + 0.5);
+	pulse.x *= 2.0;
+	// pulse *= 0.2;
+	pulse += vec2(1.0);
+	vec2 size = u_leafSize * smoothstep(0., 0.25, ratio) * (1. - smoothstep(0.9, 1., ratio)) * pulse;
+
+	size *= u_value;
 
 	position = (u_view * vec4(position.xyz, 1));
 

@@ -5,6 +5,7 @@ function PointCloud (assetName, step)
 	Entity.call(this, createLeaves(this.data.points), assets["leaf.vert"], assets["color.frag"], {
 		u_leafSize: [1, 1],
 		u_target: this.data.middle,
+		u_value: 1,
 	});
 
 	this.middle = this.data.middle;
