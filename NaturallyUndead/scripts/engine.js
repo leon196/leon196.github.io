@@ -24,7 +24,7 @@ engine.init = function ()
 	blender.init();
 
 	music = document.getElementById("music");
-	music.oncanplaythrough = function() {
+	music.oncanplay = function() {
 		musicIsReady = true;
 	};
 	music.load();
