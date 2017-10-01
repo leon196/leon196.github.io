@@ -69,7 +69,7 @@ body {
 }
 
 #message {
-	animation: fadeOut 5s forwards;
+	/*animation: fadeOut 5s forwards;*/
 	color: #fff;
 	font: 24px coffee;
 	padding: 20px;
