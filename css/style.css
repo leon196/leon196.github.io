@@ -4,26 +4,26 @@ body
 	padding: 4px;
 }
 
-a:link { 
-	text-decoration: underline; 
-	color: black; 
-	font-weight: bold; 
-}
-a:visited { 
-	text-decoration: underline; 
-	color: black; 
-	font-weight: bold; 
-}
-a:hover { 
-	text-decoration: underline; 
+a:link {
+	text-decoration: underline;
+	color: black;
 	font-weight: bold;
-	color: #ff7707; 
+}
+a:visited {
+	text-decoration: underline;
+	color: black;
+	font-weight: bold;
+}
+a:hover {
+	text-decoration: underline;
+	font-weight: bold;
+	color: #ff7707;
 	text-shadow: 1px 1px 0px black;
 }
-a:active { 
-	text-decoration: underline; 
+a:active {
+	text-decoration: underline;
 	font-weight: bold;
-	color: #ff7707; 
+	color: #ff7707;
 	text-shadow: 2px 2px 0px black;
 }
 
@@ -44,6 +44,11 @@ a:active {
 	height: 400px;
 	border: solid 4px white;
 }
+.case800
+{
+	height: 800px;
+	border: solid 4px white;
+}
 
 .caseTierHeight
 {
@@ -54,7 +59,7 @@ a:active {
 .caseTwoTierHeight
 {
 	height:66vh;
-	border: solid 4px white;	
+	border: solid 4px white;
 }
 
 .caseHalfHeight
@@ -98,7 +103,7 @@ a:active {
 	right:0px;
 }
 
-.date 
+.date
 {
 	padding: 8px;
     font: 14px arial, sans-serif;
@@ -138,6 +143,23 @@ a:active {
 .big
 {
 	font-size: 32px;
+}
+
+.newsitecontainer {
+}
+
+.newsite {
+	display: block;
+	text-align: center;
+	font-size: 30px;
+	margin: 30px 0;
+}
+
+.newsiteimg {
+width: 848px;
+	display: block;
+	margin: 0 auto;
+	box-shadow: 0px 0px 30px 0px #000;
 }
 
 .Empty
