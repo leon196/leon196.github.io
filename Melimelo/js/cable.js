@@ -154,8 +154,8 @@ function Cable () {
 	}
 
 	this.clamp = function (index) {
-		this.points[index][0] = Math.min(1, Math.max(-1, this.points[index][0]));
-		this.points[index][1] = Math.min(1, Math.max(-1, this.points[index][1]));
+		this.points[index][0] = Math.min(.98, Math.max(-.98, this.points[index][0]));
+		this.points[index][1] = Math.min(.98, Math.max(-.98, this.points[index][1]));
 	}
 
 	this.update = function (elapsed, delta) {
@@ -248,5 +248,6 @@ function Cable () {
 		this.plugs.forEach(function(plug) {
 			plug.resize(width, height);
 		});
+
 	}
 }
