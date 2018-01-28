@@ -42,3 +42,34 @@ Mouse.onMouseUp = function(event)
 	Mouse.down = false
 	Mouse.panStarted = false
 } 
+
+Mouse.onTouchMove = function(event)
+{
+	Mouse.lastX = Mouse.x;
+	Mouse.lastY = Mouse.y;
+	Mouse.x = event.changedTouches[0].pageX
+	Mouse.y = event.changedTouches[0].pageY
+	if (Mouse.panStarted)
+	{
+		Mouse.panX = Mouse.x - Mouse.panStartX
+		Mouse.panY = Mouse.y - Mouse.panStartY
+	}
+}
+
+Mouse.onTouchDown = function(event)
+{
+	Mouse.x = event.changedTouches[0].pageX
+	Mouse.y = event.changedTouches[0].pageY
+	Mouse.down = true
+
+	// Pan
+	Mouse.panStartX = Mouse.x - Mouse.panX
+	Mouse.panStartY = Mouse.y - Mouse.panY
+	Mouse.panStarted = true
+}
+
+Mouse.onTouchUp = function(event)
+{
+	Mouse.down = false
+	Mouse.panStarted = false
+} 

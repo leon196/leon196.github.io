@@ -1,13 +1,14 @@
 
 function Plug () {
 
-	this.target = [0,0];
+	this.target = [0,0,0];
 	this.size = .05;
 	this.angle = 0.;
 	this.ratio = 0.;
 	this.outlet = null;
 	this.uniforms = {
 		time: { value: 0 },
+		alpha: { value: 1 },
 		resolution: { value: [window.innerWidth, window.innerHeight] },
 		target: { value: this.target },
 		size: { value: this.size },
@@ -35,6 +36,11 @@ function Plug () {
 		this.uniforms.size.value = this.size;
 		this.uniforms.angle.value = this.angle;
 		this.uniforms.ratio.value = this.ratio;
+	}
+
+	this.resize = function(width, height) {
+		this.uniforms.resolution.value[0] = width;
+		this.uniforms.resolution.value[1] = height;
 	}
 }
 

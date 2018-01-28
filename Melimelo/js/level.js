@@ -2,30 +2,52 @@
 function generateLevel (scene, round) {
 
 	var cables = [];
-	var lineLength = 30 + round;
-	var cableCount = 3 + round;
+	var cableCount = 1 + round;
+	var lineLength = 30;
 	for (var c = 0; c < cableCount; ++c) {
-		cables.push(new Cable(lineLength+Math.round(Math.random()*(3+round))));
+		var cable = new Cable();
+		var salt = Math.random();
+		lineLength += 2*round;
+		for (var i = 0; i < lineLength; ++i) {
+			var a = i*(.3+.1*salt);
+			var r = .4+((lineLength-i)/lineLength)*(.005+.01*salt);
+			var x = Math.cos(a)*r/(window.innerWidth/window.innerHeight);
+			var y = Math.sin(a)*r;
+			cable.points.push([x+salt*.1, y-salt*.1,0]);
+		}
+		cable.setup();
+		cables.push(cable);
+		scene.add(cable.mesh);
 	}
 
 	var outlets = [];
 	var outletCount = cableCount+1;
+
+	var dimension = 8;
+	var grid = [];
+	for (var g = 0; g < dimension*dimension; ++g) {
+		grid.push(g);
+	}
+	grid = shuffle(grid);
 	for (var c = 0; c < outletCount; ++c) {
-		outlets.push(new Outlet());
-		// var p = Math.random()*2.-1.;
-		var x = Math.random()*2.-1.;//(Math.random()<.5?-1:1)*(Math.random()<.5?0:1);
-		var y = Math.random()*2.-1.;//(Math.random()<.5?-1:1)*(x==0?0:1);
-		outlets[c].target = [x, y, 0];
-	}
-
-	for (var i = 0; i < cables.length; ++i) {
-		scene.add(cables[i].mesh);
-		cables[i].move([0,0]);
-	}
-
-	for (var i = 0; i < outlets.length; ++i) {
-		scene.add(outlets[i]);
+		var outlet = new Outlet();
+		var x = ((grid[c]%dimension)/dimension)*2.-1.;
+		var y = (Math.floor(grid[c]/dimension)/dimension)*2.-1.;
+		x /= window.innerWidth/window.innerHeight;
+		outlet.target = [x*.8, y*.8, 0];
+		outlet.num = c;
+		outlets.push(outlet);
+		scene.add(outlet);
 	}
 
 	return { cables: cables, outlets: outlets };
+}
+
+function resetLevel (scene, level) {
+	level.cables.forEach(function(cable){
+		scene.remove(cable.mesh);
+	})
+	level.outlets.forEach(function(outlet){
+		scene.remove(outlet);
+	})
 }

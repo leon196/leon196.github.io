@@ -45,6 +45,13 @@ function UI () {
 	})
 	this.subtitle = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), material);
 	this.add(this.subtitle);
+
+	this.resize = function(width, height) {
+		this.subtitle.material.uniforms.resolution.value[0] = width;
+		this.subtitle.material.uniforms.resolution.value[1] = height;
+		this.title.material.uniforms.resolution.value[0] = width;
+		this.title.material.uniforms.resolution.value[1] = height;
+	}
 }
 
 UI.prototype = Object.create(THREE.Object3D.prototype)

@@ -15,6 +15,12 @@ window.onload = function () {
 	camera.position.z = 5;
 	var level, cursor, ui;
 	var round = 0;
+	var win = false;
+	var transitionIn = false;
+	var transitionOut = false;
+	var transitionDelayIn = 1.;
+	var transitionDelay = 10;
+	var transitionStart = 0.;
 
 	load(setup);
 
@@ -24,33 +30,77 @@ window.onload = function () {
 
 		level = generateLevel(scene, round);
 
-	 	cursor = new Cursor();
-	 	scene.add(cursor);
+		cursor = new Cursor();
+		scene.add(cursor);
 
-	 	ui = new UI();
-	 	scene.add(ui);
+		ui = new UI();
+		scene.add(ui);
 
 		document.addEventListener('keydown', Keyboard.onKeyDown);
-  	document.addEventListener('keyup', Keyboard.onKeyUp);
-  	document.addEventListener('mousemove', Mouse.onMove);
-  	document.addEventListener('mousedown', Mouse.onMouseDown);
-  	document.addEventListener('mouseup', Mouse.onMouseUp);
+		document.addEventListener('keyup', Keyboard.onKeyUp);
+		document.addEventListener('mousemove', Mouse.onMove);
+		document.addEventListener('mousedown', Mouse.onMouseDown);
+		document.addEventListener('mouseup', Mouse.onMouseUp);
+		document.addEventListener('touchmove', Mouse.onTouchMove);
+		document.addEventListener('touchstart', Mouse.onTouchDown);
+		document.addEventListener('touchend', Mouse.onTouchUp);
+		window.addEventListener('resize', resize, false);
 
 		requestAnimationFrame( update );
 	}
 
-	function checkGlobalConnexion(start, connected){
-		connected.push(start);
-		for(var i = 0; i< start.neighbors.length; i++){
-			if(connected.indexOf(start.neighbors[i]) == -1){
-				connected = checkGlobalConnexion(start.neighbors[i], connected);
+	function checkVictory () {
+		level.outlets.forEach(function(outlet){
+		})
+	}
+
+	function checkGlobalConnexion(start, outlets){
+		var toVisit = [];
+		toVisit.push(start);
+		var visited = [];
+		var connected = [];
+		var visiting = null;
+		while(toVisit.length > 0){
+			visiting = toVisit[toVisit.length-1];
+			toVisit.pop();
+			if(connected.indexOf(visiting) == -1){
+				connected.push(visiting);
+			}
+			visited.push(visiting);
+			if (outlets[visiting] != undefined) {
+				for(var i =0; i< outlets[visiting].neighbors.length; i++){
+					var neighborNum = outlets[visiting].neighbors[i];
+					if(visited.indexOf(neighborNum) == -1){
+						toVisit.push(neighborNum);
+					}
+				}
 			}
 		}
 		return connected;
 	}
+
+	function checkCollision(cables, selected){
+		var seuil = 0.05;
+		for( var i = 0; i<cables.length; i++){ // Tous les cables
+			if(i != selected){
+				for  (var j= 0; j < cables[selected].points.length-1; j++){ // Tous mes points
+					for (var k= 0; k < cables[i].points.length; k++){ // Tous les points de c
+						var distM = distance(cables[selected].points[j][0], cables[selected].points[j][1], cables[selected].points[j+1][0], cables[selected].points[j+1][1]);
+						var centre = [distM*cables[selected].points[j][0], distM*cables[selected].points[j][1]];
+						var d = distance(cables[i].points[k][0], cables[i].points[k][1] , centre[0], centre[1]);
+						if( d < seuil){
+							console.log("colidation");
+							// return index cable + coordonnées points à bouger
+						}
+					}
+				}	
+			}
+		}
+	}
+
 	function update (elapsed) {
 
-		elapsed *= .01;
+		elapsed *= .001;
 		var delta = Math.max(0, Math.min(1, elapsed - frameElapsed));
 		var mousex = (Mouse.x/window.innerWidth)*2.-1.;
 		var mousey = (1.-Mouse.y/window.innerHeight)*2.-1.;
@@ -60,85 +110,182 @@ window.onload = function () {
 		cursor.uniforms.mouse.value = mouse;
 		cursor.setDefault();
 
-		var colliding = [];
-		if (cursor.drag) {
-			if (Mouse.down) {
-				cursor.setGrab();
-				level.cables[cursor.selected].move(mouse, delta);
-				// level.cables[selected].checkCollision(level.cables);
-			
-			} else {
-				cursor.drag = false;
-				// level.cables[cursor.selected].slide([mousex-lastMouseX, mousey-lastMouseY]);
-			}
+		var plugRatioTotal = 0;
+		var plugCount = 0;
+
+		if (transitionOut && transitionStart + transitionDelay < elapsed) {
+			transitionOut = false;
+			transitionIn = true;
+			transitionStart = elapsed;
+			resetLevel(scene, level);
+			round += 1;
+			level = generateLevel(scene, round);
+
+		}
+		
+
+		if (transitionIn && transitionStart + transitionDelayIn < elapsed) {
+			transitionIn = false;
+		}
+		
+		if (transitionIn && transitionStart + transitionDelayIn > elapsed) {
+			var ratio = Math.max(0, Math.min(1, (elapsed-transitionStart)/transitionDelayIn));
+			level.outlets.forEach(function(outlet){
+				outlet.updateUniforms(elapsed);
+				outlet.uniforms.alpha.value = ratio;
+			})
+			level.cables.forEach(function(cable){
+				cable.update(elapsed, delta);
+				cable.updatePlugs();
+				cable.updateGeometry();
+				cable.updateUniforms(elapsed);
+				cable.uniforms.alpha.value = ratio;
+				cable.plugs.forEach(function(plug){
+					plug.uniforms.alpha.value = ratio;
+				});
+			})
 		}
 
-		for (var c = 0; c < level.cables.length; ++c) {
+		if (transitionIn == false && transitionOut == false) {
 
-			// hit test
-			var pointSelected = level.cables[c].hitTest(mouse);
-			if (!cursor.drag && pointSelected != -1) {
-				cursor.setHover();
-				// grab
+			var colliding = [];
+			if (cursor.drag) {
 				if (Mouse.down) {
-					cursor.drag = true;
-					cursor.selected = c;
-					level.cables[c].selected = pointSelected;
-				}
-			}
+					cursor.setGrab();
+					var s = 0;
+					var count = cursor.selecteds.length;
+					cursor.selecteds.forEach(function(selected){
+						var x = .03*Math.cos(2*Math.PI*s/count);
+						var y = .03*Math.sin(2*Math.PI*s/count);
+						level.cables[selected].move([mouse[0]+x,mouse[1]+y,0], delta);
+						++s;
+					})
+					// level.cables[selected].checkCollision(level.cables);
 
-			var plugs = level.cables[c].plugs;
-
-			for (var p = 0; p < plugs.length; ++p) {
-				var outlets = level.outlets;
-
-				var plugged = false;
-				var outletTarget = [0,0,0];
-				for (var o = 0; o < outlets.length; ++o) {
-					if (outlets[o].hitTestCircle(plugs[p].target[0], plugs[p].target[1], plugs[p].size)) {
-						plugged = true;
-						outletTarget = outlets[o].target;
-						outlets[o].addNeighBor(level.cables[c].getOtherSide(plugs[p]));
-						plugs[p].outlet = outlets[o];
-						break;
-					} else {
-						if(outlets[o].neighbors != []){
-							outlets[o].rmNeighBor(level.cables[c].getOtherSide(plugs[p]));
-						}
-						plugs[p].outlet = null;
-					}
-				}
-				var connexions = checkGlobalConnexion(outlets[0], []);
-				if(connexions.length == outlets.length){
-					console.log("ON a gagné !!! ");
-				}
-
-				if (plugged) {
-					plugs[p].ratio = Math.min(1, plugs[p].ratio + .01);
-					var points = level.cables[c].points;
-					var index = p*(points.length-1);
-					// level.cables[c].move(outletTarget, delta);
-					points[index][0] = lerp(points[index][0], outletTarget[0], .1);
-					points[index][1] = lerp(points[index][1], outletTarget[1], .1);
-					// level.cables[c].selected = index;
 				} else {
-					plugs[p].ratio = Math.max(0, plugs[p].ratio - .01);
+					cursor.drag = false;
+					cursor.selecteds = [];
+					// level.cables[cursor.selected].slide([mousex-lastMouseX, mousey-lastMouseY]);
 				}
 			}
 
-			// if(plugA.ratio >= 1	&& plugB.ratio >=1){
-			// 	console.log("wouhou bravo");
-			// }
+			var hitList = [];
 
-			level.cables[c].update(elapsed, delta);
+			for (var c = 0; c < level.cables.length; ++c) {
 
-			// if(plugA.ratio >= 1	&& plugB.ratio >=1){
-			// 	console.log("wouhou bravo");
-			// }
+				// hit test
+				var pointSelected = level.cables[c].hitTest(mouse);
+				if (!cursor.drag && pointSelected != -1) {
+					cursor.setHover();
+					hitList.push([c, pointSelected]);
+				}
+
+				level.cables[c].update(elapsed, delta);
+
+				var plugs = level.cables[c].plugs;
+				for (var p = 0; p < plugs.length; ++p) {
+					var outlets = level.outlets;
+
+					var plugged = false;
+					var outletTarget = [0,0,0];
+					for (var o = 0; o < outlets.length; ++o) {
+						
+						if (outlets[o].hitTestCircle(plugs[p].target[0], plugs[p].target[1], plugs[p].size)) {
+							plugged = true;
+							outletTarget = outlets[o].target;
+							if(plugs[1-p].outlet != null){
+								outlets[o].addNeighBor(plugs[1-p].outlet);
+								outlets[plugs[1-p].outlet].addNeighBor(o);
+							}
+							if(plugs[p].outlet != o){
+								plugs[p].outlet = o;
+								// console.log("this is" + o);
+								var connexions = checkGlobalConnexion(o, outlets);
+								if(connexions.length == outlets.length){
+									win = true;
+								}
+								for(var x=0; x<outlets.length; x++){
+									// console.log("Voisins de "+ x + "=" + outlets[x].neighbors);
+								}
+							}
+						} else {
+							if(plugs[p].outlet == o){
+								plugs[p].outlet = null;
+								if(plugs[1-p].outlet != null){
+									outlets[o].rmNeighBor(plugs[1-p].outlet);
+									outlets[plugs[1-p].outlet].rmNeighBor(o);
+								}
+							}
+						}
+					}
+					for (var o = 0; o < outlets.length; ++o) {
+						for (var n =0; n< outlets[o].neighbors.lenght; n++){
+							if(outlets[outlets[o].neighbors[n]].neighbors.indexOf(o) == -1){
+								outlets[o].rmNeighBor(outlets[o].neighbors[n]);
+							}
+						}
+					}
+
+					if (plugged) {
+						plugs[p].ratio = Math.min(1, plugs[p].ratio + .01);
+						var points = level.cables[c].points;
+						var index = p*(points.length-1);
+						level.cables[c].moveAt(index, outletTarget, delta);
+					} else {
+						plugs[p].ratio = Math.max(0, plugs[p].ratio - .01);
+					}
+
+					plugRatioTotal += plugs[p].ratio;
+					plugCount += 1;
+				}
+
+
+
+				level.cables[c].updatePlugs();
+				level.cables[c].updateGeometry();
+				level.cables[c].updateUniforms(elapsed);
+			}
+
+
+			for (var o = 0; o < level.outlets.length; ++o) {
+				level.outlets[o].updateUniforms(elapsed);
+			}
+
+			if (hitList.length > 0) {
+				if (!cursor.drag && Mouse.down) {
+					cursor.drag = true;
+					hitList.forEach(function(hit){
+						cursor.selecteds.push(hit[0]);
+						level.cables[hit[0]].selected = hit[1];
+					})
+				}
+			}
+		}
+		
+		if (transitionOut && transitionStart + transitionDelay > elapsed) {
+			var ratio = Math.max(0, Math.min(1, (elapsed-transitionStart)/transitionDelay));
+			var fadeOut = 1.-smoothstep(.9,1.,ratio);
+			level.outlets.forEach(function(outlet){
+				outlet.updateUniforms(elapsed);
+				// outlet.uniforms.size.value = outlet.size * (1.-ratio);
+				outlet.uniforms.alpha.value = fadeOut;
+			})
+			level.cables.forEach(function(cable){
+				cable.swing(elapsed, delta);
+				cable.updatePlugs();
+				cable.updateGeometry();
+				cable.updateUniforms(elapsed);
+				cable.uniforms.alpha.value = fadeOut;
+				cable.plugs.forEach(function(plug){
+					plug.uniforms.alpha.value = 1.-smoothstep(.8,.99,ratio);
+				});
+			})
 		}
 
-		for (var o = 0; o < level.outlets.length; ++o) {
-			level.outlets[o].updateUniforms(elapsed);
+		if (plugRatioTotal == plugCount && win) {
+			win = false;
+			transitionOut = true;
+			transitionStart = elapsed;
 		}
 
 		renderer.render( scene, camera );
@@ -146,4 +293,19 @@ window.onload = function () {
 		requestAnimationFrame( update );
 	}
 
+	function resize () {
+		var width = window.innerWidth;
+		var height = window.innerHeight;
+		camera.aspect = width / height;
+		camera.updateProjectionMatrix();
+		renderer.setSize( width, height );
+		level.cables.forEach(function(cable){
+			cable.resize(width, height);
+		});
+		level.outlets.forEach(function(outlet){
+			outlet.resize(width, height);
+		});
+		cursor.resize(width, height);
+		ui.resize(width, height);
+	}
 }

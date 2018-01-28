@@ -17,7 +17,7 @@ function Cursor () {
 	THREE.Mesh.call(this, new THREE.PlaneGeometry(1, 1), material);
 
 	this.drag = false;
-	this.selected = -1;
+	this.selecteds = [];
 
 	this.setDefault = function () {
 		this.uniforms.cursorState.value = 0;
@@ -29,6 +29,11 @@ function Cursor () {
 
 	this.setGrab = function () {
 		this.uniforms.cursorState.value = 2;
+	}
+
+	this.resize = function(width, height) {
+		this.uniforms.resolution.value[0] = width;
+		this.uniforms.resolution.value[1] = height;
 	}
 }
 

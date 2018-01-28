@@ -8,6 +8,7 @@ function Outlet() {
 	this.neighbors = [];
 	this.uniforms = {
 		time: { value: 0 },
+		alpha: { value: 1 },
 		resolution: { value: [window.innerWidth, window.innerHeight] },
 		target: { value: this.target },
 		color: { value: this.color },
@@ -34,23 +35,30 @@ function Outlet() {
 	}
 
 	this.addNeighBor = function(nb){
-		if(nb != null && nb != this && this.neighbors.indexOf(nb)==-1){
+		if(nb != null && nb != this.num && this.neighbors.indexOf(nb)==-1){
 			this.neighbors.push(nb);
 		}
 	}
 	this.rmNeighBor = function(nb){
 		var i = this.neighbors.indexOf(nb);
-		this.neighbors.splice(i,1);
+		if (i != -1) {
+			this.neighbors.splice(i,1);
+		}
 	}
 	this.hitTestCircle = function (x, y, size) {
 		var dist = distance(x,y,this.target[0],this.target[1]);
-		return dist < this.size + size;
+		return dist < this.size;
 	}
 
 	this.updateUniforms = function (elapsed) {
 		this.uniforms.time.value = elapsed;
 		this.uniforms.size.value = this.size;
 		this.uniforms.target.value = this.target;
+	}
+
+	this.resize = function(width, height) {
+		this.uniforms.resolution.value[0] = width;
+		this.uniforms.resolution.value[1] = height;
 	}
 }
 
