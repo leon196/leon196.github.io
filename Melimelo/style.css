@@ -16,3 +16,25 @@ canvas
 	height: 100%;
 	margin: 0 auto;
 }
+
+@font-face {
+    font-family: SortCai;
+    src: url("fonts/Sortdecai.ttf");
+}
+
+#levelCount {
+    position: absolute;
+    bottom: 10px;
+    right: 30px;
+    color: #fff;
+    font-size: 45px;
+    z-index: 3;
+    font-family: SortCai;
+      -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; 
+}
+

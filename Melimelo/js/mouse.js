@@ -45,6 +45,7 @@ Mouse.onMouseUp = function(event)
 
 Mouse.onTouchMove = function(event)
 {
+	event.preventDefault()
 	Mouse.lastX = Mouse.x;
 	Mouse.lastY = Mouse.y;
 	Mouse.x = event.changedTouches[0].pageX
@@ -58,6 +59,7 @@ Mouse.onTouchMove = function(event)
 
 Mouse.onTouchDown = function(event)
 {
+	event.preventDefault()
 	Mouse.x = event.changedTouches[0].pageX
 	Mouse.y = event.changedTouches[0].pageY
 	Mouse.down = true
@@ -70,6 +72,8 @@ Mouse.onTouchDown = function(event)
 
 Mouse.onTouchUp = function(event)
 {
+
+	event.preventDefault()
 	Mouse.down = false
 	Mouse.panStarted = false
 } 
