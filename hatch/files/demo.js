@@ -10834,7 +10834,7 @@ $__System.register("38", [], function (_export, _context) {
   return {
     setters: [],
     execute: function () {
-      _export("__useDefault", __useDefault = "\r\n\r\nuniform sampler2D frametarget;\r\nuniform vec2 resolution, mouse;\r\nuniform float time;\r\nvarying vec2 vUv;\r\n\r\nvoid main () {\r\n\tvec4 color = edgeSD(frametarget, vUv, resolution);\r\n\tgl_FragColor = color;\r\n}\r\n");
+      _export("__useDefault", __useDefault = "\r\n\r\nuniform sampler2D frametarget;\r\nuniform vec2 resolution, mouse;\r\nuniform float time;\r\nvarying vec2 vUv;\r\n\r\nvoid main () {\r\n\tvec4 color = edgeSD(frametarget, vUv, resolution);\r\n\tgl_FragColor = clamp(color, 0., 1.);\r\n}\r\n");
 
       _export("__useDefault", __useDefault);
 
@@ -10866,7 +10866,7 @@ $__System.register("3a", [], function (_export, _context) {
   return {
     setters: [],
     execute: function () {
-      _export("__useDefault", __useDefault = "\r\nuniform sampler2D framebuffer, frametarget, frameedge, bloom, blur, textTexture, creditTexture, cookieTexture, jobsTexture;\r\nuniform vec2 resolution, mouse;\r\nuniform vec3 Scratch, Texting, Bloom, ExtraBloom, Circle, Circle2, Circle3, TextingScreen, Credits, Cookie, Rideau;\r\nuniform float time;\r\nvarying vec2 vUv;\r\n\r\nfloat fbm (vec2 p) {\r\n\tfloat amplitude = .5;\r\n\tfloat result = 0.;\r\n\tfor (int index = 0; index < 2; ++index) {\r\n\t\tresult += noise(p / amplitude) * amplitude;\r\n\t\tamplitude /= 2.;\r\n\t}\r\n\treturn result;\r\n}\r\n\r\nvoid main () {\r\n\r\n\tvec2 p = vUv * 2. - 1.;\r\n\tp.x *= resolution.x / resolution.y;\r\n\tp *= 1.5;\r\n\tfloat grow = smoothstep(0.2, 1., -p.y);\r\n\tvec2 uv = p * .5 + .5;\r\n\r\n\t// p.x *= 1.-grow*.5;\r\n\tfloat wavy = fbm(p.xx * 4. + .5);\r\n\tfloat fade = smoothstep(.0, .5, -p.y);\r\n\twavy *= wavy * wavy * wavy;\r\n\t// wavy = smoothstep(.2, 1., wavy);\r\n\tp.y *= 1.-(wavy * 6. * fade);\r\n\r\n\r\n\tvec4 color = texture2D(cookieTexture, uv);\r\n\r\n\tfloat radius = .8;\r\n\tfloat shape = smoothstep(radius-0.01, radius, length(p));\r\n\tcolor = mix(1.-color, color, shape);\r\n\r\n\tgl_FragColor = color;\r\n}\r\n");
+      _export("__useDefault", __useDefault = "\r\nuniform sampler2D framebuffer, frametarget, frameedge, bloom, blur, textTexture, creditTexture, cookieTexture, jobsTexture;\r\nuniform vec2 resolution, mouse;\r\nuniform vec3 Scratch, Texting, Bloom, ExtraBloom, Circle, Circle2, Circle3, TextingScreen, Credits, Cookie, Rideau;\r\nuniform float time;\r\nvarying vec2 vUv;\r\n\r\nvoid main () {\r\n\r\n\tvec2 uv = vUv;\r\n\tuv = uv * 2. - 1.;\r\n\tvec2 p = uv;\r\n\tp.x *= resolution.x/resolution.y;\r\n\t// uv *= 1.-.5*sin(Circle.y*PI);\r\n\t// uv *= rot(Circle.y*TAU);\r\n\t// uv = mix(uv, .1/uv, sin(Circle.y*PI));\r\n\tuv = uv * .5 + .5;\r\n\t// uv.x *= resolution.y/resolution.x;\r\n\r\n\tvec4 color = texture2D(frametarget, uv);\r\n\tvec4 blu = texture2D(blur, uv) * (Bloom.y + ExtraBloom.y);\r\n\tvec4 edgy = texture2D(frameedge, uv);\r\n\tedgy = clamp(abs(edgy), 0., 1.);\r\n\r\n\tvec2 uvtext = uv*2.-1.;\r\n\tuvtext.x *= resolution.x/resolution.y;\r\n\tuvtext.x += (random(floor(uvtext.yy*64.+time)/64.)*2.-1.) * Scratch.y;\r\n\tuvtext = uvtext * .5 + .5;\r\n\tvec4 title = texture2D(textTexture, uvtext);\r\n\tvec4 credit = texture2D(creditTexture, uvtext);\r\n\tvec4 jobs = texture2D(jobsTexture, uvtext);\r\n\r\n\tfloat lod = 64.;\r\n\tfloat zip = 1.-abs(sin(random(floor(uv.yy*lod)/lod) + time * 2. + uv.y * 4.));\r\n\tvec4 creds = mix(credit, jobs, zip);\r\n\r\n\tvec4 cookie = texture2D(cookieTexture, uvtext);\r\n\r\n\tcolor = blu + edgy;\r\n\r\n\tcolor = mix(color, 1.-color, smoothstep(Circle.y+.01,Circle.y, length(p)));\r\n\tcolor = mix(color, 1.-color, smoothstep(Circle2.y+.01,Circle2.y, length(p)));\r\n\tcolor = mix(color, 1.-color, smoothstep(Circle3.y+.01,Circle3.y, length(p)));\r\n\r\n\tcolor = mix(color, 1.-color, title.r * TextingScreen.y);\r\n\tcolor = mix(color, 1.-color, creds.r * Credits.y);\r\n\tcolor = mix(color, 1.-color, cookie.r * Cookie.y);\r\n\r\n\tcolor *= Rideau.y;\r\n\r\n\tgl_FragColor = color;\r\n}\r\n");
 
       _export("__useDefault", __useDefault);
 
@@ -10930,7 +10930,7 @@ $__System.register("3e", [], function (_export, _context) {
   return {
     setters: [],
     execute: function () {
-      _export("__useDefault", __useDefault = "\r\nvarying vec2 vUV;\r\nvarying vec3 vNormal, vView;\r\n\r\nvoid main () {\r\n\tvec3 color = abs(vNormal);\r\n\t// float lod = 4.;\r\n\t// color = floor(color*lod)/lod;\r\n\tcolor = vec3(luminance(color));\r\n\t\r\n\tgl_FragColor = vec4(color,1);\r\n}\r\n");
+      _export("__useDefault", __useDefault = "\r\nvarying vec2 vUV;\r\nvarying vec3 vNormal, vView;\r\n\r\nvoid main () {\r\n\tvec3 color = abs(vNormal);\r\n\t// float lod = 4.;\r\n\t// color = floor(color*lod)/lod;\r\n\tcolor = vec3(luminance(color));\r\n\t\r\n\tgl_FragColor = clamp(vec4(color,1), 0., 1.);\r\n}\r\n");
 
       _export("__useDefault", __useDefault);
 
@@ -38540,20 +38540,89 @@ $__System.register('45', ['2', '3', '4', '5', '6', '9', '13', '14', '16', '17', 
 		engine.camera.position.x = 0.02;
 		engine.camera.position.y = -0.05;
 		engine.camera.position.z = 2.0;
-
-		engine.controls = new OrbitControls(engine.camera, renderer.domElement);
-		engine.controls.enableDamping = true;
-		engine.controls.dampingFactor = 0.1;
-		engine.controls.rotateSpeed = 0.1;
+		// engine.controls = new OrbitControls(engine.camera, renderer.domElement);
+		// engine.controls.enableDamping = true;
+		// engine.controls.dampingFactor = 0.1;
+		// engine.controls.rotateSpeed = 0.1;
 
 		initUniforms();
-		_Object$keys(assets.shaders).forEach(function (key) {
-			return assets.shaders[key].uniforms = uniforms;
+
+		engine.scene = new THREE.Scene();
+		Geometry.create(Geometry.random(1000), [6, 6]).forEach(function (geometry) {
+			return engine.scene.add(new THREE.Mesh(geometry, assets.shaders.dust));
 		});
+		Geometry.create(Geometry.random(10), [1, 200]).forEach(function (geometry) {
+			return engine.scene.add(new THREE.Mesh(geometry, assets.shaders.curves));
+		});
+		Geometry.createLine(assets.geometries.geo, [1, 10]).forEach(function (geometry) {
+			return engine.scene.add(new THREE.Mesh(geometry, assets.shaders.eggcrack));
+		});
+		engine.scene.add(new THREE.Mesh(new THREE.PlaneGeometry(1, 1), assets.shaders.text));
+		engine.scene.add(new THREE.Mesh(assets.geometries.geo, assets.shaders.egg));
 
-		engine.scene = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), assets.shaders.render);
-		engine.scene.frustumCulled = false;
+		// engine.framebuffer = new FrameBuffer({ material: assets.shaders.raymarching });
+		engine.frametarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
+			format: THREE.RGBAFormat,
+			type: THREE.FloatType });
+		engine.framebloom = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
+			format: THREE.RGBAFormat,
+			type: THREE.FloatType });
+		engine.frameedge = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
+			format: THREE.RGBAFormat,
+			type: THREE.FloatType });
+		engine.bloom = new Bloom(engine.frameedge.texture);
 
+		engine.sceneedge = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), assets.shaders.edge);
+		engine.sceneedge.frustumCulled = false;
+		engine.scenerender = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), assets.shaders.render);
+		engine.scenerender.frustumCulled = false;
+
+		uniforms.frametarget = { value: engine.frametarget.texture };
+		uniforms.frameedge = { value: engine.frameedge.texture };
+		uniforms.framebloom = { value: engine.framebloom.texture };
+		uniforms.blur = { value: engine.bloom.blurTarget.texture };
+		uniforms.bloom = { value: engine.bloom.bloomTarget.texture };
+
+		uniforms.textTexture = { value: makeText.createTexture([{
+				text: 'HATCH',
+				font: 'kanit',
+				textAlign: 'center',
+				fontSize: 196,
+				fillStyle: 'white',
+				textAlign: 'center',
+				textBaseline: 'middle',
+				width: 1024,
+				height: 1024,
+				shadowColor: 'rgba(0,0,0,.5)',
+				shadowBlur: 4,
+				offsetY: 10
+			}]) };
+		uniforms.creditTexture = { value: makeText.createTexture([{
+				text: 'PONK\n50D\nKOLTES',
+				font: 'bebasneue_bold',
+				textAlign: 'center',
+				fontSize: 196,
+				fillStyle: 'white',
+				textBaseline: 'middle',
+				width: 1024,
+				height: 1024,
+				shadowColor: 'rgba(0,0,0,.5)',
+				shadowBlur: 4,
+				offsetY: 20
+			}]) };
+		uniforms.jobsTexture = { value: makeText.createTexture([{
+				text: 'VISUAL\nMUSIC\nTOOL',
+				font: 'bebasneue_bold',
+				textAlign: 'center',
+				fontSize: 196,
+				fillStyle: 'white',
+				textBaseline: 'middle',
+				width: 1024,
+				height: 1024,
+				shadowColor: 'rgba(0,0,0,.5)',
+				shadowBlur: 4,
+				offsetY: 20
+			}]) };
 		uniforms.cookieTexture = { value: makeText.createTexture([{
 				text: 'Cookie',
 				font: 'bebasneue_bold',
@@ -38568,25 +38637,59 @@ $__System.register('45', ['2', '3', '4', '5', '6', '9', '13', '14', '16', '17', 
 				shadowBlur: 4,
 				offsetY: -40
 			}, {
-				text: 'Demoparty',
+				text: 'Collective',
 				fontSize: 180,
 				offsetY: 130
 			}]) };
-		gui.add(engine, 'screenshot');
+		_Object$keys(assets.shaders).forEach(function (key) {
+			return assets.shaders[key].uniforms = uniforms;
+		});
+		// gui.add(engine, 'screenshot');
 		timeline.start();
 	}
 
 	function updateEngine(elapsed) {
-		engine.controls.update();
+		elapsed = timeline.getTime();
+		// engine.controls.update();
 		updateUniforms(elapsed);
+
+		// engine.framebuffer.update();
+		// uniforms.framebuffer.value = engine.framebuffer.getTexture();
+
+		// record(scene, camera);
+
 		renderer.clear();
+		renderer.setRenderTarget(engine.frametarget);
 		renderer.render(engine.scene, engine.camera);
+		renderer.setRenderTarget(engine.frameedge);
+		renderer.render(engine.sceneedge, engine.camera);
+		// engine.anaglyph.render(engine.scene, engine.camera);
+		renderer.setRenderTarget(null);
+		engine.bloom.render(renderer);
+		renderer.render(engine.scenerender, engine.camera);
+
+		// array = lerpArray(array, assets.animations.getPosition('Camera', elapsed), .9);
+		array = assets.animations.getPosition('Camera', elapsed);
+		engine.camera.position.set(array[0], array[1], array[2]);
+
+		engine.camera.fov = 60 + assets.animations.getPosition('ExtraFOV', elapsed)[1];
+		engine.camera.updateProjectionMatrix();
+
+		// array = lerpArray(array, assets.animations.getPosition('CameraTarget', elapsed), .9);
+		array = assets.animations.getPosition('CameraTarget', elapsed);
+		engine.target.set(array[0], array[1], array[2]);
+		engine.camera.lookAt(engine.target);
 	}
 
 	function resizeEngine(width, height) {
 		renderer.setSize(width, height);
+		// engine.framebuffer.setSize(width,height);
 		engine.camera.aspect = width / height;
 		engine.camera.updateProjectionMatrix();
+		engine.frametarget.setSize(width, height);
+		engine.framebloom.setSize(width, height);
+		engine.frameedge.setSize(width, height);
+		// engine.anaglyph.setSize(width, height);
 		resizeUniforms(width, height);
 	}
 
@@ -38642,8 +38745,17 @@ $__System.register('45', ['2', '3', '4', '5', '6', '9', '13', '14', '16', '17', 
 
 			engine = {
 				camera: new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.001, 1000),
+				target: new THREE.Vector3(),
 				scene: null,
-				controls: null
+				sceneedge: null,
+				scenerender: null,
+				controls: null,
+				framebuffer: null,
+				frametarget: null,
+				framebloom: null,
+				frameedge: null,
+				anaglyph: null,
+				bloom: null
 			};
 
 			_export('engine', engine);
@@ -38748,7 +38860,7 @@ $__System.register('1', ['4e'], function (_export) {
 		}],
 		execute: function () {
 			started = false;
-			addEventListener('click', start);
+			document.getElementById('play').addEventListener('click', start);
 		}
 	};
 });
