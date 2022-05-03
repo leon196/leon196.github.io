@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shaderland</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="shortcut icon" href="media/images/logo.ico" />
+    <script type="text/javascript" src="script/marked.min.js"></script>
+    <script type="text/javascript" src="script/include.js"></script>
+  </head>
+  <body>
+    <div class="title">
+      <img src="media/images/logoBW.png" />
+      <h1>Welcome to Shaderland</h1>
+      <h2>Where dreams become real time</h2>
+    </div>
+    <div id="tv">
+      <img src="media/images/screen-alpha-anete-lusina.png" />
+      <video id="channel" autoplay muted></video>
+      <p class="text">
+        <em>Previews of projects by Leon Denise</em><br />
+        <em>Photo of monitor by Anete Lusina</em>
+      </p>
+    </div>
+
+    <div class="category">
+      <h1>About Leon Denise</h1>
+    </div>
+    <div id="about">
+      <img class="background" src="media/images/photo.jpg" />
+      <div class="links">
+        <div w3-include-md="link.md"></div>
+      </div>
+      <p class="text">
+        Léon Denise is programming shaders. He uses tools from video games to
+        explore and experiment with digital playgrounds. His work is about image
+        filters, displacement effects, particles behaviours and mathematical
+        sculptures. <em>Photo by Gloria Marillier</em>
+      </p>
+    </div>
+
+    <div class="category">
+      <h1>About Cookie Collective</h1>
+    </div>
+    <div id="about">
+      <img class="background" src="media/images/cookie.jpg" />
+      <a href="https://cookie.paris/"
+        ><img class="overlay" src="media/images/CookieCollective.png"
+      /></a>
+      <p class="text">
+        Léon Denise participates in the
+        <a href="https://cookie.paris/">Cookie Collective</a> which gathers
+        digital artists involved in real-time creation. This covers video games,
+        art installations, video mapping, demoscene, live coding, etc. <br />
+        <em>Photo by Gloria Marillier</em>
+      </p>
+    </div>
+
+    <div class="category">
+      <h1>About Neon Minuit</h1>
+    </div>
+    <div id="about">
+      <video
+        autoplay
+        muted
+        loop
+        src="media/video/project/neonminuit.mp4"
+      ></video>
+      <a href="http://www.neonminuit.xyz">
+        <img class="overlay" src="media/images/logo-neon-minuit.png" />
+      </a>
+      <p class="text">
+        Leon Denise is part of a duo with
+        <a href="https://www.minuitdigital.com/">Dorian Rigal</a>. Neon Minuit
+        captures pieces of reality to stage them in their playground: the
+        virtual world. Their artistic approach is inspired by scientific
+        experimentation and serendipity. Their works are about immersive
+        interactive digital art.
+      </p>
+    </div>
+
+    <div class="category">
+      <h1>Recent projects</h1>
+    </div>
+    <div class="content" w3-include-md="content.md"></div>
+
+    <script>
+      includeMD();
+    </script>
+    <script type="text/javascript" src="script/channel.js"></script>
+  </body>
+</html>
