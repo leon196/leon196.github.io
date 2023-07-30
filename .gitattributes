@@ -1,14 +1,15 @@
-*.jpg
-*.jpeg
-*.png
-*.tga
-*.bmp
-*.webm
-*.mp4
-*.mov
-*.gif
-*.svg
-*.exr
-*.hdr
-*.fbx
-*.obj
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.tga binary
+*.bmp binary
+*.webm binary
+*.mp4 binary
+*.mov binary
+*.gif binary
+*.svg binary
+*.exr binary
+*.hdr binary
+*.fbx binary
+*.obj binary
+*.zip binary
