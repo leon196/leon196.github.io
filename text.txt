@@ -1,0 +1,2 @@
+
+ Many times using special characters or Javascript is enough to thwart most spiders. Example (using special characters): Changing the @"" to &#64; : <a href=""mailto:support&#64;yourdomain.com"">Email Us!</a>. Example (using Javascript): <script language=""javascript"">var email = ""support""; var domain = ""yourdomain.com""; document.write(""<a href="" + ""mail"" + ""to:"" + email + ""@"" + domain + "">"" + ""contact"" + ""</a>"" + ""."")</script> ""
