@@ -1,0 +1,64 @@
+body
+{
+    margin: 0;
+    background: black;
+    color: white;
+    font-family: monospace;
+}
+
+h1
+{
+    position: fixed;
+    left: 50%;
+    top: 20px;
+    transform: translate(-50%, -50%);
+    background: black;
+    padding: 8px;
+}
+
+p
+{
+    position: fixed;
+    left: 50%;
+    bottom: 5px;
+    transform: translate(-50%, -50%);
+    background: black;
+    padding: 8px;
+}
+
+canvas
+{
+    display: block;
+    width: 100vw;
+    height: 100vh;
+}
+
+button
+{
+    cursor: pointer;
+    background: none;
+    border: none;
+    margin: 0;
+    background: black;
+    padding: 8px;
+}
+
+.control-video
+{
+    position: fixed;
+    bottom: 20px;
+}
+
+.control-filter
+{
+    position: fixed;
+    bottom: 20px;
+}
+
+.center
+{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
