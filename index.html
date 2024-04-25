@@ -5,26 +5,27 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="style.css" />
-    <script src="script/twgl-full.min.js"></script>
-    <script src="script/load.js"></script>
+    <script src="script/lib/twgl-full.min.js"></script>
+    <script src="script/lib/load.js"></script>
     <script src="script/webgl.js"></script>
   </head>
   <body>
     <div id="card">
-      <h1>Leon Denise</h1>
-      <p>Real-Time Rendering Engineer</p>
+      <h1>Leon&nbsp;Denise</h1>
+      <p>engineer & designer</p>
       <ul>
-        <li><a href="mailto:neondelice&#64;gmail.com">contact</a></li>
-        <li><a href="https://twitter.com/leondenise">twitter</a></li>
-        <li><a href="https://github.com/leon196">github</a></li>
-        <li><a href="https://shadertoy.com/user/leon">shadertoy</a></li>
-        <li><a href="https://leon.itch.io">itch</a></li>
-        <li><a href="https://giphy.com/leondenise">giphy</a></li>
-        <li><a href="https://vimeo.com/leondenise">vimeo</a></li>
-        <li><a href="https://youtube.com/channel/UC9cIOpUQIjFBXsWoeHy0RZQ">youtube</a></li>
+        <li><a href="mailto:neondelice&#64;gmail.com" title="contact">
+          <img src="media/social/email.svg"></a></li>
+        <li><a href="https://twitter.com/leondenise" title="twitter">
+          <img src="media/social/twitter.svg"></a></li>
+        <li><a href="https://www.instagram.com/neondelice/" title="instagram">
+            <img src="media/social/insta.svg"></a></li>
       </ul>
     </div>
-    <img id="logo" src="media/svg/leon.svg" width="100px"/>
+    <a href="about.html">
+      <img id="logo" src="media/svg/leon.svg" width="100px"/>
+    </a>
     <canvas id="magic"></canvas>
+    <script>webgl("oil_sim", "oil_render")</script>
   </body>
 </html>
