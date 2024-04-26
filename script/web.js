@@ -14,11 +14,6 @@ window.addEventListener("load", (e) =>
     leon.addEventListener("click", swapping);
     block.addEventListener("click", swapping);
 
-    const email = document.getElementById("email");
-    email.addEventListener("mouseover", (e) => {
-        email.style.fill = "#333";
-    })
-
     const left = document.getElementById("left");
     const title = document.getElementById("title");
     const right = document.getElementById("right");
