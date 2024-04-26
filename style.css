@@ -38,6 +38,16 @@ li {
   display: inline;
 }
 
+.box {
+  border-radius: 5px;
+  background-color: #222c;
+  box-shadow: 0px 0px 10px #000;
+}
+
+.shadow {
+  text-shadow: #333 0 0 10px;
+}
+
 #card {
   font-family: Font;
   text-align: center;
@@ -46,10 +56,11 @@ li {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  border-radius: 5px;
-  background-color: #222c;
-  box-shadow: 0px 0px 10px #000;
-  padding: 20px;
+  padding: 10px;
+}
+
+#card h1 {
+  line-height: 30px;
 }
 
 #card p {
@@ -57,13 +68,25 @@ li {
 }
 
 #card ul {
-  padding-top: 5px;
+  line-height: 30px;
+}
+
+#card img {
+  vertical-align:middle;
 }
 
 #logo {
   position: absolute;
   right: 20px;
   bottom: 20px;
+}
+
+#leon {
+  cursor: pointer;
+}
+
+#leon:hover {
+  text-shadow: #eee 0 0 10px;
 }
 
 #block {
@@ -75,10 +98,8 @@ li {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  border-radius: 5px;
-  background-color: #222c;
-  box-shadow: 0px 0px 10px #000;
-  padding: 20px;
+  padding: 10px;
+  cursor: pointer;
 }
 
 #block img {
@@ -89,6 +110,25 @@ li {
   margin-top: 10px;
 }
 
+#ui {
+  font-family: Font;
+  font-size: large;
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translate(-50%, 0);
+  padding: 10px;
+}
+
+#ui img {
+  cursor: pointer;
+  vertical-align:middle;
+}
+
+#ui p {
+  display: inline-block;
+}
+
 a,
 a:link,
 a:visited,
@@ -96,10 +136,4 @@ a:hover,
 a:active {
   color: #e0b710;
   text-decoration: none;
-}
-
-.separator {
-  text-align: center;
-  font-size: 2em;
-  margin-top: 1em;
 }

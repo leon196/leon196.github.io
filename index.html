@@ -8,11 +8,12 @@
     <script src="script/lib/twgl-full.min.js"></script>
     <script src="script/lib/load.js"></script>
     <script src="script/webgl.js"></script>
+    <script src="script/web.js"></script>
   </head>
   <body>
     <div id="card">
-      <h1>Leon&nbsp;Denise</h1>
-      <p>engineer & designer</p>
+      <h1 id="leon" class="shadow">Leon&nbsp;Denise</h1>
+      <p class="shadow">engineer & designer</p>
       <ul>
         <li><a href="mailto:neondelice&#64;gmail.com" title="contact">
           <img src="media/social/email.svg"></a></li>
@@ -22,10 +23,20 @@
             <img src="media/social/insta.svg"></a></li>
       </ul>
     </div>
-    <a href="about.html">
-      <img id="logo" src="media/svg/leon.svg" width="100px"/>
-    </a>
+
+    <div id="block" class="box" style="visibility: hidden">
+        <img src="media/images/photo.jpg">
+      <p>
+        Hi 👋 I'm Leon Denise. I'm using video games tools to explore and experiment digital playgrounds. My work is about image filters, glitch effects, fractal shapes, particles systems behaviours and mathematical sculptures. I'm a freelancer shader coder and technical artist, working mostly with creative studios on VR standalone headsets and with artists to make interactive installations, playful devices, immersive projections and new media movies.
+      </p>
+    </div>
+
+    <div id="ui" class="box">
+      <img id="left" src="media/svg/left.svg" width="30px"/>
+      <p id="title">Oil</p>
+      <img id="right" src="media/svg/right.svg" width="30px"/>
+    </div>
+    
     <canvas id="magic"></canvas>
-    <script>webgl("oil_sim", "oil_render")</script>
   </body>
 </html>

@@ -1,6 +1,7 @@
 
-const webgl = (filter, render) => {
-window.onload = (event) =>
+let engine = {};
+
+window.addEventListener("load", (event) =>
 {
     const canvas = document.getElementById("magic");
     const gl = canvas.getContext("webgl2");
@@ -10,6 +11,9 @@ window.onload = (event) =>
     let ready = false;
     let tick = 0;
     let elapsed = 0;
+
+    let effect = ["oil_sim", "oil_render"]
+    engine.select = (filter, render) => effect = [filter, render]
     
     let shader = {
         filter: ["frame.vert", "filter.frag"],
@@ -18,6 +22,7 @@ window.onload = (event) =>
         oil_render: ["frame.vert", "oil_render.frag"],
         smoke_sim: ["frame.vert", "smoke_sim.frag"],
         smoke_render: ["frame.vert", "smoke_render.frag"],
+        cloud: ["frame.vert", "cloud.frag"],
     };
     
     // meshes
@@ -55,7 +60,7 @@ window.onload = (event) =>
         position: [0,0],
     }
     
-    let assetToLoad = [];
+    let assetToLoad = []
     for (const [key, item] of Object.entries(shader))
     {
         if (!assetToLoad.includes(item[0])) assetToLoad.push(item[0]);
@@ -107,8 +112,12 @@ window.onload = (event) =>
         uniforms.mouse = mouse.position;
         uniforms.framebuffer = frames[read].attachments[0];
     
-        draw(shader[filter], frames[write].framebuffer);
-        draw(shader[render], null);
+        if (effect[0] != "none")
+        {
+            draw(shader[effect[0]], frames[write].framebuffer);
+        }
+
+        draw(shader[effect[1]], null);
     
         tick += 1;
         elapsed = time / 1000;
@@ -142,5 +151,4 @@ window.onload = (event) =>
     // start loop
     requestAnimationFrame(loop);
     
-}
-}
+});
