@@ -8,6 +8,11 @@
   src: url(media/font/Oswald-VariableFont_wght.woff2);
 }
 
+@font-face {
+  font-family: Icons;
+  src: url(media/font/bootstrap-icons.woff2);
+}
+
 html,
 body {
   width: 100%;
@@ -69,6 +74,7 @@ li {
 
 #card ul {
   line-height: 30px;
+  font-family: Icons;
 }
 
 #card img {
@@ -86,7 +92,6 @@ li {
 }
 
 #leon:hover {
-  text-shadow: #eee 0 0 10px;
 }
 
 #block {
