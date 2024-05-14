@@ -35,16 +35,21 @@ void main()
     
     // data
     vec4 d = texture(framebuffer, q);
-    float radius = min(.02*(1.-gray), d.x);
+    // float radius = max(.2*(1.-gray), d.x);
+    // float radius = min(d.x, (gray) * .01);
+    // float radius = max((1.-gray)*.1, d.x);
+    // float radius = min(.005, d.x);
+    float radius = d.x;
+    // float radius = min(.002+(1.-gray)*.01, d.x);
     
     // distance test
     float dist = length(p)-radius;
     
     // if farer, choose previous result
-    if (map.x < dist || radius < nearest)// || gray > .5)//.005)// || radius > gray * .05)
+    if (map.x < dist || radius < nearest)// || gray > .5)// || gray > .5)//.005)// || radius > gray * .05)
     {
         dist = map.x;
-        radius = map.y;
+        radius = map.y;//gray * .02;//map.y;
         q = map.zw;
     }
     
@@ -53,7 +58,7 @@ void main()
     {
         // border distance
         // float edge = min(min(abs(uv.y), abs(1.-uv.y)), min(abs(uv.x), abs(1.-uv.x)));
-        float maxRadius = 1.;//.2;
+        float maxRadius = .2;//.2;
         
         // make it special sometimes
         //dist = hash11(t) > .9 ? maxRadius : edge;

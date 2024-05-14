@@ -35,7 +35,6 @@ function CreateEngine (gl, filter, filterWithBuffer)
 
     if (filterWithBuffer !== undefined)
     {
-        console.log(filterWithBuffer)
         shader.filterWithBuffer = ["shaders/frame.vert", filterWithBuffer];
     }
 
@@ -68,20 +67,27 @@ function CreateEngine (gl, filter, filterWithBuffer)
 
     // FRAME BUFFER
     
-    const attachments = [ { internalFormat: gl.RGBA32F, format: gl.RGBA, type: gl.FLOAT } ];
+    const options = [ {
+        internalFormat: gl.RGBA32F, format: gl.RGBA, type: gl.FLOAT,
+        minMag: gl.LINEAR, wrap: gl.REPEAT
+    } ];
+    const createFrame = twgl.createFramebufferInfo;
+    const resize = twgl.resizeFramebufferInfo;
     const frame =
     {
-        lutted: twgl.createFramebufferInfo(gl, attachments),
-        buffer: twgl.createFramebufferInfo(gl, attachments),
+        lutted: createFrame(gl, options),
+        buffer: createFrame(gl, options),
         swap: 0,
+        width: 1024,
+        height: 1024,
     }
 
     if (filterWithBuffer !== null)
     {
         frame.feedback = 
         [
-            twgl.createFramebufferInfo(gl, attachments),
-            twgl.createFramebufferInfo(gl, attachments),
+            createFrame(gl, options, frame.width, frame.height),
+            createFrame(gl, options, frame.width, frame.height),
         ];
     }
 
@@ -91,15 +97,24 @@ function CreateEngine (gl, filter, filterWithBuffer)
         {
             engine.width = width;
             engine.height = height;
-            twgl.resizeFramebufferInfo(gl, frame.lutted, attachments, width, height);
-            twgl.resizeFramebufferInfo(gl, frame.buffer, attachments, width, height);
-            if (filterWithBuffer !== null)
+            
+            if (shader.filterWithBuffer)
             {
-                frame.feedback.forEach(f =>
-                {
-                    twgl.resizeFramebufferInfo(gl, f, attachments, width, height)
-                });
+                resize(gl, frame.lutted, options, frame.width, frame.height);
+                resize(gl, frame.buffer, options, frame.width, frame.height);
             }
+            else
+            {
+                resize(gl, frame.lutted, options, width, height);
+                resize(gl, frame.buffer, options, width, height);
+            }
+            // if (filterWithBuffer !== null)
+            // {
+            //     frame.feedback.forEach(f =>
+            //     {
+            //         resize(gl, f, options, width, height)
+            //     });
+            // }
         }
     }
 
@@ -112,6 +127,11 @@ function CreateEngine (gl, filter, filterWithBuffer)
             gl.clear(gl.COLOR_BUFFER_BIT);
         });
         engine.uniforms.tick = 0;
+
+        if (engine.process.algo !== null)
+        {
+            engine.process.update = true;
+        }
     }
 
     // DRAW
@@ -137,9 +157,9 @@ function CreateEngine (gl, filter, filterWithBuffer)
 
         // dimensions
         twgl.resizeCanvasToDisplaySize(gl.canvas);
-        const width = engine.width;
-        const height = engine.height;
-        const rect = [0, 0, width, height];
+        let width = engine.width;
+        let height = engine.height;
+        let rect = [0, 0, width, height];
         engine.uniforms.resolution = [width, height];
         engine.uniforms.viewport = engine.viewport;
 
@@ -164,7 +184,7 @@ function CreateEngine (gl, filter, filterWithBuffer)
                 {
                     // draw result
                     engine.uniforms.image = engine.process.image;
-                    engine.draw(shader.threshold, null, engine.viewport);
+                    engine.draw(shader.draw, null, engine.viewport);
                 }
             }
             // GPU
@@ -173,6 +193,11 @@ function CreateEngine (gl, filter, filterWithBuffer)
                 // effect with feedback buffer
                 if (shader.filterWithBuffer)
                 {
+                    width = frame.width;
+                    height = frame.height;
+                    rect = [0, 0, width, height];
+                    engine.uniforms.resolution = [width, height];
+
                     // pre process image (apply LUT)
                     engine.draw(shader.lut, frame.lutted.framebuffer, rect);
                     
@@ -196,6 +221,9 @@ function CreateEngine (gl, filter, filterWithBuffer)
                     engine.uniforms.image = frame.buffer.attachments[0];
     
                     // draw result
+                    width = engine.width;
+                    height = engine.height;
+                    engine.uniforms.resolution = [width, height];
                     engine.draw(shader.draw, null, engine.viewport);
                     engine.update = false;
                 }
@@ -290,19 +318,16 @@ function CreateEngine (gl, filter, filterWithBuffer)
         // read buffer to array
         gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, process.read);
 
-        // apply
-        process.array = process.algo.algo(process.read, width, height);
 
         // bake result
         process.image = twgl.createTexture(gl,
         {
-            src: process.array,
+            src: process.algo.algo(process.read, width, height),
             format: gl.LUMINANCE,
             minMag: gl.NEAREST,
             flipY: false,
             width: width,
             height: height,
-            unpackAlignment: 1,
         })
     }
 

@@ -21,13 +21,13 @@ let settings = {
 		levels_black_offset:0,
 		levels_white_offset:0,
 		levels_lut: [],
-		current_screen: "voronoi2",
+		current_screen: "reaction_diffusion",
 		start_time: new Date().getTime(),
 		time: 0,
 		device_pixel_ratio: 1
 	},
 
-	screen_set: ["euclid", "seuil", "error_diffusion", "voronoi", "voronoi2"],
+	screen_set: ["euclid", "seuil", "error_diffusion", "voronoi", "voronoi2", "reaction_diffusion"],
 	
 	all_screens: {},
 	screen: {

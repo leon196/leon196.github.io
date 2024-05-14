@@ -123,8 +123,8 @@ export default {
 				this.gradient_image.src = this.gradient_image_source;
 				image = this.gradient_image_source;
 			
-				this.engine.width = 300;
-				this.engine.height = 2100;
+				// this.engine.width = 300;
+				// this.engine.height = 2100;
 			}
 			
 			this.engine.media = twgl.createTextures(gl,
@@ -142,6 +142,15 @@ export default {
 
 			// hook events
 			window.addEventListener("mouseup", x => this.engine.update = true )
+
+			this.mouse =
+			{
+				clic: false,
+				zoom: 1,
+
+				delta: [0,0],
+				wheelDelta: 0,
+			}
 			
 		},
 
@@ -151,39 +160,67 @@ export default {
 			if (!this.engine || !this.engine.ready) return;
 			
 			const engine = this.engine;
-			const rect = [0,0,this.canvas_width, this.canvas_height];
-			const global = this.global_settings;
+			let rect = [0,0,this.canvas_width, this.canvas_height];
 			let width = this.canvas_width;
 			let height = this.canvas_height;
 
 			// pan zoom
+			// if (this.isPreview)
+			// {
+			// 	rect = this.update_panzoom(this.image_settings.image_object);
+			// }
 			if (this.isPreview)
 			{
 				rect[0] = this.canvas_image_offset_x;
 				rect[1] = this.canvas_height-this.canvas_image_offset_y-this.canvas_image_height;
 				rect[2] = this.canvas_image_width;
 				rect[3] = this.canvas_image_height;
+
+				if (settings.screen.process != null)
+				{
+					engine.process.set(settings.screen.process());
+				}
+
+				engine.uniforms.time = (new Date().getTime() - settings.global.start_time)/1000;
+				engine.viewport = rect;
+				this.update_lut_texture();
+				this.update_uniforms();
+				engine.resize(width, height);
+				engine.render();
 			}
 			else if (this.isZoom)
 			{
-				rect[0] = this.canvas_image_offset_x;
-				rect[1] = this.canvas_image_offset_y-this.canvas_image_height;
-				rect[2] = this.canvas_image_width;
-				rect[3] = this.canvas_image_height;
+				let w = this.canvas_image_width;
+				let h = this.canvas_image_height;
+				rect[0] = this.canvas_image_offset_x * w;// + w/2;
+				rect[1] = (this.canvas_image_offset_y - 1) * h;// + h/2;
+				rect[2] = w;
+				rect[3] = h;
 			}
 			
-			if (settings.screen.process != null)
+		},
+
+		update_panzoom: function(image)
+		{
+			const mouse = this.mouse;
+			const engine = this.engine;
+			let rect = [engine.viewport[0], engine.viewport[1], engine.viewport[2], engine.viewport[3]];
+
+			if (mouse.clic)
 			{
-				engine.process.set(settings.screen.process());
+				rect[0] += mouse.delta[0];
+				rect[1] += mouse.delta[1];
 			}
 
-			engine.uniforms.time = (new Date().getTime() - settings.global.start_time)/1000;
-			engine.viewport = rect;
-			this.update_lut_texture();
-			this.update_uniforms();
-			engine.resize(width, height);
-			engine.render();
-			
+			mouse.zoom -= mouse.wheelDelta * 0.001;
+			mouse.zoom = Math.max(0.01, Math.min(10, mouse.zoom));
+
+			rect[2] = image.width * mouse.zoom;
+			rect[3] = image.height * mouse.zoom;
+
+			// engine.viewport = rect;
+			// console.log(rect)
+			return rect;
 		},
 
 		update_uniforms: function()

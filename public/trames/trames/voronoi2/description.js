@@ -18,10 +18,10 @@
 				type: "slider",
 				min: 0,
 				max: 200,
-				value: 100,
+				value: 15,
 				step: 1,
 				unit: "",
-				process_to_uniform: x => x / 100,
+				process_to_uniform: x => x / 2000,
 				gradient_view: { bypass: false }
 			},
 			{
@@ -30,7 +30,7 @@
 				uniform: "nearest",
 				slug: "nearest",
 				type: "slider",
-				min: 5,
+				min: 1,
 				max: 20,
 				value: 5,
 				step: 1,
@@ -44,7 +44,7 @@
 				label_en: "Edge",
 				slug: "edge",
 				type: "checkbox",
-				value: true,
+				value: false,
 				uniform: "edge",
 				process_to_uniform: x => x ? 1 : 0,
 				gradient_view: { bypass: false }

@@ -9,131 +9,109 @@
 		
 		process: function()
 		{
-			let algo = x => x;
+			const self = this;
 			const algorithm = this.settings[0].all_values[this.settings[0].value];
-
-			const shuffle = (w, h) =>
-			{
-
-				// https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
-				const sfc32 = (a, b, c, d) =>
-				{
-					return function() {
-					  a |= 0; b |= 0; c |= 0; d |= 0;
-					  let t = (a + b | 0) + d | 0;
-					  d = d + 1 | 0;
-					  a = b ^ b >>> 9;
-					  b = c + (c << 3) | 0;
-					  c = (c << 21 | c >>> 11);
-					  c = c + t | 0;
-					  return (t >>> 0) / 4294967296;
-					}
-				}
-	
-				// const r = () => Math.random();
-				// const now =  Date.now();
-				// const prng = sfc32(now * r(), now * r(), now * r(), now * r());
-				const prng = sfc32(1, 2, 3, 4);
-
-				let array = new Uint8Array(w*h);
-				for (let i = 0; i < w*h; ++i) array[i] = prng() > 0.5 ? 255 : 0;
-				return array;
-			}
-
+			
+			let mat = [[ -1, 1]];
+			 
 			switch (algorithm.label_en)
 			{
-				default:
-					algo = (read, width, height) => shuffle(width, height);
-				break;
-
 				case "Simple 1D":
-					algo = function(read, width, height)
-					{
-						let array = shuffle(width, height);
-						for (let i = 0; i < width*height; ++i)
-						{
-							let gray = read[i*4];
-							let error = Math.floor((array[i] - gray) / 2);
-							array[i + 1] += error;
-						}
-						return array;
-					} 
-				break;
+					mat = 
+					[[ -1, 1]];
+					break;
 
 				case "Simple 2D":
-					algo = function(read, width, height)
-					{
-						let array = shuffle(width, height);
-						for (let i = 0; i < width*height; ++i)
-						{
-							let gray = read[i*4];
-							let error = Math.floor((array[i] - gray) / 4);
-							array[i + 1] += error;
-							array[i + width] += error;
-						}
-						return array;
-					} 
-				break;
+					mat =
+					[[ -1,    1/2.],
+					 [  1/2.,    0]];
+					break;
 
 				case "Atkinson":
-					algo = function(read, width, height)
-					{
-						let array = shuffle(width, height);
-						for (let i = 0; i < width*height; ++i)
-						{
-							let gray = read[i*4];
-							let error = Math.floor((array[i] - gray) / 8);
-							array[i + 1] += error;
-							array[i + 2] += error;
-							array[i + width - 1] += error;
-							array[i + width] += error;
-							array[i + width + 1] += error;
-							array[i + width + width] += error;
-						}
-						return array;
-					} 
-				break;
-				
+					mat =
+					[[   0.,   -1, 1./8, 1./8],
+					 [ 1./8, 1./8, 1./8,   0.],
+					 [   0., 1./8,   0.,   0.]]
+					break;
+
 				case "Sierra24":
-					algo = function(read, width, height)
-					{
-						let array = shuffle(width, height);
-						for (let i = 0; i < width*height; ++i)
-						{
-							let gray = read[i*4];
-							let error = Math.floor((array[i] - gray) / 32);
-							array[i + 1] += error*5;
-							array[i + 2] += error*3;
-							array[i + width - 2] += error*2;
-							array[i + width - 1] += error*3;
-							array[i + width] += error*5;
-							array[i + width + 1] += error*3;
-							array[i + width + 2] += error*2;
-							array[i + width + width - 1] += error*2;
-							array[i + width + width] += error*3;
-							array[i + width + width + 1] += error*2;
-						}
-						return array;
-					} 
-				break;
-				
+					mat = 
+					[[    0.,    0.,    -1, 5./32, 3./32],
+					 [ 2./32, 4./32, 5./32, 4./32, 2./32],
+					 [    0., 2./32, 3./32, 2./32,    0.]]
+					break;
+
 				case "Floyd Steinberg":
-					algo = function(read, width, height)
-					{
-						let array = shuffle(width, height);
-						for (let i = 0; i < width*height; ++i)
-						{
-							let gray = read[i*4];
-							let error = Math.floor((array[i] - gray) / 16);
-							array[i + 1] += error*7;
-							array[i + width - 1] += error*3;
-							array[i + width] += error*5;
-							array[i + width + 1] += error;
-						}
-						return array;
-					} 
-				break;
+					mat = 
+					[[    0.,    -1, 7./16],
+					 [ 3./16, 5./16, 1./16]]
+					break;
 			}
+
+			const range = (w) => [...Array(w).keys()]
+			const repeat = (w, v) => Array(w).fill(v)
+			const matrix = (w,h,v) => Array(h).fill(Array(w).fill(v))
+			const getI = (x,y,w) => (x + y * w) * 4
+			const setI = (x,y,w) => (x + y * w)
+			const range2 = (start, stop, step) => 
+			{
+				let a = [];
+				let i = start;
+				while (i != stop)
+				{
+					a.push(i);
+					i += step;
+				}
+				return a;
+			}
+			
+			const algo = (src, w, h) =>
+			{
+				// by Sam Hocevar from libcaca.py
+				let dest = new Uint8Array(w*h);
+				let lines = mat.length;
+				let rows = mat[0].length;
+				let offset = mat[0].indexOf(-1);
+				let ey = matrix(w + rows - 1, lines, 0);
+				let width_range = range(w);
+				let serp_range = range2(w - 1, -1, -1);
+				let serpentine = self.settings[1].value;
+
+				for (let y = 0; y < h; ++y)
+				{
+					let ex = repeat(rows-offset,0);
+					let xrange = width_range;
+					if (serpentine && (y & 1 == 1)) xrange = serp_range;
+
+					for (let xr = 0; xr < w; ++xr)
+					{
+						let x = xrange[xr];
+						let c = src[getI(x,y,w)] + ex[0] + ey[0][x + offset]
+						let d = c > 125 ? 255 : 0;
+						dest[setI(x,y,w)] = d
+						let error = c - d;
+						for (let dx = 0; dx < rows - offset - 2; ++dx)
+							ex[dx] = ex[dx + 1] + error * mat[0][offset + 1 + dx]
+						ex[rows - offset - 2] = error * mat[0][rows - 1]
+						
+						if (serpentine && (y & 1) == 1)
+							for (let dy = 1; dy < lines; ++dy)
+								for (let dx = 0; dx < rows; ++dx)
+									ey[dy][x + dx] += error * mat[dy][rows - 1 - dx]
+						else
+							for (let dy = 1; dy < lines; ++dy)
+								for (let dx = 0; dx < rows; ++dx)
+									ey[dy][x + dx] += error * mat[dy][dx]
+
+					}
+					for (let dy = 0; dy < lines - 1; ++dy)
+						ey[dy] = ey[dy + 1]
+					ey[lines - 1] = repeat(w + rows - 1, 0)
+				}
+					
+				return dest;
+			}
+
 			return { algo: algo, label: algorithm.label_en };
 		},
 
@@ -177,7 +155,18 @@
 				gradient_view: {
 					bypass: false
 				}
-			}
+			},
+			{
+				label_fr: "Serpentine",
+				label_en: "Serpentine",
+				slug: "serpentine",
+				type: "checkbox",
+				value: false,
+				uniform: "edge",
+				process_to_uniform: x => x ? 1 : 0,
+				should_reset_buffer: true,
+				gradient_view: { bypass: false }
+			},
 		]
 	}
 });

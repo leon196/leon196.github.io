@@ -14,9 +14,10 @@
 
 		<!-- MAIN PREVIEW -->
 		<div id="panzoom_container"
-			@mousemove="mouse_move_on_preview($event)"
 			:class="{ 'show_image' : show_original_image}">
-			<img id="panzoom_image" :src="image.source">
+			<img id="panzoom_image"
+				@mousemove="mouse_move_on_preview($event)"
+				:src="image.source">
 		</div>
 
 
@@ -152,7 +153,9 @@ export default {
 			let start_y = ($("#viewport").height() - $("#ruler").height()) / 2 - $("#panzoom_image").height() / 2;
 
 			// INIT PANZOOM WITH RAW IMAGE 
-			let panzoom = Panzoom(image_element, {
+			let dom = document.getElementById("panzoom_image");
+			let parent = dom.parentElement;
+			let panzoom = Panzoom(dom, {
 				//contain: 'inside'
 				//step: 0.3,
 				canvas: true,
@@ -164,8 +167,10 @@ export default {
 				minScale: 1,
 				pinchAndPan: true
 			});
+			
+			this.panzoom_image = dom;
 
-			$("#panzoom_container")[0].addEventListener('wheel', panzoom.zoomWithWheel)
+			parent.addEventListener('wheel', panzoom.zoomWithWheel)
 
 
 			image_element.addEventListener('panzoomchange', (event) => {
@@ -222,15 +227,18 @@ export default {
 		},
 
 		mouse_move_on_preview: function(event) {
-			let mouse_x = event.layerX;
-			let mouse_y = event.layerY;
+			let mouse_x = event.offsetX;
+			let mouse_y = event.offsetY;
 			// TODO : CALCULATE FROM SCREEN SCALE
 			let view_scale = 1; 
 
-			this.views.zoom.canvas_image_width = 3000;
-			this.views.zoom.canvas_image_height = 3000;
-			this.views.zoom.canvas_image_offset_x = -mouse_x;
-			this.views.zoom.canvas_image_offset_y = mouse_y;
+			let width = this.panzoom_image.width;
+			let height = this.panzoom_image.height;
+
+			this.views.zoom.canvas_image_width = 2000;
+			this.views.zoom.canvas_image_height = 2000;
+			this.views.zoom.canvas_image_offset_x = -mouse_x/width;
+			this.views.zoom.canvas_image_offset_y = mouse_y/height;
 			this.views.zoom.canvas_scale = view_scale;
 
 			// this.views.zoom.source_image_width = 300;

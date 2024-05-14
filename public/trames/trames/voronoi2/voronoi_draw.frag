@@ -27,13 +27,13 @@ void main()
     vec2 p = 2.*(uv-pos);//*vec2(resolution.x/resolution.y,1);
     float dist = length(p);
 
-    float shape = smoothstep(.0,.001,dist-radius*size);
+    float shape = smoothstep(.0,.001,dist-size);//-radius*size);
 
     if (edge > 0.5)
     {
         #define T(u) length(texture(image, uv+u).zw)
         vec2 e = vec2(.001,0);
-        shape *= 1.-clamp((abs(T(e.xy)-T(-e.xy))+abs(T(e.yx)-T(-e.yx)))*100.,0.,1.);
+        shape *= step(abs(T(e.xy)-T(-e.xy))+abs(T(e.yx)-T(-e.yx)), .001);
     }
     
     fragColor = vec4(shape);//vec4(fract(frame.xy), .5, 1);
