@@ -2,7 +2,7 @@
 precision mediump float;
 
 uniform sampler2D image;
-uniform vec2 resolution;
+uniform vec2 sizeOutput;
 
 uniform float r_seuil;
 uniform float r_invert;

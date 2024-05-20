@@ -2,10 +2,10 @@
 precision mediump float;
 
 uniform sampler2D framebuffer, image, lut;
-uniform vec2 resolution;
+uniform vec2 sizeOutput;
 uniform float scale, size, edge, time, tick, nearest, farest;
 
-in vec2 uv, view;
+in vec2 uv;
 out vec4 fragColor;
 
 // Dave Hoskins
@@ -26,7 +26,7 @@ vec2 hash22(vec2 p)
 // #define Db 0.5
 
 void getVal(vec2 p, out vec2 val, out vec2 laplacian) {
-  vec2 r = resolution;
+  vec2 r = sizeOutput;
   vec2 uv = p / r;
   vec2 n = p + vec2(0.0, 1.0);
   vec2 ne = p + vec2(1.0, 1.0);

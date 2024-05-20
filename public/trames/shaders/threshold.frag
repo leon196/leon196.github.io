@@ -13,7 +13,8 @@ float luminance(vec3 color)
 
 void main()
 {
-    float gray = luminance(texture(image, uv).rgb);
-    gray = step(0.5, gray);
-    outputColor = vec4(vec3(gray), 1);
+    // float gray = luminance(texture(image, uv).rgb);
+    // gray = step(0.5, gray);
+    // outputColor = vec4(vec3(gray), 1);
+    outputColor = step(0.5, texture(image, uv));
 }

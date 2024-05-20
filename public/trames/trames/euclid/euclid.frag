@@ -2,10 +2,10 @@
 precision mediump float;
 
 uniform sampler2D image;
-uniform vec2 resolution;
+uniform vec2 sizeOutput;
 uniform float r_lineature, r_angle, shape;
 
-in vec2 uv, view;
+in vec2 uv;
 out vec4 fragColor;
 
 float luminance(vec3 color)
@@ -25,7 +25,7 @@ void main()
 	float gray = luminance(color);
 
 	// pattern
-	vec2 p = (view);//*vec2(resolution.x/resolution.y,1.);
+	vec2 p = uv*vec2(sizeOutput.x/sizeOutput.y,1.);
 	float cos1 = 0.25 * cos((p.x * sin(r_angle) + p.y * cos(r_angle)) * r_lineature);
 	float cos2 = 0.25 * cos((p.x * cos(r_angle) - p.y * sin(r_angle)) * r_lineature);
 	float trame = cos1 * (1.-max(0., shape)) + cos2 * (1.-max(0., -shape));

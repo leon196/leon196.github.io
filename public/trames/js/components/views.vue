@@ -237,8 +237,8 @@ export default {
 
 			this.views.zoom.canvas_image_width = 2000;
 			this.views.zoom.canvas_image_height = 2000;
-			this.views.zoom.canvas_image_offset_x = -mouse_x/width;
-			this.views.zoom.canvas_image_offset_y = mouse_y/height;
+			this.views.zoom.canvas_image_offset_x = mouse_x/width;
+			this.views.zoom.canvas_image_offset_y = 1-mouse_y/height;
 			this.views.zoom.canvas_scale = view_scale;
 
 			// this.views.zoom.source_image_width = 300;

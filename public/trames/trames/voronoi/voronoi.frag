@@ -2,10 +2,10 @@
 precision mediump float;
 
 uniform sampler2D image, lut;
-uniform vec2 resolution;
+uniform vec2 sizeOutput;
 uniform float scale, size, edge;
 
-in vec2 uv, view;
+in vec2 uv;
 out vec4 fragColor;
 
 // Dave Hoskins
@@ -67,7 +67,7 @@ vec3 voronoi( in vec2 x )
 
 void main()
 {
-    vec2 p = view;
+	vec2 p = uv*vec2(sizeOutput.x/sizeOutput.y,1.);
     vec3 vor = voronoi(p*scale);
     float gray = texture(image, uv).r;
     float value = smoothstep(.01,.0,length(vor.yz)-(gray)*size + .01);

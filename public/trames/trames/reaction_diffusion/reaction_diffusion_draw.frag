@@ -2,10 +2,10 @@
 precision mediump float;
 
 uniform sampler2D framebuffer, image, lut;
-uniform vec2 resolution;
+uniform vec2 sizeOutput;
 uniform float scale, size, edge, time, tick;
 
-in vec2 uv, view;
+in vec2 uv;
 out vec4 fragColor;
 
 // Dave Hoskins

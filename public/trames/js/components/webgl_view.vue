@@ -28,37 +28,48 @@ export default {
 			canvas_height: 0,
 
 			canvas: null,
-			gl_context: null,
-			buffer: null,
-			current_program: null,
+			engine: null,
+			clock: null,
 
 			locations: {},
-			gradient_image: {}
 		}
 	},
 	mounted: function() {
 		this.canvas_width = $("#" + this.id).width() * this.device_pixel_ratio;
 		this.canvas_height = $("#" + this.id).height() * this.device_pixel_ratio;
+		
+		const canvas = $("canvas#" + this.id).get(0);
+		const engine = CreateEngine(canvas);
+		
+		this.canvas = canvas;
+		this.engine = engine;
+		this.clock = new Date();
+
+		this.isPreview = this.id.includes('preview');
+		this.isGradient = this.id.includes('gradient');
+		this.isZoom = this.id.includes('zoom');
+		
+		engine.setOutputSize(2048, 2048);
+
+		// // hook events
+		window.addEventListener("mouseup", x => engine.update = true )
 
 		emitter.on('screen_loaded', (trigger) => {
 			this.screen_settings = settings.screen;
 			this.init_canvas();
-			requestAnimationFrame(this.render);
 		})
 
-		emitter.on('update_view', (trigger) => {
-			
-			if (!this.engine || !this.engine.ready) return;
-
-			if (["levels_black", "levels_white", "levels_grey", "levels_black_offset", "levels_white_offset"].includes(trigger)) {
-				this.engine.process.update = true;
-			}
-			
-		});
 		// emitter.on('update_view', (trigger) => {
+			
 		// 	if (!this.engine || !this.engine.ready) return;
-		// 	this.engine.process.update = true;
+
+		// 	if (["levels_black", "levels_white", "levels_grey", "levels_black_offset", "levels_white_offset"].includes(trigger)) {
+		// 		this.engine.process.update = true;
+		// 	}
+			
 		// });
+
+		requestAnimationFrame(this.render);
 
 	},
 	created: function() {
@@ -71,85 +82,32 @@ export default {
 
 	},
 	methods: {
-		init_canvas: function() {
-			this.canvas = $("canvas#" + this.id).get(0);
-			try
-			{
-				this.gl_context = this.canvas.getContext('webgl2', {
-					alpha: false,
-					antialias: true,
-					depth: true,
-					failIfMajorPerformanceCaveat: false,
-					powerPreference: "default",
-					premultipliedAlpha: true,
-					// preserveDrawingBuffer: true,
-					stencil: false,
-					desynchronized: false,
-					uniforms_locations: {}
-				});
-				this.gl_context.getExtension("OES_texture_float")
-				this.gl_context.getExtension("EXT_color_buffer_float")
-				this.gl_context.getExtension("OES_texture_float_linear")
-			} 
-			catch (error)
-			{
-				console.log(error);
-			}
-			if (!this.gl_context)
-			{
-				throw "cannot create webgl context";
-			}
-
-			const gl = this.gl_context;
-			const filter = this.screen_settings.shader;
-			const buffer = this.screen_settings.buffer;
-			let image = this.image_settings.image_object;
-
-			this.engine = CreateEngine(gl, filter, buffer);
-
-			this.isPreview = this.id.includes('preview');
-			this.isGradient = this.id.includes('gradient');
-			this.isZoom = this.id.includes('zoom');
-
-			this.settings = {};
-			for (const [key, item] of Object.entries(settings.screen.settings))
-    		{
-				this.settings[key] = item.value;
-			}
+		init_canvas: function()
+		{
+			const trame = this.screen_settings;
+			this.engine.setTrame(trame);
+			
 
 			if (this.isGradient)
 			{
-				this.gradient_image = new Image();
-				this.gradient_image.src = this.gradient_image_source;
-				image = this.gradient_image_source;
-			
-				// this.engine.width = 300;
-				// this.engine.height = 2100;
+				const image = new Image();
+				image.src = this.gradient_image_source;
+				this.engine.setImage(image.src);
+				// image.addEventListener("load", (e) => 
+				// 	engine.setInputSize(image.width, image.height));
+			}
+			else
+			{
+				const image = this.image_settings.image_object;
+				this.engine.setImage(image);
+				this.engine.setInputSize(image.width, image.height);
 			}
 			
-			this.engine.media = twgl.createTextures(gl,
+			// settings
+			this.settings = {};
+			for (const [key, item] of Object.entries(trame.settings))
 			{
-				image: 
-				{
-					src: image,
-					flipY: true,
-				},
-			})
-
-			this.engine.uniforms.hasPanzoom = !this.isGradient;// && !this.isZoom;
-        	this.engine.process.isGradient = this.isGradient;
-			
-
-			// hook events
-			window.addEventListener("mouseup", x => this.engine.update = true )
-
-			this.mouse =
-			{
-				clic: false,
-				zoom: 1,
-
-				delta: [0,0],
-				wheelDelta: 0,
+				this.settings[key] = item.value;
 			}
 			
 		},
@@ -157,76 +115,47 @@ export default {
 		render: function()
 		{
 			requestAnimationFrame(this.render);
+
 			if (!this.engine || !this.engine.ready) return;
 			
 			const engine = this.engine;
-			let rect = [0,0,this.canvas_width, this.canvas_height];
-			let width = this.canvas_width;
-			let height = this.canvas_height;
+			const elapsed = (this.clock.getTime() - settings.global.start_time)/1000;
+			let rect = [0, 0, this.canvas.width, this.canvas.height];
 
-			// pan zoom
-			// if (this.isPreview)
-			// {
-			// 	rect = this.update_panzoom(this.image_settings.image_object);
-			// }
 			if (this.isPreview)
 			{
 				rect[0] = this.canvas_image_offset_x;
 				rect[1] = this.canvas_height-this.canvas_image_offset_y-this.canvas_image_height;
 				rect[2] = this.canvas_image_width;
 				rect[3] = this.canvas_image_height;
-
-				if (settings.screen.process != null)
-				{
-					engine.process.set(settings.screen.process());
-				}
-
-				engine.uniforms.time = (new Date().getTime() - settings.global.start_time)/1000;
-				engine.viewport = rect;
-				this.update_lut_texture();
-				this.update_uniforms();
-				engine.resize(width, height);
-				engine.render();
 			}
 			else if (this.isZoom)
 			{
+				const canvas = this.canvas;
 				let w = this.canvas_image_width;
 				let h = this.canvas_image_height;
-				rect[0] = this.canvas_image_offset_x * w;// + w/2;
-				rect[1] = (this.canvas_image_offset_y - 1) * h;// + h/2;
+				rect[0] = -this.canvas_image_offset_x * w + canvas.width/2;
+				rect[1] = -this.canvas_image_offset_y * h + canvas.height/2;
 				rect[2] = w;
 				rect[3] = h;
 			}
-			
-		},
-
-		update_panzoom: function(image)
-		{
-			const mouse = this.mouse;
-			const engine = this.engine;
-			let rect = [engine.viewport[0], engine.viewport[1], engine.viewport[2], engine.viewport[3]];
-
-			if (mouse.clic)
+			else if (this.isGradient)
 			{
-				rect[0] += mouse.delta[0];
-				rect[1] += mouse.delta[1];
+				rect = [0, 0, this.canvas.width, this.canvas.height];
+				engine.setInputSize(this.canvas.width, this.canvas.height);
+				this.engine.setOutputSize(this.canvas.width, this.canvas.height);
 			}
 
-			mouse.zoom -= mouse.wheelDelta * 0.001;
-			mouse.zoom = Math.max(0.01, Math.min(10, mouse.zoom));
-
-			rect[2] = image.width * mouse.zoom;
-			rect[3] = image.height * mouse.zoom;
-
-			// engine.viewport = rect;
-			// console.log(rect)
-			return rect;
+			this.update_uniforms();
+			engine.setTime(elapsed);
+			engine.setPanzoom(rect);
+			engine.setLookUpTable(this.global_settings.levels_lut);
+			engine.render();
 		},
 
 		update_uniforms: function()
 		{
 			// effect settings
-			// for (let setting of settings.screen.settings)
 			for (const [key, setting] of Object.entries(settings.screen.settings))
 			{
 				let value = 0;
@@ -243,34 +172,19 @@ export default {
 					value = setting.process_to_uniform(setting.value);
 				}
 
+				// trigger reset if needed
 				if (this.settings[key] != value)
 				{
 					this.settings[key] = value;
 					if (setting.should_reset_buffer)
 					{
-						this.engine.reset();
+						this.engine.reset(settings.screen.settings);
 					}
 				}
 
 				// update uniform
 				this.engine.uniforms[setting.uniform] = value;
 			}
-		},
-
-		update_lut_texture: function()
-		{
-			const gl = this.gl_context;
-			const engine = this.engine;
-			const lut = this.global_settings.levels_lut;
-
-			engine.media.lut = twgl.createTexture(gl,
-			{
-				src: lut,
-				format: gl.LUMINANCE,
-				width: lut.length,
-				wrap: gl.CLAMP_TO_EDGE,
-				minMag: gl.LINEAR,
-			});
 		},
 	}
 }

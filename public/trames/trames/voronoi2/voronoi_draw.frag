@@ -2,10 +2,10 @@
 precision mediump float;
 
 uniform sampler2D framebuffer, image, lut;
-uniform vec2 resolution;
+uniform vec2 sizeOutput;
 uniform float scale, size, edge, time, tick;
 
-in vec2 uv, view;
+in vec2 uv;
 out vec4 fragColor;
 
 // Dave Hoskins
@@ -24,10 +24,10 @@ void main()
     vec2 pos = frame.zw;
     
     // shape position
-    vec2 p = 2.*(uv-pos);//*vec2(resolution.x/resolution.y,1);
+    vec2 p = 2.*(uv-pos);//*vec2(sizeOutput.x/sizeOutput.y,1);
     float dist = length(p);
 
-    float shape = smoothstep(.0,.001,dist-size);//-radius*size);
+    float shape = smoothstep(.0,.001,dist-radius);//-radius*size);
 
     if (edge > 0.5)
     {
