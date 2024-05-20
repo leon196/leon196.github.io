@@ -9,5 +9,5 @@ out vec4 outputColor;
 void main()
 {
     // outputColor = step(0.5, texture(image, uv));
-    outputColor = texture(image, uv);
+    outputColor = textureLod(image, uv, 4.);
 }

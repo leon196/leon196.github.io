@@ -2,7 +2,7 @@
 precision mediump float;
 
 uniform sampler2D framebuffer, image, lut;
-uniform vec2 sizeOutput;
+uniform vec2 sizeInput, sizeOutput;
 uniform float scale, size, edge, time, tick, nearest, farest;
 
 in vec2 uv;

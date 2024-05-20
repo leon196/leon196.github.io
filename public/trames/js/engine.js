@@ -7,6 +7,7 @@ function CreateEngine (canvas)
     {
         ready: false,
         update: true,
+        refresh: false,
     }
 
     const media =
@@ -40,17 +41,9 @@ function CreateEngine (canvas)
     {
         lut: ["shaders/frame.vert", "shaders/lut.frag"],
         draw: ["shaders/frame.vert", "shaders/draw.frag"],
+        blur: ["shaders/frame.vert", "shaders/blur.frag"],
         threshold: ["shaders/frame.vert", "shaders/threshold.frag"],
     };
-
-    // TRAME
-
-    engine.setTrame = function(trame_)
-    {
-        engine.trame = trame_;
-        shaderToLoad.filter = ["shaders/frame.vert", trame_.shader];
-        engine.reload();
-    }
     
     const uniforms =
     {
@@ -79,7 +72,8 @@ function CreateEngine (canvas)
     
     const options = [ {
         internalFormat: gl.RGBA32F, format: gl.RGBA, type: gl.FLOAT,
-        minMag: gl.NEAREST, wrap: gl.REPEAT
+        minMag: gl.NEAREST,
+        wrap: gl.REPEAT
     } ];
 
     const vec4 = (x,y,w,h) => { return { x:x|0, y:y|0, width:w|0, height:h|0 } };
@@ -95,6 +89,7 @@ function CreateEngine (canvas)
     const frame =
     {
         lutted: twgl.createFramebufferInfo(gl, options, rect.input.width, rect.input.height),
+        blured: twgl.createFramebufferInfo(gl, options, rect.input.width, rect.input.height),
         result: twgl.createFramebufferInfo(gl, options, rect.output.width, rect.output.height),
         swap: 0,
     }
@@ -161,17 +156,27 @@ function CreateEngine (canvas)
         engine.uniforms.sizeOutput = [rect.output.width, rect.output.height];
         engine.uniforms.sizeCanvas = [rect.canvas.width, rect.canvas.height];
 
+        if (engine.refresh)
+        {
+            // apply lut
+            engine.uniforms.image = engine.media.image;
+            engine.draw(shader.lut, frame.lutted.framebuffer, rect.input);
+
+            // blur
+            engine.uniforms.image = frame.lutted.attachments[0];
+            engine.draw(shader.blur, frame.blured.framebuffer, rect.input);
+
+            engine.refresh = false;
+        }
+
         if (engine.trame.update !== undefined)
         {
             engine.trame.update(engine);
         }
         else
-        {    
-            // pre process image (apply LUT)
-            engine.draw(shader.lut, frame.lutted.framebuffer, rect.input);
-            
+        {
             // use lutted image
-            engine.uniforms.image = frame.lutted.attachments[0];
+            engine.uniforms.image = frame.blured.attachments[0];
 
             // apply filter
             engine.draw(shader.filter, frame.result.framebuffer, rect.output)
@@ -192,7 +197,20 @@ function CreateEngine (canvas)
     
     engine.setImage = function(image_)
     {
-        media.image = twgl.createTexture(gl, { src: image_, flipY: true });
+        media.image = twgl.createTexture(gl, {
+            src: image_,
+            flipY: true,
+            // min: gl.NEAREST_MIPMAP_LINEAR,
+        });
+
+        engine.refresh = true;
+    }
+
+    engine.setTrame = function(trame_)
+    {
+        engine.trame = trame_;
+        shaderToLoad.filter = ["shaders/frame.vert", trame_.shader];
+        engine.reload();
     }
 
     engine.setPanzoom = function(rect_)
@@ -213,6 +231,8 @@ function CreateEngine (canvas)
             wrap: gl.CLAMP_TO_EDGE,
             minMag: gl.LINEAR,
         });
+
+        engine.refresh = true;
     }
 
     engine.setInputSize = function(width, height)
@@ -222,6 +242,7 @@ function CreateEngine (canvas)
             rect.input.width = width;
             rect.input.height = height;
             twgl.resizeFramebufferInfo(gl, frame.lutted, frame.options, width, height);
+            twgl.resizeFramebufferInfo(gl, frame.blured, frame.options, width, height);
         }
     }
 
@@ -232,6 +253,10 @@ function CreateEngine (canvas)
             rect.output.width = width;
             rect.output.height = height;
             twgl.resizeFramebufferInfo(gl, frame.result, frame.options, width, height);
+            if (engine.trame != undefined && engine.trame.resize != undefined)
+            {
+                engine.trame.resize(engine);
+            }
         }
     }
 

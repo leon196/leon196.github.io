@@ -2,7 +2,7 @@
 precision mediump float;
 
 uniform sampler2D framebuffer, image, lut;
-uniform vec2 sizeOutput;
+uniform vec2 sizeInput, sizeOutput;
 uniform float scale, size, edge, time, tick;
 
 in vec2 uv;
@@ -24,7 +24,7 @@ void main()
     vec2 pos = frame.zw;
     
     // shape position
-    vec2 p = 2.*(uv-pos);//*vec2(sizeOutput.x/sizeOutput.y,1);
+    vec2 p = 2.*(uv-pos)*vec2(sizeOutput.x/sizeOutput.y,1);
     float dist = length(p);
 
     float shape = smoothstep(.0,.001,dist-radius);//-radius*size);

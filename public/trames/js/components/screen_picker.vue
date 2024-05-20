@@ -47,7 +47,7 @@ export default {
 		if (Object.keys(settings.all_screens).length < 1) {
 			let screen_descriptions = [];
 			for (let screen_slug of this.screen_set) {
-				screen_descriptions.push(screen_slug + '/description.js')
+				screen_descriptions.push(screen_slug + '/' + screen_slug + '.js')
 			}
 
 			$.getMultiScripts(screen_descriptions, './trames/').done((...results) => {

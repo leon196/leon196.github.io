@@ -2,7 +2,7 @@
 precision mediump float;
 
 uniform sampler2D framebuffer, image, lut;
-uniform vec2 sizeOutput;
+uniform vec2 sizeInput, sizeOutput;
 uniform float scale, size, edge, time, tick, nearest, farest;
 
 in vec2 uv;
@@ -30,7 +30,7 @@ void main()
     float gray = texture(image, q).r;
     
     // position
-    vec2 p = (uv-q);//*vec2(sizeOutput.x/sizeOutput.y,1);
+    vec2 p = (uv-q)*vec2(sizeOutput.x/sizeOutput.y,1);
     // p -= (q-.5)*2.*vec2(R.x/R.y,1);
     
     // data

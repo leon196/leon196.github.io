@@ -27,7 +27,7 @@ let settings = {
 		device_pixel_ratio: 1
 	},
 
-	screen_set: ["euclid", "seuil", "error_diffusion", "voronoi", "voronoi2", "reaction_diffusion"],
+	screen_set: ["euclid", "seuil", "error_diffusion", "voronoi", "voronoi2", "reaction_diffusion", "dbs"],
 	
 	all_screens: {},
 	screen: {

@@ -237,8 +237,7 @@ export default {
 		},
 		load_screen: function(screen_slug) {
 			let screen_url = "./trames/" + screen_slug + "/";
-
-			$.getMultiScripts(["description.js"], screen_url).done((...results) => {
+			$.getMultiScripts([screen_slug + ".js"], screen_url).done((...results) => {
 				let description = eval(results[0][0]);
 				// let vertex_shader = eval(results[1][0]);
 				// let fragment_shader = eval(results[2][0]);
