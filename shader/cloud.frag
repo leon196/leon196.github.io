@@ -37,7 +37,9 @@ void main()
     vec3 normal = normalize(noise-vec3(T(e.xzz),T(e.zyz),1.));
     vec3 tint = 0.5 + 0.5 * cos(vec3(1,2,3)*5. + ray.z * 3. + noise);
     float shade = dot(normal, normalize(vec3(0,1,-1)))*.5+.5;
-    vec3 color = vec3(tint * shade);
+    // vec2 m = mouse;//abs(mouse-.5)*2.;
+    // shade = smoothstep(.0,m.y*.5+.2,shade-m.x*.4-.2);
+    vec3 color = vec3(tint*shade);
 
     fragColor = vec4(color,1.0);
 }

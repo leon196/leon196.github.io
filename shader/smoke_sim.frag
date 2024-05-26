@@ -1,7 +1,7 @@
 #version 300 es
 precision mediump float;
 
-uniform float clic, time, tick;
+uniform float desktop, clic, time, tick;
 uniform vec2 resolution, mouse;
 uniform sampler2D framebuffer, bluenoise;
 
@@ -36,6 +36,15 @@ void main()
     float x = (noise(pos+e.yxy)-noise(pos-e.yxy))/(2.*e.x);
     float y = (noise(pos+e.xyy)-noise(pos-e.xyy))/(2.*e.x);
     vec2 curl = vec2(x,-y);
+    
+    if (desktop > .5) {
+        vec2 aspect = vec2(resolution.x/resolution.y, 1);
+        vec2 m = (mouse-.5)*aspect*2.;
+        vec2 dir = normalize(m-p);
+        dir = vec2(dir.y, -dir.x);
+        offset -= dir * smoothstep(.5,.0,length(m-p)-.1) * 5.;
+
+    }
 
     // force fields
     offset += curl;

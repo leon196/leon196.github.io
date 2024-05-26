@@ -1,7 +1,7 @@
 #version 300 es
 precision mediump float;
 
-uniform float clic, time, timeDelta, tick;
+uniform float desktop, clic, time, timeDelta, tick;
 uniform vec2 mouse, resolution;
 uniform sampler2D framebuffer;
 
@@ -44,7 +44,7 @@ void main()
     
     // draw circle at mouse or in motion
     float t = time;
-    if (clic > .5) p = (uv-mouse)*aspect;
+    if (desktop > .5) p = (uv-mouse)*aspect;
     else p = (uv-.5)*aspect+vec2(cos(t),sin(t))*.3;
     float paint = trace(length(p),.1);
     
