@@ -177,6 +177,8 @@ export default {
 				engine.setOutputSize(canvas.width, canvas.height);
 			}
 
+			// if (!this.isPreview) return;
+
 			this.update_uniforms();
 			engine.setTime(elapsed);
 			engine.setPanzoom(rect);

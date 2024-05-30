@@ -1,12 +1,12 @@
 (function() {
 	return {
-		slug: "dbs",
-		name: "Direct Binary Search",
-		description: "Direct Binary Search",
+		slug: "error_bloc",
+		name: "Error Diffusion Bloc",
+		description: "Error Diffusion Bloc",
 		author: "",
 		url_info: "",
 
-		shader: "trames/dbs/dbs.frag",
+		shader: "trames/error_bloc/error_bloc.frag",
 
 		settings: [
 		],
@@ -75,7 +75,7 @@
 					src[i] = value;
 					dest[i] = value + Math.random() - 0.5 > 0.5 ? 1 : 0;
 				}
-				let w = new Worker("trames/dbs/dbs_worker.js");
+				let w = new Worker("trames/error_bloc/error_bloc_worker.js");
 				w.postMessage([ src, dest, width, height ]);
 				w.onmessage = (e) => { 
 					state.image = twgl.createTexture(gl,
@@ -88,6 +88,7 @@
 						height: height,
 					})
 				}
+
 				state.update = false;
 			}
 

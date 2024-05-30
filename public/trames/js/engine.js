@@ -73,7 +73,7 @@ function CreateEngine (canvas)
     const options = [ {
         internalFormat: gl.RGBA32F, format: gl.RGBA, type: gl.FLOAT,
         minMag: gl.NEAREST,
-        wrap: gl.REPEAT
+        wrap: gl.CLAMP_TO_EDGE
     } ];
 
     const vec4 = (x,y,w,h) => { return { x:x|0, y:y|0, width:w|0, height:h|0 } };
@@ -163,8 +163,8 @@ function CreateEngine (canvas)
             engine.draw(shader.lut, frame.lutted.framebuffer, rect.input);
 
             // blur
-            engine.uniforms.image = frame.lutted.attachments[0];
-            engine.draw(shader.blur, frame.blured.framebuffer, rect.input);
+            // engine.uniforms.image = frame.lutted.attachments[0];
+            // engine.draw(shader.blur, frame.blured.framebuffer, rect.input);
 
             engine.refresh = false;
         }
@@ -176,7 +176,8 @@ function CreateEngine (canvas)
         else
         {
             // use lutted image
-            engine.uniforms.image = frame.blured.attachments[0];
+            // engine.uniforms.image = frame.blured.attachments[0];
+            engine.uniforms.image = frame.lutted.attachments[0];
 
             // apply filter
             engine.draw(shader.filter, frame.result.framebuffer, rect.output)

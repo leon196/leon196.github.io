@@ -142,15 +142,22 @@ export default {
 	methods: {
 		init_panzoom: function() {
 
-			this.views.preview.canvas_width = $("#panzoom_container").width();
-			this.views.preview.canvas_height = $("#panzoom_container").height();
+			const viewport = $("#viewport");
+			const container = $("#cpanzoom_ontainer");
+			const image = $("#panzoom_image");
+			const ruler = $("#ruler");
 
-			let image_view_base_width = $("#panzoom_image").width();
-			let image_view_base_height = $("#panzoom_image").height();
-			let image_element = $("#panzoom_image")[0];
+			this.views.preview.canvas_width = container.width();
+			this.views.preview.canvas_height = container.height();
 
-			let start_x = $("#viewport").width() / 2 - $("#panzoom_image").width() / 2;
-			let start_y = ($("#viewport").height() - $("#ruler").height()) / 2 - $("#panzoom_image").height() / 2;
+			let image_view_base_width = image.width();
+			let image_view_base_height = image.height();
+			let image_element = image[0];
+
+			const startScale = 1
+
+			let start_x = viewport.width() / 2 - image.width() / 2;
+			let start_y = (viewport.height() - ruler.height()) / 2 - image.height() / 2;
 
 			// INIT PANZOOM WITH RAW IMAGE 
 			let dom = document.getElementById("panzoom_image");
@@ -160,10 +167,10 @@ export default {
 				//step: 0.3,
 				canvas: true,
 				origin: "top left",
-				startScale: 1,
+				startScale: startScale,
 				startX: start_x,
 				startY: start_y,
-				maxScale: 100,
+				maxScale: 40,
 				minScale: 1,
 				pinchAndPan: true
 			});

@@ -142,7 +142,7 @@ export default {
 .screen_picker_title {
 	text-transform: uppercase;
 	white-space: nowrap;
-	width: 250px;
+	width: 50px;
 	font-size: var(--medium_text_size);
 	line-height: var(--medium_text_size_lh);
 }
@@ -162,7 +162,7 @@ export default {
 
 .thumbnails {
 	position: relative;
-	height: 250px;
+	height: 50px;
 
 }
 
@@ -170,12 +170,12 @@ export default {
 	position: absolute;
 	left: 0px;
 	top: 0px;
-	height: 250px;
+	height: 50px;
 }
 
 .thumbnail_gradient {
 	position: absolute;
-	left: 250px;
+	left: 50px;
 	top: 0px;
 	right: 0;
 	bottom: 0px;
