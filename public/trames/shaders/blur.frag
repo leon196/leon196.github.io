@@ -1,11 +1,8 @@
-#version 300 es
-precision mediump float;
 
 uniform sampler2D image;
-uniform vec2 sizeInput, sizeOutput;
+uniform vec2 resolution;
 
-in vec2 uv;
-out vec4 outputColor;
+in vec2 vUv;
 
 // mrharicot
 // https://www.shadertoy.com/view/XdfGDH
@@ -17,7 +14,7 @@ float normpdf(in float x, in float sigma)
 
 void main()
 {
-	vec3 c = texture(image, uv).rgb;
+	// blur
 		
     //declare stuff
     const int mSize = 11;
@@ -44,10 +41,12 @@ void main()
     {
         for (int j=-kSize; j <= kSize; ++j)
         {
-            final_colour += kernel[kSize+j]*kernel[kSize+i]*texture(image, (gl_FragCoord.xy+vec2(float(i),float(j))) / sizeInput).rgb;
+            final_colour += kernel[kSize+j]*kernel[kSize+i]*texture(image, vUv+vec2(float(i),float(j)) / resolution).rgb;
         }
     }
     
-    
-    outputColor = vec4(final_colour/(Z*Z), 1.0);
+    gl_FragColor = texture(image, vUv);
+    // gl_FragColor = vec4(final_colour/(Z*Z), 1.0);
+    // gl_FragColor = vec4(pow(final_colour/(Z*Z), vec3(1./2.2)), 1.0);
+    // gl_FragColor = sRGBTransferOETF(gl_FragColor);
 }

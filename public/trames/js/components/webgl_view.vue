@@ -26,132 +26,120 @@ export default {
 			device_pixel_ratio: settings.global.device_pixel_ratio,
 			canvas_width: 0,
 			canvas_height: 0,
-
 			canvas: null,
-			engine: null,
-			clock: null,
-
+			worker: null,
 			locations: {},
 		}
 	},
 	mounted: function() {
 		this.canvas_width = $("#" + this.id).width() * this.device_pixel_ratio;
 		this.canvas_height = $("#" + this.id).height() * this.device_pixel_ratio;
+		this.canvas = $("canvas#" + this.id).get(0);
 		
-		const canvas = $("canvas#" + this.id).get(0);
-		const engine = CreateEngine(canvas);
-		
-		this.canvas = canvas;
-		this.engine = engine;
-		this.clock = new Date();
-		this.ready = false;
-
 		this.isPreview = this.id.includes('preview');
 		this.isGradient = this.id.includes('gradient');
 		this.isZoom = this.id.includes('zoom');
+
+		// this.worker = new Worker("./js/engine.js");
+		// this.offscreenCanvas = this.canvas.transferControlToOffscreen();
+		// console.log('transferControlToOffscreen' in this.canvas)
+
+		const offscreen = this.canvas.transferControlToOffscreen();
+
+		this.worker = new Worker('./js/engine.worker.js', { type: 'module' });
+		this.worker.postMessage({
+			event: "create",
+			args: {
+				canvas: offscreen,
+				width: this.canvas.clientWidth,
+				height: this.canvas.clientHeight,
+			}
+		}, [offscreen]);
 		
-		engine.setOutputSize(5906, 5906);
-		engine.setLookUpTable(this.global_settings.levels_lut);
-
-		// // hook events
-		window.addEventListener("mouseup", x => engine.update = true )
-
-		emitter.on('screen_loaded', (trigger) => {
-			this.screen_settings = settings.screen;
-			this.init_canvas();
-		})
-
-		const lut_params = ["levels_black", "levels_white", "levels_grey", "levels_black_offset", "levels_white_offset"];
-
-		const size_params = ["format_x", "format_y", "resolution", "definition_x", "definition_y"]
-
-		emitter.on('update_view', (trigger) => {
-
-			const engine = this.engine;
-			const globals = this.global_settings;
-			
-			if (!engine || !engine.ready) return;
-
-			const lut_update = lut_params.includes(trigger);
-			if (lut_update)
-			{
-				const array = globals.levels_lut;
-				engine.setLookUpTable(array);
-			}
-
-			const size_update = size_params.includes(trigger);
-			if (size_update)
-			{
-				if (!this.isGradient)
-				{
-					const width = Math.min(10000, globals.definition_x);
-					const height = Math.min(10000, globals.definition_y);
-					engine.setOutputSize(width, height);
-					engine.reset();
-				}
-			}
-			
+		const canvas = this.canvas;
+		const globals = this.global_settings;
+		
+		this.worker.postMessage({
+			event: "setLookUpTable",
+			args: { array: this.global_settings.levels_lut }
 		});
 
+		let format = [0, 0];
+		let outputSize = [0, 0];
+
+		// image
+		if (this.isGradient) {
+			format = [canvas.width, canvas.height];
+			outputSize = [canvas.width, canvas.height];
+			this.worker.postMessage({ event: "setImageSrc", args: { src: this.gradient_image_source } });
+		} else {
+			format = [globals.format_x, globals.format_y];
+			outputSize = [globals.definition_x, globals.definition_y];
+			const image = this.image_settings.image_object;
+			this.worker.postMessage({ event: "setImageSrc", args: { src: image.src } });
+		}
+		
+		this.worker.postMessage({ event: "setFormat", args: { format: format } });
+		this.worker.postMessage({ event: "setOutputSize", args: { outputSize: outputSize } });
+		
 		requestAnimationFrame(this.render);
-
-	},
-	created: function() {
-
-	},
-	computed: function() {
-
-	},
-	watch: {
-
-	},
-	methods: {
-		init_canvas: function()
-		{
-			const trame = this.screen_settings;
-			const engine = this.engine;
-			const canvas = this.canvas;
-
-			engine.setTrame(trame);
+		
+		// loaded event
+		emitter.on('screen_loaded', (trigger) => {
+			this.screen_settings = settings.screen;
+			const trame = settings.screen;
+			this.worker.postMessage({
+				event: "setTrame",
+				args: { shader: trame.shader, worker: trame.worker, }
+			});
 			
 			// settings
 			this.settings = {};
-			for (const [key, item] of Object.entries(trame.settings))
-			{
+			for (const [key, item] of Object.entries(trame.settings)) {
 				this.settings[key] = item.value;
 			}
-
-			if (this.isGradient)
-			{
-				const image = new Image();
-				image.src = this.gradient_image_source;
-				engine.setInputSize(canvas.width, canvas.height);
-				engine.setOutputSize(canvas.width, canvas.height);
-				var self = this;
-				image.addEventListener("load", (e) => {
-					engine.setImage(image);
-					self.ready = true;
-				})
+		})
+		
+		// update parameters event
+		const lut_params = ["levels_black", "levels_white", "levels_grey", "levels_black_offset", "levels_white_offset"];
+		const size_params = ["format_x", "format_y", "resolution", "definition_x", "definition_y"]
+		emitter.on('update_view', (trigger) => {
+			const globals = this.global_settings;
+			const lut_update = lut_params.includes(trigger);
+			if (lut_update) {
+				this.worker.postMessage({
+					event: "setLookUpTable",
+					args: { array: globals.levels_lut }
+				});
 			}
-			else
-			{
-				const image = this.image_settings.image_object;
-				engine.setImage(image);
-				engine.setInputSize(image.width, image.height);
-				this.ready = true;
+			const size_update = size_params.includes(trigger);
+			if (size_update) {
+				if (!this.isGradient) {
+					this.worker.postMessage({
+						event: "setFormat",
+						args: { format: [globals.format_x, globals.format_y] }
+					});
+					this.worker.postMessage({
+						event: "setOutputSize",
+						args: { outputSize: [globals.definition_x, globals.definition_y] }
+					});
+					// engine.reset();
+				}
 			}
-			
-		},
+		});
 
+
+	},
+	created: function() {},
+	computed: function() {},
+	watch: {},
+	methods: {
 		render: function()
 		{
 			requestAnimationFrame(this.render);
-
-			if (!this.engine || !this.engine.ready || !this.ready) return;
 			
-			const engine = this.engine;
 			const canvas = this.canvas;
-			const elapsed = (this.clock.getTime() - settings.global.start_time)/1000;
+			const globals = this.global_settings;
 			let rect = [0, 0, canvas.width, canvas.height];
 
 			if (this.isPreview)
@@ -163,8 +151,8 @@ export default {
 			}
 			else if (this.isZoom)
 			{
-				let w = this.canvas_image_width;
-				let h = this.canvas_image_height;
+				let w = globals.definition_x;
+				let h = globals.definition_y;
 				rect[0] = -this.canvas_image_offset_x * w + canvas.width/2;
 				rect[1] = -this.canvas_image_offset_y * h + canvas.height/2;
 				rect[2] = w;
@@ -173,20 +161,20 @@ export default {
 			else if (this.isGradient)
 			{
 				rect = [0, 0, canvas.width, canvas.height];
-				engine.setInputSize(canvas.width, canvas.height);
-				engine.setOutputSize(canvas.width, canvas.height);
 			}
 
-			// if (!this.isPreview) return;
-
 			this.update_uniforms();
-			engine.setTime(elapsed);
-			engine.setPanzoom(rect);
-			engine.render();
+			this.worker.postMessage({ event: "setPanzoom", args: { rect: rect } });
+			this.worker.postMessage({ event: "render" });
+
 		},
 
 		update_uniforms: function()
 		{
+			// const engine = this.engine;
+			let trame = settings.screen;
+			if (trame.settings == undefined) return;
+
 			// effect settings
 			for (const [key, setting] of Object.entries(settings.screen.settings))
 			{
@@ -210,12 +198,20 @@ export default {
 					this.settings[key] = value;
 					if (setting.should_reset_buffer)
 					{
-						this.engine.reset(settings.screen.settings);
+						// engine.reset(settings.screen.settings);
+						// this.worker.postMessage({
+						// 	event: "setUniforms",
 					}
 				}
 
 				// update uniform
-				this.engine.uniforms[setting.uniform] = value;
+				this.worker.postMessage({
+					event: "setUniforms",
+					args: {
+						name: setting.uniform,
+						value: value,
+					}
+				});
 			}
 		},
 	}

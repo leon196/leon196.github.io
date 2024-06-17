@@ -1,13 +1,9 @@
-#version 300 es
-precision mediump float;
+in vec2 vUv;
 
+uniform float time;
 uniform sampler2D image;
-
-in vec2 uv;
-out vec4 outputColor;
 
 void main()
 {
-    // outputColor = step(0.5, texture(image, uv));
-    outputColor = textureLod(image, uv, 4.);
+    gl_FragColor = texture(image, vUv);
 }

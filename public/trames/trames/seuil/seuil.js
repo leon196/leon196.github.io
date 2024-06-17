@@ -14,7 +14,7 @@
 				type: "slider",
 				min: 0,
 				max: 255,
-				value: 100,
+				value: 125,
 				step: 1,
 				unit: "",
 				uniform: "r_seuil",
@@ -30,15 +30,10 @@
 				label_en: "Invert mode",
 				slug: "invert",
 				type: "checkbox",
-				value: true,
+				value: false,
 				uniform: "r_invert",
 				process_to_uniform: function(input) {
-
-					if (input == true) {
-						return 1;
-					} else {
-						return 0;
-					};
+					return input ? 1 : 0;
 				},
 				gradient_view: {
 					bypass: false

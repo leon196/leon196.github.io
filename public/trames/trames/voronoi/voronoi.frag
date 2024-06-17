@@ -1,12 +1,11 @@
-#version 300 es
-precision mediump float;
 
-uniform sampler2D image, lut;
-uniform vec2 sizeOutput;
-uniform float scale, size, edge;
+uniform sampler2D image;
+uniform vec2 resolution, format;
+#define R resolution
+#define inch_to_mm 25.4
+in vec2 vUv;
 
-in vec2 uv;
-out vec4 fragColor;
+uniform float r_lineature, size, edge;
 
 // Dave Hoskins
 // https://www.shadertoy.com/view/4djSRW
@@ -67,13 +66,13 @@ vec3 voronoi( in vec2 x )
 
 void main()
 {
-	vec2 p = uv*vec2(sizeOutput.x/sizeOutput.y,1.);
-    vec3 vor = voronoi(p*scale);
-    float gray = texture(image, uv).r;
+	float gray = texture(image, vUv).r;
+	vec2 p = vUv*format/inch_to_mm;
+    vec3 vor = voronoi(p*r_lineature);
     float value = smoothstep(.01,.0,length(vor.yz)-(gray)*size + .01);
     if (edge > 0.5)
     {
         value = smoothstep(0.0,.01,vor.x-(1.-gray)*.7 + .01);
     }
-	fragColor = vec4(vec3(value), 1);
+	gl_FragColor = vec4(vec3(value), 1);
 }

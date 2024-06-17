@@ -22,7 +22,8 @@ export default {
 	data() {
 		return {
 			global_settings: settings.global,
-			path_code: "M0 0"
+			path_code: "M0 0",
+			levels_lut: null,
 
 		}
 	},
@@ -76,12 +77,13 @@ export default {
 				//////////////////////////////////
 				// INIT LUT
 				// WILL CONTAIN THE 256 MULTIPLICATION COEFS
-				let levels_lut = [];
+				// let levels_lut = [];
+				if (this.levels_lut == null) this.levels_lut = new Uint8Array(255);
 				let count = 0;
 
 				// FILL LUT WITH BLACK STATIC VALUES
 				for (var i = 0; i < black; i++) {
-					levels_lut[count] = 255 - b_y1 * 255;
+					this.levels_lut[count] = 255 - b_y1 * 255;
 					count++;
 				}
 
@@ -89,17 +91,17 @@ export default {
 				var steps = white - black;
 				var step = 1 / steps;
 				for (var i = 0; i < 1; i += step) {
-					levels_lut[count] = 255 - bezier_y_from_x(i, b_y1, b_handle_y, b_handle_y, b_y2) * 255;
+					this.levels_lut[count] = 255 - bezier_y_from_x(i, b_y1, b_handle_y, b_handle_y, b_y2) * 255;
 					count++;
 				}
 
 				// FILL LUT WITH WHITE STATIC VALUES
 				for (var i = 0; i < 256 - white; i++) {
-					levels_lut[count] = 255 - b_y2 * 255;
+					this.levels_lut[count] = 255 - b_y2 * 255;
 					count++;
 				}
 
-				this.global_settings.levels_lut = levels_lut;
+				this.global_settings.levels_lut = this.levels_lut;
 				emitter.emit('update_view', "levels_lut");
 			}
 		})

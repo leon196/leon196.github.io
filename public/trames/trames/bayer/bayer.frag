@@ -1,19 +1,12 @@
-#version 300 es
-precision mediump float;
 
 uniform sampler2D image;
-uniform vec2 sizeOutput;
+uniform vec2 resolution, format;
 uniform float r_lineature, r_angle, shape;
 
-in vec2 uv;
-out vec4 fragColor;
+in vec2 vUv;
 
 #define MAX_LEVEL 4
-
-float luminance(vec3 color)
-{
-    return dot(color, vec3(0.2126, 0.7152, 0.0722));
-}
+#define inch_to_mm 25.4
 
 float bayer(vec2 pixelpos)
 {
@@ -30,16 +23,11 @@ float bayer(vec2 pixelpos)
 
 void main()
 {
+    vec2 lod = format/inch_to_mm*r_lineature;
+	vec2 p = vUv*lod;
+	float gray = texture(image, floor(vUv*lod)/lod).r;
 
-	vec2 p = uv*sizeOutput;
-	vec2 lod = vec2(pow(2., r_lineature)+1.);
-	p = floor(p/lod)*lod;
-	// p /= sizeOutput;
-	
-	vec3 color = texture(image, p/sizeOutput).rgb;
-	float gray = luminance(color);
+	vec3 color = vec3(step(bayer(p), gray));
 
-	color = vec3(step(bayer(p), gray));
-
-	fragColor = vec4(color, 1);
+	gl_FragColor = vec4(color, 1);
 }

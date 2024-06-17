@@ -9,18 +9,23 @@
 
 		settings: [
 			{
-				label_fr: "Scale",
-				label_en: "Scale",
-				slug: "scale",
+				label_fr: "Linéature",
+				label_en: "Linéature",
+				slug: "lineature",
 				type: "slider",
-				min: 0,
+				min: 5,
 				max: 300,
 				value: 100,
 				step: 1,
-				unit: "",
-				uniform: "scale",
-				process_to_uniform: x => x,
-				gradient_view: { bypass: false }
+				unit: "lpi",
+				uniform: "r_lineature",
+				process_to_uniform: function(input) {
+					return input
+				},
+				gradient_view: {
+					bypass: true,
+					default: 10
+				}
 			},
 			{
 				label_fr: "Size",

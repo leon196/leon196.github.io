@@ -15,8 +15,8 @@
 				type: "slider",
 				min: 5,
 				max: 300,
-				value: 300,
-				step: 0.1,
+				value: 100,
+				step: 1,
 				unit: "lpi",
 				uniform: "r_lineature",
 				process_to_uniform: function(input) {
@@ -34,7 +34,7 @@
 				type: "slider",
 				min: 0,
 				max: 180,
-				value: 0,
+				value: 45,
 				step: 5,
 				unit: "°",
 				uniform: "r_angle",
@@ -50,7 +50,7 @@
 				label_en: "Pattern",
 				slug: "pattern",
 				type: "radio",
-				value: 2,
+				value: 0,
 				all_values: [{
 						mode: 0,
 						label_fr: "Cercle 1",

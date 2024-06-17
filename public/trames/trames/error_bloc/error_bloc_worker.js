@@ -2,9 +2,8 @@
 onmessage = function(o) {
 
     let src = o.data[0];
-    // let dest = o.data[1];
-    let w = o.data[2];
-    let h = o.data[3];
+    let w = o.data[1];
+    let h = o.data[2];
 
     // let width = w
 
@@ -57,7 +56,7 @@ onmessage = function(o) {
     for (let y = 0; y < h; ++y) {
         tmp.push([]) 
         for (let x = 0; x < w; ++x)
-            tmp[y].push(src[x + y * h]);
+            tmp[y].push(src[x + y * h]/255);
     }
     
     // # Analyse tile list
@@ -128,8 +127,8 @@ onmessage = function(o) {
         }
     }
 
-    w = o.data[2];
-    h = o.data[3];
+    w = o.data[1];
+    h = o.data[2];
     let result = new Uint8Array(w*h);
     for (j = 0; j < h; ++j) 
         for (i = 0; i < w; ++i)

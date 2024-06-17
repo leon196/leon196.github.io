@@ -1,6 +1,5 @@
+
 const { loadModule } = window["vue3-sfc-loader"];
-
-
 
 let emitter = mitt();
 emitter.on('update_view', function(trigger) {
@@ -50,3 +49,12 @@ const app = Vue.createApp({
 
 //// MOUNT!
 app.mount('#app');
+
+// const canvas = new OffscreenCanvas(256, 256);
+// const engine = CreateEngine(canvas, () => {
+//   // const viewport = document.getElementById("preview");
+//   // const context = viewport.getContext("2d");
+//   console.log(canvas.transferToImageBitmap());
+//   // const image = new Image()
+//   // document.appendChild
+// });

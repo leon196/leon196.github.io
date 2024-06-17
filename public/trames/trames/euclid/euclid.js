@@ -13,10 +13,10 @@
 				label_en: "Linéature",
 				slug: "lineature",
 				type: "slider",
-				min: 5,
+				min: 1,
 				max: 300,
-				value: 300,
-				step: 0.1,
+				value: 100,
+				step: 1,
 				unit: "lpi",
 				uniform: "r_lineature",
 				process_to_uniform: function(input) {

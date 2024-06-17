@@ -9,8 +9,8 @@ let inch_to_mm = 25.4;
 let settings = {
 	global: {
 		media_mode: "print",
-		format_x: 500,
-		format_y: 500,
+		format_x: 400,
+		format_y: 300,
 		resolution: 300,
 		definition_x: 0,
 		definition_y: 0,
@@ -21,13 +21,13 @@ let settings = {
 		levels_black_offset:0,
 		levels_white_offset:0,
 		levels_lut: [],
-		current_screen: "bayer",
+		current_screen: "seuil",
 		start_time: new Date().getTime(),
 		time: 0,
 		device_pixel_ratio: 1
 	},
 
-	screen_set: ["patterns", "euclid", "seuil", "error_diffusion", "voronoi", "voronoi2", "reaction_diffusion", "dbs", "error_bloc", "bayer"],
+	screen_set: ["patterns", "euclid", "seuil", "error_diffusion", "voronoi", "bayer", "dbs"],
 	
 	all_screens: {},
 	screen: {
@@ -35,8 +35,8 @@ let settings = {
 	},
 
 	image: {
-		source: "images/chat_carre.png",
-		filename: "chat_carre.png",
+		source: "images/image.jpg",
+		filename: "image.jpg",
 	},
 
 	generator: {

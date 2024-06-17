@@ -1,10 +1,20 @@
 
 onmessage = function(o) {
 
-    let src = o.data[0];
-    let dest = o.data[1];
-    let w = o.data[2];
-    let h = o.data[3];
+    let array = o.data.array;
+    let w = o.data.width;
+    let h = o.data.height;
+    let settings = o.data.settings;
+
+    // console.log(settings)
+    // let step_count = o.data[3];
+    
+    let src = new Float32Array(w*h);
+    let dest = new Float32Array(w*h);
+    for (let i = 0; i < w*h; ++i) {
+        src[i] = array[i] / 255.;
+        dest[i] = array[i] / 255. + Math.random() - 0.5 > 0.5 ? 1. : 0;
+    }
 
     // Sam Hocevar
     // from libcaca.py
@@ -31,8 +41,8 @@ onmessage = function(o) {
         }
     }
 
-    for (let steps = 0; steps < 10; ++steps)
-    {
+    // for (let steps = 0; steps < step_count; ++steps)
+    // {
         const srcmat = new Float32Array(w*h);
         const destmat = new Float32Array(w*h);
         const srchvs = new Float32Array(w*h);
@@ -155,14 +165,18 @@ onmessage = function(o) {
 
         for (i = 0; i < w*h; ++i)
             dest[i] = destmat[i]
-    }
+    
+    // }
 
-    w = o.data[2];
-    h = o.data[3];
-    let result = new Uint8Array(w*h);
-    for (i = 0; i < w*h; ++i)
+    const ww = o.data.width;
+    const hh = o.data.height;
+    let result = new Uint8Array(ww*hh);
+    for (i = 0; i < ww*hh; ++i)
         result[i] = dest[i] > 0.5 ? 255 : 0
-
-    postMessage(result);
+    postMessage({
+        array: result,
+        width: ww,
+        height: hh,
+    });//[result, steps]);
 
 }

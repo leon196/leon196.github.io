@@ -170,7 +170,7 @@ export default {
 				startScale: startScale,
 				startX: start_x,
 				startY: start_y,
-				maxScale: 40,
+				maxScale: 100,
 				minScale: 1,
 				pinchAndPan: true
 			});
