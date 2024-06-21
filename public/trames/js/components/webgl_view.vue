@@ -177,7 +177,7 @@ export default {
 				rect = [0, 0, canvas.width, canvas.height];
 			}
 
-			this.update_uniforms();
+			// this.update_uniforms();
 			this.worker.postMessage({ event: "setPanzoom", args: { rect: rect } });
 			this.worker.postMessage({ event: "render" });
 
@@ -186,6 +186,8 @@ export default {
 		should_update: function()
 		{
 			const globals = this.global_settings;
+
+			this.update_uniforms();
 
 			if (this.lut_update) {
 				this.worker.postMessage({
