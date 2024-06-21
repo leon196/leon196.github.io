@@ -15,6 +15,7 @@ let tick = 0;
 let update = false;
 let update_blur = false;
 let update_lut = false;
+let is_gradient = false;
 let outputSize = [0, 0];
 
 let image_texture = null;
@@ -36,7 +37,6 @@ let frame_blur = new THREE.WebGLRenderTarget( width, height, options);
 let frame_result = new THREE.WebGLRenderTarget( width, height, options);
 const uniforms = {
     time: { value: 0 },
-    is_gradient: { value: false },
     image: { value: null },
     lut: { value: null },
     format: { value: [1, 1] },
@@ -51,6 +51,12 @@ function new_shader(vert, frag) {
     });
 }
 
+const layer_geo = new THREE.PlaneGeometry( 2, 2 );
+const layer_blur = new THREE.Scene();
+const layer_lut = new THREE.Scene();
+const layer_draw = new THREE.Scene();
+const layer_filter = new THREE.Scene();
+const layer_result = new THREE.Scene();
 let shaders = {};
 THREE.Cache.enabled = true;
 let files = {};
@@ -66,10 +72,12 @@ files_to_load.forEach(element => {
                 blur: new_shader("fullscreen.vert", "blur.frag"),
                 lut: new_shader("fullscreen.vert", "lut.frag"),
                 filter: new_shader("fullscreen.vert", "draw.frag"),
+                draw: new_shader("fullscreen.vert", "draw.frag"),
                 result: new_shader("rect.vert", "result.frag"),
             };
             mesh_result = new THREE.Mesh( layer_geo, shaders.result );
             layer_blur.add( new THREE.Mesh( layer_geo, shaders.blur ) );
+            layer_draw.add( new THREE.Mesh( layer_geo, shaders.draw ) );
             layer_lut.add( new THREE.Mesh( layer_geo, shaders.lut ) );
             layer_filter.add( new THREE.Mesh( layer_geo, shaders.filter ) );
             layer_result.add( mesh_result );
@@ -77,12 +85,6 @@ files_to_load.forEach(element => {
         }
     });
 });
-
-const layer_geo = new THREE.PlaneGeometry( 2, 2 );
-const layer_blur = new THREE.Scene();
-const layer_lut = new THREE.Scene();
-const layer_filter = new THREE.Scene();
-const layer_result = new THREE.Scene();
 
 engine.render = function()
 {
@@ -96,7 +98,8 @@ engine.render = function()
         uniforms.image.value = image_texture;
         uniforms.resolution.value = outputSize;
         renderer.setRenderTarget(frame_blur);
-        renderer.render( layer_blur, camera );
+        let layer = is_gradient ? layer_draw : layer_blur;
+        renderer.render( layer, camera );
         update_blur = false;
     }
     
@@ -168,7 +171,7 @@ engine.render = function()
         uniforms.resolution.value = [ width, height ];
         uniforms.image.value = frame_result.texture;
         // uniforms.image.value = image_texture;
-        // uniforms.image.value = frame_lut.texture;
+        // uniforms.image.value = frame_blur.texture;
         renderer.setRenderTarget(null);
         renderer.clear();
         renderer.render( layer_result, camera );
@@ -181,6 +184,7 @@ engine.create = function(args) {
     canvas = args.canvas;
     width = args.width;
     height = args.height;
+    is_gradient = args.is_gradient;
     renderer = new THREE.WebGLRenderer({ canvas: canvas });
     const gl = renderer.getContext();
     gl.pixelStorei(gl.PACK_ALIGNMENT, 1);
@@ -196,7 +200,7 @@ engine.resize = (args) =>
 {
     width = args.width;
     height = args.height;
-    renderer.setSize( width, height );
+    renderer.setSize( width, height, false );
     camera.right = width;
     camera.top = height;
     camera.updateProjectionMatrix();
@@ -220,7 +224,7 @@ engine.setPanzoom = (args) => {
 }
 engine.setTrame = (args) => {
     if (args.shader !== undefined) {
-        // console.log(args.shader)
+        worker_path = null;
         loader.load("./../"+args.shader, data => {
             shaders.filter.fragmentShader = data;
             shaders.filter.needsUpdate = true;
@@ -228,8 +232,6 @@ engine.setTrame = (args) => {
         }, x => x, (e) => console.log(e));
     } else if (args.worker !== undefined) {
         worker_path = args.worker;
-        // shaders.filter.fragmentShader = files["draw.frag"];
-        // shaders.filter.needsUpdate = true;
         engine.refresh();
     }
     
@@ -237,12 +239,14 @@ engine.setTrame = (args) => {
 engine.setFormat = (args) => {
     const w = args.format[0];
     const h = args.format[1];
-    uniforms.format.value = [w, h];
+    if (w != 0 && h != 0) {
+        uniforms.format.value = [w, h];
+    }
 }
 engine.setOutputSize = (args) => {
     const w = args.outputSize[0];
     const h = args.outputSize[1];
-    if (w != outputSize[0] || h != outputSize[1]) {
+    if (w != 0 && h != 0 && (w != outputSize[0] || h != outputSize[1])) {
         outputSize = [w,h];
         frame_blur.setSize(w, h);
         frame_lut.setSize(w, h);

@@ -26,8 +26,11 @@ export default {
 			device_pixel_ratio: settings.global.device_pixel_ratio,
 			canvas_width: 0,
 			canvas_height: 0,
+			outputSize: [0,0],
 			canvas: null,
 			worker: null,
+			lut_update: false,
+			size_update: false,
 			locations: {},
 		}
 	},
@@ -40,52 +43,68 @@ export default {
 		this.isGradient = this.id.includes('gradient');
 		this.isZoom = this.id.includes('zoom');
 
-		// this.worker = new Worker("./js/engine.js");
-		// this.offscreenCanvas = this.canvas.transferControlToOffscreen();
-		// console.log('transferControlToOffscreen' in this.canvas)
-
-		const offscreen = this.canvas.transferControlToOffscreen();
+		
+		const canvas = this.canvas;
+		const globals = this.global_settings;
+		const offscreen = canvas.transferControlToOffscreen();
 
 		this.worker = new Worker('./js/engine.worker.js', { type: 'module' });
 		this.worker.postMessage({
 			event: "create",
 			args: {
 				canvas: offscreen,
-				width: this.canvas.clientWidth,
-				height: this.canvas.clientHeight,
+				width: canvas.clientWidth,
+				height: canvas.clientHeight,
+				is_gradient: this.isGradient,
 			}
 		}, [offscreen]);
-		
-		const canvas = this.canvas;
-		const globals = this.global_settings;
+
+		window.addEventListener( 'resize', (e) =>
+		{
+			this.worker.postMessage({
+				event: "resize",
+				args: {
+					width: canvas.clientWidth,
+					height: canvas.clientHeight,
+				}
+			});
+		});
 		
 		this.worker.postMessage({
 			event: "setLookUpTable",
 			args: { array: this.global_settings.levels_lut }
 		});
 
-		let format = [0, 0];
-		let outputSize = [0, 0];
+		let imageSrc = "";
 
 		// image
 		if (this.isGradient) {
-			format = [canvas.width, canvas.height];
-			outputSize = [canvas.width, canvas.height];
-			this.worker.postMessage({ event: "setImageSrc", args: { src: this.gradient_image_source } });
+			imageSrc = "./../" + this.gradient_image_source
 		} else {
-			format = [globals.format_x, globals.format_y];
-			outputSize = [globals.definition_x, globals.definition_y];
-			const image = this.image_settings.image_object;
-			this.worker.postMessage({ event: "setImageSrc", args: { src: image.src } });
+			imageSrc = this.image_settings.image_object.src;
 		}
 		
-		this.worker.postMessage({ event: "setFormat", args: { format: format } });
-		this.worker.postMessage({ event: "setOutputSize", args: { outputSize: outputSize } });
+		this.worker.postMessage({ event: "setImageSrc", args: { src: imageSrc } });
 		
-		requestAnimationFrame(this.render);
+		// update parameters event
+		const lut_params = ["levels_black", "levels_white", "levels_grey", "levels_black_offset", "levels_white_offset"];
+		const size_params = ["format_x", "format_y", "resolution", "definition_x", "definition_y"]
+		emitter.on('update_view', (trigger) => {
+			if (lut_params.includes(trigger)) {
+				this.lut_update = true;
+			}
+			if (size_params.includes(trigger) && !this.isGradient) {
+				this.size_update = true;
+				if (this.outputSize[0] == 0 && this.outputSize[1] == 0) {
+					this.should_update();
+				}
+			}
+		});
 		
 		// loaded event
 		emitter.on('screen_loaded', (trigger) => {
+
+			// trame
 			this.screen_settings = settings.screen;
 			const trame = settings.screen;
 			this.worker.postMessage({
@@ -93,42 +112,36 @@ export default {
 				args: { shader: trame.shader, worker: trame.worker, }
 			});
 			
+			// size
+			let format = [0, 0];
+			let outputSize = [0, 0];
+			if (this.isGradient) {
+				format = [canvas.width, canvas.height];
+				outputSize = [canvas.width, canvas.height];
+			} else {
+				format = [globals.format_x, globals.format_y];
+				outputSize = [globals.definition_x, globals.definition_y];
+			}
+			this.worker.postMessage({ event: "setFormat", args: { format: format } });
+			this.worker.postMessage({ event: "setOutputSize", args: { outputSize: outputSize } });
+
 			// settings
 			this.settings = {};
 			for (const [key, item] of Object.entries(trame.settings)) {
 				this.settings[key] = item.value;
 			}
+
+			this.lut_update = true;
+			this.size_update = true;
+			this.should_update();
 		})
-		
-		// update parameters event
-		const lut_params = ["levels_black", "levels_white", "levels_grey", "levels_black_offset", "levels_white_offset"];
-		const size_params = ["format_x", "format_y", "resolution", "definition_x", "definition_y"]
-		emitter.on('update_view', (trigger) => {
-			const globals = this.global_settings;
-			const lut_update = lut_params.includes(trigger);
-			if (lut_update) {
-				this.worker.postMessage({
-					event: "setLookUpTable",
-					args: { array: globals.levels_lut }
-				});
-			}
-			const size_update = size_params.includes(trigger);
-			if (size_update) {
-				if (!this.isGradient) {
-					this.worker.postMessage({
-						event: "setFormat",
-						args: { format: [globals.format_x, globals.format_y] }
-					});
-					this.worker.postMessage({
-						event: "setOutputSize",
-						args: { outputSize: [globals.definition_x, globals.definition_y] }
-					});
-					// engine.reset();
-				}
-			}
-		});
 
+		window.addEventListener("mouseup", (e) => {
+			this.should_update();
+		})
 
+		// start
+		requestAnimationFrame(this.render);
 	},
 	created: function() {},
 	computed: function() {},
@@ -136,6 +149,7 @@ export default {
 	methods: {
 		render: function()
 		{
+			// loop
 			requestAnimationFrame(this.render);
 			
 			const canvas = this.canvas;
@@ -151,8 +165,8 @@ export default {
 			}
 			else if (this.isZoom)
 			{
-				let w = globals.definition_x;
-				let h = globals.definition_y;
+				let w = globals.definition_x * 2;
+				let h = globals.definition_y * 2;
 				rect[0] = -this.canvas_image_offset_x * w + canvas.width/2;
 				rect[1] = -this.canvas_image_offset_y * h + canvas.height/2;
 				rect[2] = w;
@@ -167,6 +181,32 @@ export default {
 			this.worker.postMessage({ event: "setPanzoom", args: { rect: rect } });
 			this.worker.postMessage({ event: "render" });
 
+		},
+
+		should_update: function()
+		{
+			const globals = this.global_settings;
+
+			if (this.lut_update) {
+				this.worker.postMessage({
+					event: "setLookUpTable",
+					args: { array: globals.levels_lut }
+				});
+				this.lut_update = false;
+			}
+
+			if (this.size_update) {
+				this.worker.postMessage({
+					event: "setFormat",
+					args: { format: [globals.format_x, globals.format_y] }
+				});
+				this.worker.postMessage({
+					event: "setOutputSize",
+					args: { outputSize: [globals.definition_x, globals.definition_y] }
+				});
+				this.outputSize = [globals.definition_x, globals.definition_y];
+				this.size_update = false;
+			}
 		},
 
 		update_uniforms: function()
@@ -199,8 +239,6 @@ export default {
 					if (setting.should_reset_buffer)
 					{
 						// engine.reset(settings.screen.settings);
-						// this.worker.postMessage({
-						// 	event: "setUniforms",
 					}
 				}
 
