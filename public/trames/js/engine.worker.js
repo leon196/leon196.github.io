@@ -170,6 +170,7 @@ engine.render = function()
             renderer.render( layer_filter, camera );
 
             update = false;
+            loading = false;
         }
             
         // draw result

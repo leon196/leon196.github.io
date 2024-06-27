@@ -199,7 +199,7 @@ export default {
 			// 	}
 			// })
 
-			const startScale = 40
+			const startScale = 1
 
 			let start_x = viewport.width() / 2 - image.width() / 2;
 			let start_y = (viewport.height() - ruler.height()) / 2 - image.height() / 2;
@@ -213,8 +213,8 @@ export default {
 				canvas: true,
 				origin: "top left",
 				startScale: startScale,
-				startX: start_x / startScale - 200,
-				startY: start_y / startScale - 200,
+				startX: start_x / startScale,// - 200,
+				startY: start_y / startScale,// - 200,
 				maxScale: 100,
 				minScale: 1,
 				pinchAndPan: true
