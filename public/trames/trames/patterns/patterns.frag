@@ -51,20 +51,21 @@ float trame_grid_column (float gray, vec2 p)
 
 void main()
 {
+	// vec2 p = vUv*format/inch_to_mm;
 	float gray = texture(image, vUv).r;
-	vec2 p = vUv*format/inch_to_mm;
-  // vec2 p = (vUv-.5)*vec2(R.x/R.y,1)*rot(r_angle);
+  vec2 aspect = vec2(format.x/format.y,1);
+  vec2 p = (vUv-.5)*aspect*rot(r_angle)*format.y/inch_to_mm;
+
 
 	float trame = 0.5;
-  if (r_pattern == 0.)      trame = trame_grid_circle1(gray, p);
-  else if (r_pattern == 1.) trame = trame_grid_circle1(gray, p);
-  else if (r_pattern == 2.) {
+  if (r_pattern == 0.) trame = trame_grid_circle1(gray, p);
+  else if (r_pattern == 1.) {
     trame = trame_grid_square1(gray, p);
     // trame -= trame_grid_square1(gray, p);
   }
-  else if (r_pattern == 3.) trame = trame_grid_square2(gray, p);
+  else if (r_pattern == 2.) trame = trame_grid_square2(gray, p);
+  else if (r_pattern == 3.) trame = trame_grid_column(gray, p);
   else if (r_pattern == 4.) trame = trame_grid_column(gray, p);
-  else if (r_pattern == 5.) trame = trame_grid_column(gray, p);
 
 	gl_FragColor = vec4(vec3(step(0., trame)), 1);
 }

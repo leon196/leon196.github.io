@@ -15,7 +15,7 @@
 				type: "slider",
 				min: 5,
 				max: 300,
-				value: 100,
+				value: 50,
 				step: 1,
 				unit: "lpi",
 				uniform: "r_lineature",
@@ -24,7 +24,7 @@
 				},
 				gradient_view: {
 					bypass: true,
-					default: 200
+					default: 4
 				}
 			},
 			{
@@ -50,7 +50,7 @@
 				label_en: "Pattern",
 				slug: "pattern",
 				type: "radio",
-				value: 0,
+				value: 1,
 				all_values: [{
 						mode: 0,
 						label_fr: "Cercle 1",
@@ -58,26 +58,21 @@
 					},
 					{
 						mode: 1,
-						label_fr: "Cercle 2",
-						label_en: "Circle 2"
-					},
-					{
-						mode: 2,
 						label_fr: "Carré 1",
 						label_en: "Square 1"
 					},
 					{
-						mode: 3,
+						mode: 2,
 						label_fr: "Carré 2",
 						label_en: "Square 2"
 					},
 					{
-						mode: 4,
+						mode: 3,
 						label_fr: "Lune",
 						label_en: "Moon"
 					},
 					{
-						mode: 5,
+						mode: 4,
 						label_fr: "Ligne",
 						label_en: "Line"
 					}

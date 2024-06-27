@@ -12,7 +12,9 @@ let worker = null;
 let worker_path = null;
 
 let tick = 0;
+let time = 0;
 let update = false;
+let loading = false;
 let update_blur = false;
 let update_lut = false;
 let is_gradient = false;
@@ -57,29 +59,32 @@ const layer_lut = new THREE.Scene();
 const layer_draw = new THREE.Scene();
 const layer_filter = new THREE.Scene();
 const layer_result = new THREE.Scene();
+const layer_load = new THREE.Scene();
 let shaders = {};
 THREE.Cache.enabled = true;
 let files = {};
-let files_to_load = ["rect.vert", "fullscreen.vert", "blur.frag", "lut.frag", "draw.frag", "result.frag"]
-let loading = files_to_load.length;
+let files_to_load = ["rect.vert", "fullscreen.vert", "blur.frag", "lut.frag", "draw.frag", "result.frag", "load.frag"]
+let loaded = files_to_load.length;
 const loader = new THREE.FileLoader();
 files_to_load.forEach(element => {
     loader.load("./../shaders/"+element, data => {
         files[element] = data;
-        loading -= 1;
-        if (loading == 0) {
+        loaded -= 1;
+        if (loaded == 0) {
             shaders = {
                 blur: new_shader("fullscreen.vert", "blur.frag"),
                 lut: new_shader("fullscreen.vert", "lut.frag"),
                 filter: new_shader("fullscreen.vert", "draw.frag"),
                 draw: new_shader("fullscreen.vert", "draw.frag"),
                 result: new_shader("rect.vert", "result.frag"),
+                load: new_shader("fullscreen.vert", "load.frag"),
             };
             mesh_result = new THREE.Mesh( layer_geo, shaders.result );
             layer_blur.add( new THREE.Mesh( layer_geo, shaders.blur ) );
             layer_draw.add( new THREE.Mesh( layer_geo, shaders.draw ) );
             layer_lut.add( new THREE.Mesh( layer_geo, shaders.lut ) );
             layer_filter.add( new THREE.Mesh( layer_geo, shaders.filter ) );
+            layer_load.add( new THREE.Mesh( layer_geo, shaders.load ) );
             layer_result.add( mesh_result );
             mesh_result.scale.set(250, 250, 1);
         }
@@ -169,12 +174,14 @@ engine.render = function()
             
         // draw result
         uniforms.resolution.value = [ width, height ];
+        uniforms.time.value = time;
         uniforms.image.value = frame_result.texture;
         // uniforms.image.value = image_texture;
         // uniforms.image.value = frame_blur.texture;
         renderer.setRenderTarget(null);
         renderer.clear();
-        renderer.render( layer_result, camera );
+        if (loading) renderer.render( layer_load, camera );
+        else renderer.render( layer_result, camera );
     }
 
     tick += 1;
@@ -185,14 +192,16 @@ engine.create = function(args) {
     width = args.width;
     height = args.height;
     is_gradient = args.is_gradient;
-    renderer = new THREE.WebGLRenderer({ canvas: canvas });
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
     const gl = renderer.getContext();
     gl.pixelStorei(gl.PACK_ALIGNMENT, 1);
     max_size = gl.getParameter(gl.MAX_TEXTURE_SIZE);
     renderer.setSize( width, height, false );
     renderer.autoClear = false;
-    camera.right = width;
-    camera.top = height;
+    // camera.left = -width/2;
+    // camera.bottom = -height/2;
+    camera.right = width;///2;
+    camera.top = height;///2;
     camera.updateProjectionMatrix();
 }
 
@@ -291,6 +300,12 @@ engine.setUniforms = (args) => {
         uniforms[name].value = value;
         engine.refresh();
     }
+}
+engine.setTime = (args) => {
+    time = args.time;
+}
+engine.shouldLoad = (args) => {
+    loading = args.loading;
 }
 
 onmessage = function(e)

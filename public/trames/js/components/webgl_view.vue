@@ -42,7 +42,6 @@ export default {
 		this.isPreview = this.id.includes('preview');
 		this.isGradient = this.id.includes('gradient');
 		this.isZoom = this.id.includes('zoom');
-
 		
 		const canvas = this.canvas;
 		const globals = this.global_settings;
@@ -128,7 +127,7 @@ export default {
 			// settings
 			this.settings = {};
 			for (const [key, item] of Object.entries(trame.settings)) {
-				this.settings[key] = item.value;
+				this.settings[item.uniform] = item.value;
 			}
 
 			this.lut_update = true;
@@ -147,7 +146,7 @@ export default {
 	computed: function() {},
 	watch: {},
 	methods: {
-		render: function()
+		render: function(elapsed)
 		{
 			// loop
 			requestAnimationFrame(this.render);
@@ -178,7 +177,9 @@ export default {
 			}
 
 			// this.update_uniforms();
+			this.update_settings();
 			this.worker.postMessage({ event: "setPanzoom", args: { rect: rect } });
+			this.worker.postMessage({ event: "setTime", args: { time: elapsed/1000. } });
 			this.worker.postMessage({ event: "render" });
 
 		},
@@ -198,20 +199,33 @@ export default {
 			}
 
 			if (this.size_update) {
+				// size
+				const canvas = this.canvas;
+				let format = [0, 0];
+				let outputSize = [0, 0];
+				if (this.isGradient) {
+					format = [canvas.width, canvas.height];
+					outputSize = [canvas.width, canvas.height];
+				} else {
+					format = [globals.format_x, globals.format_y];
+					outputSize = [globals.definition_x, globals.definition_y];
+				}
 				this.worker.postMessage({
 					event: "setFormat",
-					args: { format: [globals.format_x, globals.format_y] }
+					args: { format: format }
 				});
 				this.worker.postMessage({
 					event: "setOutputSize",
-					args: { outputSize: [globals.definition_x, globals.definition_y] }
+					args: { outputSize: outputSize }
 				});
-				this.outputSize = [globals.definition_x, globals.definition_y];
+				this.outputSize = outputSize;
 				this.size_update = false;
 			}
+
+			this.worker.postMessage({ event: "shouldLoad", args: { loading: false } });
 		},
 
-		update_uniforms: function()
+		update_settings: function()
 		{
 			// const engine = this.engine;
 			let trame = settings.screen;
@@ -235,20 +249,29 @@ export default {
 				}
 
 				// trigger reset if needed
-				if (this.settings[key] != value)
+				if (this.settings[setting.uniform] != value)
 				{
-					this.settings[key] = value;
+					this.settings[setting.uniform] = value;
 					if (setting.should_reset_buffer)
 					{
 						// engine.reset(settings.screen.settings);
 					}
+					
+					this.worker.postMessage({ event: "shouldLoad", args: { loading: true } });
 				}
+			}
+		},
 
+		update_uniforms: function()
+		{		
+			// effect settings
+			for (const [key, value] of Object.entries(this.settings))
+			{
 				// update uniform
 				this.worker.postMessage({
 					event: "setUniforms",
 					args: {
-						name: setting.uniform,
+						name: key,
 						value: value,
 					}
 				});

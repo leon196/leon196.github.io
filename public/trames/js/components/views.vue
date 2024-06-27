@@ -143,7 +143,7 @@ export default {
 		init_panzoom: function() {
 
 			const viewport = $("#viewport");
-			const container = $("#cpanzoom_ontainer");
+			const container = $("#panzoom_container");
 			const image = $("#panzoom_image");
 			const ruler = $("#ruler");
 
@@ -154,7 +154,52 @@ export default {
 			let image_view_base_height = image.height();
 			let image_element = image[0];
 
-			const startScale = 1
+			this.views.preview.canvas_image_width = image.width();
+			this.views.preview.canvas_image_height = image.height();
+			
+			// this.clic = false;
+			// this.clic_origin = [0, 0];
+			// this.clic_offset = [0, 0];
+			// let dom = document.getElementById("panzoom_container");
+			// dom.addEventListener('mousedown', (e) => {
+			// 	e.preventDefault();
+			// 	this.clic = true;
+			// 	this.clic_origin = [e.clientX, e.clientY];
+			// });
+			// dom.addEventListener('mouseup', (e) => {
+			// 	this.clic = false;
+			// 	this.clic_offset = [
+			// 		this.views.preview.canvas_image_offset_x,
+			// 		this.views.preview.canvas_image_offset_y];
+			// });
+			// dom.addEventListener('mousemove', (e) => {
+			// 	const x = e.clientX;
+			// 	const y = e.clientY;
+			// 	if (this.clic) {
+			// 		let xx = this.clic_offset[0] + x - this.clic_origin[0];
+			// 		let yy = this.clic_offset[1] + y - this.clic_origin[1];
+			// 		this.views.preview.canvas_image_offset_x = xx;
+			// 		this.views.preview.canvas_image_offset_y = yy;
+			// 	}
+			// });
+			// dom.addEventListener('wheel', (e) => {
+			// 	const x = e.clientX;
+			// 	const y = e.clientY;
+			// 	const xx = this.clic_offset[0];
+			// 	const yy = this.clic_offset[1];
+			// 	if (e.deltaY < 0)
+			// 	{
+			// 		this.views.preview.canvas_image_width *= 1.1;
+			// 		this.views.preview.canvas_image_height *= 1.1;
+			// 	}
+			// 	else if (e.deltaY > 0)
+			// 	{
+			// 		this.views.preview.canvas_image_width *= 0.9;
+			// 		this.views.preview.canvas_image_height *= 0.9;
+			// 	}
+			// })
+
+			const startScale = 40
 
 			let start_x = viewport.width() / 2 - image.width() / 2;
 			let start_y = (viewport.height() - ruler.height()) / 2 - image.height() / 2;
@@ -168,18 +213,15 @@ export default {
 				canvas: true,
 				origin: "top left",
 				startScale: startScale,
-				startX: start_x,
-				startY: start_y,
+				startX: start_x / startScale - 200,
+				startY: start_y / startScale - 200,
 				maxScale: 100,
 				minScale: 1,
 				pinchAndPan: true
 			});
 			
 			this.panzoom_image = dom;
-
 			parent.addEventListener('wheel', panzoom.zoomWithWheel)
-
-
 			image_element.addEventListener('panzoomchange', (event) => {
 
 				// CANVAS WIDTH AND HEIGHT
