@@ -15,15 +15,17 @@ mat2 rot (float a)
 
 void main()
 {
-	float gray = texture(image, vUv).r;
+	// float gray = texture(image, vUv).r;
   vec2 aspect = vec2(format.x/format.y,1);
 
   // coordinates
   vec2 p = (vUv-.5)*aspect*rot(r_angle)*r_lineature*format.y/inch_to_mm;
-
   p.x *= (1.+stretch);
-  
   if (hexagonal > 0.5) p.x += floor(mod(p.y,2.))/2.;
+  vec2 q = floor(p)/vec2((1.+stretch),1.)*inch_to_mm*rot(-r_angle)/aspect/r_lineature/format.y+.5;
+	float gray = texture(image, q).r/2.;
+
+  
 
   vec2 cell = fract(p)-.5;
   cell.x /= (1.+stretch);

@@ -33,7 +33,7 @@
 				slug: "steps",
 				type: "slider",
 				min: 2,
-				max: 10,
+				max: 5,
 				value: 4,
 				step: 1,
 				uniform: "steps",

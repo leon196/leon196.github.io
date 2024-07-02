@@ -158,6 +158,11 @@ export default {
 					height: canvas.clientHeight,
 				}
 			});
+			if (this.isGradient) {
+				const size = [canvas.clientWidth, canvas.clientHeight];
+				this.worker.postMessage({ event: "setFormat", args: { format: size } });
+				this.worker.postMessage({ event: "setOutputSize", args: { outputSize: size } });
+			}
 		});
 
 		// start

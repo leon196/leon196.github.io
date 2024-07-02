@@ -283,7 +283,10 @@ engine.setTrame = (args) =>
         bitmap.setOptions( { imageOrientation: 'flipY' } );
         for (let i = 0; i < args.maps.length; ++i) {
             bitmap.load("./../" + args.maps[i].path, function ( imageBitmap ) {
-                uniforms[args.maps[i].name] = { value: new THREE.CanvasTexture( imageBitmap ) };
+                const texture = new THREE.CanvasTexture( imageBitmap );
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                uniforms[args.maps[i].name] = { value: texture };
                 engine.refresh();
                 file_loaded += 1;
                 if (file_loaded == args.maps.length) should_wait = false;

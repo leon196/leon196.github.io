@@ -76,7 +76,7 @@
 				label_en: "Pattern",
 				slug: "pattern",
 				type: "radio",
-				value: 0,
+				value: 1,
 				all_values: [{
 						mode: 0,
 						label_fr: "Cercle",
