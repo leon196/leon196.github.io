@@ -3,28 +3,41 @@ import * as THREE from './libraries/three.module.js'
 
 let engine = {};
 
+// webgl component
+let renderer = null;
+let canvas = null;
+let camera = new THREE.OrthographicCamera( 0, 0, 0, 0, -10, 10 );
+
+// dimensions
 let width = 500;
 let height = 500;
 let max_size = 500;
-let renderer = null;
-let canvas = null;
+let outputSize = [0, 0];
+
+// worker
 let worker = null;
 let worker_path = null;
 
+// time
 let tick = 0;
 let time = 0;
+
+// states
 let update = false;
-let loading = false;
 let update_blur = false;
 let update_lut = false;
 let is_gradient = false;
-let outputSize = [0, 0];
+let should_wait = false;
 
+// textures
 let image_texture = null;
 let data_texture = null;
 let lut_texture = null;
-let mesh_result = null;
 
+// geometry that will panzoom
+let quad_result = null;
+
+// frame buffer options
 let options = {
     format: THREE.RedFormat,
     // internalFormat: THREE.R8UI,
@@ -33,7 +46,6 @@ let options = {
     colorSpace: THREE.SRGBColorSpace,
     unpackAlignment: 1,
 };
-const camera = new THREE.OrthographicCamera( 0, width, height, 0, -10, 10 );
 let frame_lut = new THREE.WebGLRenderTarget( width, height, options);
 let frame_blur = new THREE.WebGLRenderTarget( width, height, options);
 let frame_result = new THREE.WebGLRenderTarget( width, height, options);
@@ -79,23 +91,22 @@ files_to_load.forEach(element => {
                 result: new_shader("rect.vert", "result.frag"),
                 load: new_shader("fullscreen.vert", "load.frag"),
             };
-            mesh_result = new THREE.Mesh( layer_geo, shaders.result );
+            quad_result = new THREE.Mesh( layer_geo, shaders.result );
             layer_blur.add( new THREE.Mesh( layer_geo, shaders.blur ) );
             layer_draw.add( new THREE.Mesh( layer_geo, shaders.draw ) );
             layer_lut.add( new THREE.Mesh( layer_geo, shaders.lut ) );
             layer_filter.add( new THREE.Mesh( layer_geo, shaders.filter ) );
             layer_load.add( new THREE.Mesh( layer_geo, shaders.load ) );
-            layer_result.add( mesh_result );
-            mesh_result.scale.set(250, 250, 1);
+            layer_result.add( quad_result );
+            quad_result.scale.set(250, 250, 1);
         }
     });
 });
 
 engine.render = function()
 {
-    // uniforms.resolution.value = outputSize;
-    // uniforms.image.value = image_texture;
-    // renderer.render( layer_blur, camera );
+    // extra files are loading
+    if (should_wait) return;
 
     // blur
     if (update_blur)
@@ -118,10 +129,10 @@ engine.render = function()
         update_lut = false;
     }
 
-    // trame with CPU
-    if (worker_path !== null)
+    if (update)
     {
-        if (update)
+        // trame with CPU
+        if (worker_path !== null)
         {
             const w = outputSize[0];
             const h = outputSize[1];
@@ -149,111 +160,149 @@ engine.render = function()
                 settings: settings,
             });
 
-            worker.onmessage = (e) => engine.imageFromData(e.data);
-            update = false;
-        }
-        else
-        {
             uniforms.image.value = data_texture;
-            renderer.setRenderTarget(null);
-            renderer.clear();
-            renderer.render(layer_result, camera);
+
+            worker.onmessage = (e) => 
+            {
+                if (data_texture !== null) data_texture.dispose();
+                const array = e.data.array;
+                const w = e.data.width;
+                const h = e.data.height;
+                data_texture = new THREE.DataTexture(array, w, h, THREE.RedFormat);
+                data_texture.needsUpdate = true;
+                uniforms.image.value = data_texture;
+                postMessage({});
+            }
         }
-    }
-    else // trame with shader
-    {
-        if (update)
+        else // trame with shader
         {
             // filter and store in texture array
             uniforms.image.value = frame_lut.texture;
             renderer.setRenderTarget(frame_result);
             renderer.render( layer_filter, camera );
-
-            update = false;
-            loading = false;
+            uniforms.image.value = frame_result.texture;
+            postMessage({});
         }
-            
-        // draw result
-        uniforms.resolution.value = [ width, height ];
-        uniforms.time.value = time;
-        uniforms.image.value = frame_result.texture;
-        // uniforms.image.value = image_texture;
-        // uniforms.image.value = frame_blur.texture;
-        renderer.setRenderTarget(null);
-        renderer.clear();
-        if (loading) renderer.render( layer_load, camera );
-        else renderer.render( layer_result, camera );
+
+        update = false;
     }
+    
+
+    // loading
+    // if (loading) renderer.render( layer_load, camera );
+    
+    uniforms.resolution.value = [ width, height ];
+    uniforms.time.value = time;
+
+    // draw result
+    renderer.setRenderTarget(null);
+    renderer.render(layer_result, camera);
 
     tick += 1;
 }
 
-engine.create = function(args) {
+engine.create = (args) =>
+{
     canvas = args.canvas;
     width = args.width;
     height = args.height;
     is_gradient = args.is_gradient;
+
+    // webgl renderer
     renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+    renderer.setClearColor(0x000000, 0);
+
+    // max size from hardware
     const gl = renderer.getContext();
     gl.pixelStorei(gl.PACK_ALIGNMENT, 1);
     max_size = gl.getParameter(gl.MAX_TEXTURE_SIZE);
-    renderer.setSize( width, height, false );
-    renderer.autoClear = false;
-    // camera.left = -width/2;
-    // camera.bottom = -height/2;
-    camera.right = width;///2;
-    camera.top = height;///2;
-    camera.updateProjectionMatrix();
+    
+    // resize
+    engine.resize(args);
 }
 
 engine.resize = (args) =>
 {
+    // resize webgl renderer
     width = args.width;
     height = args.height;
     renderer.setSize( width, height, false );
+
+    // match html coordinates (easier panzoom integration)
+    // camera.left = -width/2;
     camera.right = width;
-    camera.top = height;
+    camera.bottom = -height;
+    // camera.top = height/2;
     camera.updateProjectionMatrix();
 }
 
 engine.reset = (x) => x;
-engine.refresh = () => {
-    update = true;
-}
-engine.setTime = (t) => t;
-engine.setPanzoom = (args) => {
+
+engine.refresh = () => update = true;
+
+engine.setPanzoom = (args) =>
+{
     const rect = args.rect;
-    const x = rect[0];
-    const y = rect[1];
-    const width = rect[2];
-    const height = rect[3];
-    if (mesh_result != null) {
-        mesh_result.position.set(x+width/2, y+height/2, 0);
-        mesh_result.scale.set(width/2, height/2, 1);
+    if (quad_result != null)
+    {
+        const x = rect[0];
+        const y = rect[1];
+        const width = rect[2];
+        const height = rect[3];
+
+        // transform quad to match panzoom
+        quad_result.position.set(x+width/2, y+height/2, 0);
+        quad_result.scale.set(width/2, height/2, 1);
     }
 }
-engine.setTrame = (args) => {
-    if (args.shader !== undefined) {
+
+engine.setTrame = (args) =>
+{
+    // trame with gpu
+    if (args.shader !== undefined)
+    {
         worker_path = null;
         loader.load("./../"+args.shader, data => {
             shaders.filter.fragmentShader = data;
             shaders.filter.needsUpdate = true;
             engine.refresh();
         }, x => x, (e) => console.log(e));
-    } else if (args.worker !== undefined) {
+    }
+    // trame with cpu worker
+    else if (args.worker !== undefined)
+    {
         worker_path = args.worker;
         engine.refresh();
     }
-    
-};
-engine.setFormat = (args) => {
+    // maps to load
+    if (args.maps !== undefined)
+    {
+        should_wait = true;
+        let file_loaded = 0;
+        const bitmap = new THREE.ImageBitmapLoader();
+        bitmap.setOptions( { imageOrientation: 'flipY' } );
+        for (let i = 0; i < args.maps.length; ++i) {
+            bitmap.load("./../" + args.maps[i].path, function ( imageBitmap ) {
+                uniforms[args.maps[i].name] = { value: new THREE.CanvasTexture( imageBitmap ) };
+                engine.refresh();
+                file_loaded += 1;
+                if (file_loaded == args.maps.length) should_wait = false;
+            }, x => x, e => console.log(e));
+        }
+    }
+}
+
+engine.setFormat = (args) =>
+{
     const w = args.format[0];
     const h = args.format[1];
     if (w != 0 && h != 0) {
         uniforms.format.value = [w, h];
     }
 }
-engine.setOutputSize = (args) => {
+
+engine.setOutputSize = (args) =>
+{
     const w = args.outputSize[0];
     const h = args.outputSize[1];
     if (w != 0 && h != 0 && (w != outputSize[0] || h != outputSize[1])) {
@@ -266,7 +315,9 @@ engine.setOutputSize = (args) => {
         engine.refresh();
     }
 }
-engine.setLookUpTable = (args) => {
+
+engine.setLookUpTable = (args) =>
+{
     const array = args.array;
     lut_texture = new THREE.DataTexture(array, array.length, 1, options.format);
     lut_texture.needsUpdate = true;
@@ -274,7 +325,9 @@ engine.setLookUpTable = (args) => {
     update_lut = true;
     engine.refresh();
 }
-engine.setImageSrc = (args) => {
+
+engine.setImageSrc = (args) =>
+{
     const bitmap = new THREE.ImageBitmapLoader();
 	bitmap.setOptions( { imageOrientation: 'flipY' } );
 	bitmap.load(args.src, function ( imageBitmap ) {
@@ -285,15 +338,9 @@ engine.setImageSrc = (args) => {
         engine.refresh();
     }, x => x, e => console.log(e));
 }
-engine.imageFromData = (data) => {
-    if (data_texture !== null) data_texture.dispose();
-    const array = data.array;
-    const w = data.width;
-    const h = data.height;
-    data_texture = new THREE.DataTexture(array, w, h, THREE.RedFormat);
-    data_texture.needsUpdate = true;
-}
-engine.setUniforms = (args) => {
+
+engine.setSettings = (args) =>
+{
     const name = args.name;
     const value = args.value;
     if (uniforms[name] === undefined) uniforms[name] = { value: 0 };
@@ -302,11 +349,10 @@ engine.setUniforms = (args) => {
         engine.refresh();
     }
 }
-engine.setTime = (args) => {
+
+engine.setTime = (args) =>
+{
     time = args.time;
-}
-engine.shouldLoad = (args) => {
-    loading = args.loading;
 }
 
 onmessage = function(e)

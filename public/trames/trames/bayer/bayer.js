@@ -27,6 +27,23 @@
 					default: 200
 				}
 			},
+			{
+				label_fr: "Steps",
+				label_en: "Steps",
+				slug: "steps",
+				type: "slider",
+				min: 2,
+				max: 10,
+				value: 4,
+				step: 1,
+				uniform: "steps",
+				process_to_uniform: function(input) {
+					return input
+				},
+				gradient_view: {
+					bypass: false
+				}
+			},
 		]
 	}
 })

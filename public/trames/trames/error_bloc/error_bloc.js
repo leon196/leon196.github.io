@@ -6,14 +6,9 @@
 		author: "",
 		url_info: "",
 
+		worker: "./trames/error_diffusion/error_bloc.worker.js",
+
 		settings: [
 		],
-
-		update: function(array, width, height, callback)
-		{
-			let w = new Worker("./trames/error_bloc/error_bloc_worker.js");
-			w.postMessage([ array, width, height ]);
-			w.onmessage = (e) => callback(e.data);
-		},
 	}
 });

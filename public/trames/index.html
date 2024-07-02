@@ -14,8 +14,6 @@
 	<script src="js/libraries/jquery-ui.min.js"></script>
 	<script src="./js/libraries/vue.3.4.2.global.prod.min.js"></script>
 	<script src="./js/libraries/vue3-sfc-loader.min.js"></script>
-    <script type="module" src="./js/libraries/three.module.js"></script>
-    <script type="module" src="./js/engine.js"></script>
 	<script src="https://unpkg.com/mitt/dist/mitt.umd.js"></script>
 	<script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
   
@@ -23,10 +21,6 @@
 	<body>
 		<div id="app"></div>
 		<script src="./js/variables.js"></script>
-		<script type="module">
-			import { CreateEngine } from './js/engine.js';
-			window.CreateEngine = CreateEngine;
-		</script>
 		<script src="./js/app.js"></script>
 	</body>
 </html>

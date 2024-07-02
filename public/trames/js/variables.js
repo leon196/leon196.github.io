@@ -21,13 +21,26 @@ let settings = {
 		levels_black_offset:0,
 		levels_white_offset:0,
 		levels_lut: [],
-		current_screen: "patterns",
+		current_screen: "euclid",
 		start_time: new Date().getTime(),
 		time: 0,
 		device_pixel_ratio: 1
 	},
 
-	screen_set: ["patterns", "euclid", "seuil", "error_diffusion", "voronoi", "bayer", "dbs"],
+	screen_set: [
+		"patterns",
+		"atlas",
+		"bayer",
+		"euclid",
+		"seuil",
+		"error_diffusion",
+		"voronoi",
+		// "voronoi2",
+		// "reaction_diffusion",
+		"dbs",
+		// "dbscpp",
+		// "error_bloc",
+	],
 	
 	all_screens: {},
 	screen: {

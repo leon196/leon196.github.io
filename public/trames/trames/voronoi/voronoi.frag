@@ -69,10 +69,11 @@ void main()
 	float gray = texture(image, vUv).r;
 	vec2 p = vUv*format/inch_to_mm;
     vec3 vor = voronoi(p*r_lineature);
-    float value = smoothstep(.01,.0,length(vor.yz)-(gray)*size + .01);
-    if (edge > 0.5)
-    {
-        value = smoothstep(0.0,.01,vor.x-(1.-gray)*.7 + .01);
-    }
+    // float value = smoothstep(.01,.0,length(vor.yz)-(gray)*size + .01);
+    // if (edge > 0.5)
+    // {
+    //     value = smoothstep(0.0,.01,vor.x-(1.-gray)*.7 + .01);
+    // }
+    float value = smoothstep(0.0,.01,vor.x-(1.-gray)*.55 + .01);
 	gl_FragColor = vec4(vec3(value), 1);
 }

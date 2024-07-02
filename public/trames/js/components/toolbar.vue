@@ -138,7 +138,7 @@
 					:id="'screen_'+screen_setting.slug"
 					:label="screen_setting.label_fr"
 					:value="screen_setting.value"
-					@change_value="{screen_setting.value = $event; update_view('screen / '+screen_setting.slug)}">
+					@change_value="{screen_setting.value = $event; update_view('screen / checkbox / '+screen_setting.slug)}">
 				</checkbox>
 
 				<radio v-if="screen_setting.type == 'radio'" 
@@ -146,7 +146,7 @@
 					:label="screen_setting.label_fr"
 					:all_values="screen_setting.all_values"
 					:current_value="screen_setting.value"
-					@change_value="{screen_setting.value = $event; update_view('screen / '+screen_setting.slug)}">
+					@change_value="{screen_setting.value = $event; update_view('screen / radio / '+screen_setting.slug)}">
 				</radio>
 
 			</template>

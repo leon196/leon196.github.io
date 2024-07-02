@@ -27,30 +27,6 @@
 					default: 10
 				}
 			},
-			{
-				label_fr: "Size",
-				label_en: "Size",
-				slug: "size",
-				type: "slider",
-				min: 0,
-				max: 100,
-				value: 50,
-				step: 1,
-				unit: "",
-				uniform: "size",
-				process_to_uniform: x => x / 100,
-				gradient_view: { bypass: false }
-			},
-			{
-				label_fr: "Edge Mode",
-				label_en: "Edge Mode",
-				slug: "edge",
-				type: "checkbox",
-				value: true,
-				uniform: "edge",
-				process_to_uniform: x => x ? 1 : 0,
-				gradient_view: { bypass: false }
-			},
 		]
 	}
 });

@@ -1,11 +1,26 @@
 (function() {
 	return {
-		slug: "patterns",
-		name: "Motif",
-		description: "Motif",
+		slug: "atlas",
+		name: "Atlas",
+		description: "Atlas",
 		author: "",
 		url_info: "",
-		shader: "trames/patterns/patterns.frag",
+		
+		shader: "./trames/atlas/atlas.frag",
+		maps: [
+			{
+				name: "alphabet",
+				path: "./trames/atlas/images/alphabet.png"
+			},
+			{
+				name: "numbers",
+				path: "./trames/atlas/images/numbers.png"
+			},
+			{
+				name: "symbols",
+				path: "./trames/atlas/images/symbols.png"
+			},
+		],
 
 		settings: [
 			{
@@ -28,48 +43,38 @@
 				}
 			},
 			{
-				label_fr: "Angle",
-				label_en: "Angle",
-				slug: "angle",
+				label_fr: "Grid",
+				label_en: "Grid",
+				slug: "grid",
 				type: "slider",
-				min: 0,
-				max: 180,
-				value: 45,
-				step: 5,
-				unit: "°",
-				uniform: "r_angle",
+				min: 1,
+				max: 10,
+				value: 5,
+				step: 1,
+				uniform: "grid",
 				process_to_uniform: function(input) {
-					return input * (Math.PI / 180);
+					return input
 				},
 				gradient_view: {
 					bypass: false
 				}
 			},
 			{
-				label_fr: "Stretch",
-				label_en: "Stretch",
-				slug: "stretch",
+				label_fr: "Scale",
+				label_en: "Scale",
+				slug: "scale",
 				type: "slider",
-				min: -100,
+				min: 1,
 				max: 100,
-				value: 0,
+				value: 10,
 				step: 1,
-				unit: "",
-				uniform: "stretch",
-				process_to_uniform: x => x / 100,
+				uniform: "scale",
+				process_to_uniform: function(input) {
+					return input/10
+				},
 				gradient_view: {
 					bypass: false
 				}
-			},
-			{
-				label_fr: "Hexagonal",
-				label_en: "Hexagonal",
-				slug: "hexagonal",
-				type: "checkbox",
-				value: true,
-				uniform: "hexagonal",
-				process_to_uniform: x => x ? 1 : 0,
-				gradient_view: { bypass: false }
 			},
 			{
 				label_fr: "Pattern",
@@ -79,26 +84,21 @@
 				value: 0,
 				all_values: [{
 						mode: 0,
-						label_fr: "Cercle",
-						label_en: "Circle"
+						label_fr: "Alphabet",
+						label_en: "Alphabet"
 					},
 					{
 						mode: 1,
-						label_fr: "Carré",
-						label_en: "Square"
+						label_fr: "Nombre",
+						label_en: "Number"
 					},
 					{
 						mode: 2,
-						label_fr: "Lune",
-						label_en: "Moon"
-					},
-					{
-						mode: 3,
-						label_fr: "Ligne",
-						label_en: "Line"
+						label_fr: "Symbol",
+						label_en: "Symbol"
 					}
 				],
-				uniform: "r_pattern",
+				uniform: "pattern",
 				process_to_uniform: function(input) {
 					return input;
 				},
