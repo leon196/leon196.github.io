@@ -1,12 +1,12 @@
-#version 300 es
-precision mediump float;
 
-uniform sampler2D framebuffer, image, lut;
-uniform vec2 sizeInput, sizeOutput;
-uniform float scale, size, edge, time, tick, nearest, farest;
+uniform sampler2D image, feedback;
+uniform vec2 resolution, format;
+#define R resolution
+#define inch_to_mm 25.4
+in vec2 vUv;
 
-in vec2 uv;
-out vec4 fragColor;
+uniform float tick;
+const float lod = 0.;
 
 // Dave Hoskins
 // https://www.shadertoy.com/view/4djSRW
@@ -26,45 +26,45 @@ vec2 hash22(vec2 p)
 // #define Db 0.5
 
 void getVal(vec2 p, out vec2 val, out vec2 laplacian) {
-  vec2 r = sizeOutput;
-  vec2 uv = p / r;
-  vec2 n = p + vec2(0.0, 1.0);
-  vec2 ne = p + vec2(1.0, 1.0);
-  vec2 nw = p + vec2(-1.0, 1.0);
-  vec2 e = p + vec2(1.0, 0.0);
-  vec2 s = p + vec2(0.0, -1.0);
-  vec2 se = p + vec2(1.0, -1.0);
-  vec2 sw = p + vec2(-1.0, -1.0);
-  vec2 w = p + vec2(-1.0, 0.0);
+    vec2 r = resolution;
+    vec2 uv = p / r;
+    vec2 n = p + vec2(0.0, 1.0);
+    vec2 ne = p + vec2(1.0, 1.0);
+    vec2 nw = p + vec2(-1.0, 1.0);
+    vec2 e = p + vec2(1.0, 0.0);
+    vec2 s = p + vec2(0.0, -1.0);
+    vec2 se = p + vec2(1.0, -1.0);
+    vec2 sw = p + vec2(-1.0, -1.0);
+    vec2 w = p + vec2(-1.0, 0.0);
 
-  val = texture(framebuffer, uv).xy;
-  laplacian = texture(framebuffer, n / r).xy * 0.2;
-  laplacian += texture(framebuffer, e / r).xy * 0.2;
-  laplacian += texture(framebuffer, s / r).xy * 0.2;
-  laplacian += texture(framebuffer, w / r).xy * 0.2;
-  laplacian += texture(framebuffer, nw / r).xy * 0.05;
-  laplacian += texture(framebuffer, ne / r).xy * 0.05;
-  laplacian += texture(framebuffer, sw / r).xy * 0.05;
-  laplacian += texture(framebuffer, se / r).xy * 0.05;
-  laplacian += -1.0 * val;   
+    val = texture(feedback, uv).xy;
+    laplacian = texture(feedback, n / r, lod).xy * 0.2;
+    laplacian += texture(feedback, e / r, lod).xy * 0.2;
+    laplacian += texture(feedback, s / r, lod).xy * 0.2;
+    laplacian += texture(feedback, w / r, lod).xy * 0.2;
+    laplacian += texture(feedback, nw / r, lod).xy * 0.05;
+    laplacian += texture(feedback, ne / r, lod).xy * 0.05;
+    laplacian += texture(feedback, sw / r, lod).xy * 0.05;
+    laplacian += texture(feedback, se / r, lod).xy * 0.05;
+    laplacian += -1.0 * val;   
 }
 
 void main()
 {
-    vec4 map = texture(framebuffer, uv);
-    float gray = texture(image, uv).r;
+    
+    float gray = texture(image, vUv).r;
 
     vec3 color = vec3(0.0);
     if (tick < 1.) {
-        // if (uv.x > 0.45 && uv.x < 0.55 && uv.y > 0.45 && uv.y < 0.55)
+        // if (vUv.x > 0.45 && vUv.x < 0.55 && vUv.y > 0.45 && vUv.y < 0.55)
         // {
         //     color = vec3(1.);
         // }
         float a = 1.;
-        float b = step(.9, hash22(gl_FragCoord.xy).r);
-        // float b = step(0.5, gray);// smoothstep(.01,0.,length(uv-.5)-.1);
+        float b = step(.9, hash22(floor(gl_FragCoord.xy/pow(2., lod))).r);
+        // float b = step(0.5, gray);// smoothstep(.01,0.,length(vUv-.5)-.1);
         color = vec3(a,b,0);
-        // color = vec3(smoothstep(.5,0.,length(uv-.5)-.1));
+        // color = vec3(smoothstep(.5,0.,length(vUv-.5)-.1));
         // color = vec3();
     } else {
      	vec2 val, laplacian;
@@ -85,6 +85,6 @@ void main()
         
         color = vec3(clamp(val + delta , 0., 1.), 0.0);
     }
-
-    fragColor = vec4(color, 1);
+    
+    gl_FragColor = vec4(color, 1);
 }

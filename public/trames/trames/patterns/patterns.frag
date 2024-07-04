@@ -5,7 +5,7 @@ uniform vec2 resolution, format;
 #define inch_to_mm 25.4
 in vec2 vUv;
 
-uniform float r_lineature, r_angle, r_pattern, hexagonal, stretch;
+uniform float r_lineature, r_angle, r_pattern, hexagonal, stretch, mode;
 
 mat2 rot (float a)
 {
@@ -21,10 +21,15 @@ void main()
   // coordinates
   vec2 p = (vUv-.5)*aspect*rot(r_angle)*r_lineature*format.y/inch_to_mm;
   p.x *= (1.+stretch);
+  if (mode > 0.5) p = (p-.5);
   if (hexagonal > 0.5) p.x += floor(mod(p.y,2.))/2.;
-  vec2 q = floor(p)/vec2((1.+stretch),1.)*inch_to_mm*rot(-r_angle)/aspect/r_lineature/format.y+.5;
-	float gray = texture(image, q).r/2.;
 
+  
+  vec2 q = p;
+  if (mode > 0.5) q = ceil(q);
+  q = q/vec2((1.+stretch),1.)*inch_to_mm*rot(-r_angle)/aspect/r_lineature/format.y+.5;
+
+	float gray = texture(image, q).r/2.;
   
 
   vec2 cell = fract(p)-.5;
@@ -39,15 +44,15 @@ void main()
   else if (r_pattern == 1.) trame = max(abs(cell.x), abs(cell.y))-gray;
 
   // moon
-  else if (r_pattern == 2.)
-  {
-    trame = -(length(cell)-.5);
-    cell = fract(p+.2)-.5;
-    trame = min(trame, length(cell)-gray);
-  }
+  // else if (r_pattern == 2.)
+  // {
+  //   trame = -(length(cell)-.5);
+  //   cell = fract(p+.2)-.5;
+  //   trame = min(trame, length(cell)-gray);
+  // }
 
   // line
-  else if (r_pattern == 3.)
+  else if (r_pattern == 2.)
   {
     trame = abs(cell.x)-gray;
   }

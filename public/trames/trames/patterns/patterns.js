@@ -72,6 +72,16 @@
 				gradient_view: { bypass: false }
 			},
 			{
+				label_fr: "Mode",
+				label_en: "Mode",
+				slug: "mode",
+				type: "checkbox",
+				value: true,
+				uniform: "mode",
+				process_to_uniform: x => x ? 1 : 0,
+				gradient_view: { bypass: false }
+			},
+			{
 				label_fr: "Pattern",
 				label_en: "Pattern",
 				slug: "pattern",
@@ -89,11 +99,6 @@
 					},
 					{
 						mode: 2,
-						label_fr: "Lune",
-						label_en: "Moon"
-					},
-					{
-						mode: 3,
 						label_fr: "Ligne",
 						label_en: "Line"
 					}

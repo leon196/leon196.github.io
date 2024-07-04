@@ -23,6 +23,7 @@ export default {
 			device_pixel_ratio: settings.global.device_pixel_ratio,
 			canvas: null,
 			worker: null,
+			started: false,
 			lut_update: false,
 			size_update: false,
 			outputSize: [0,0],
@@ -73,7 +74,12 @@ export default {
 			const trame = settings.screen;
 			this.worker.postMessage({
 				event: "setTrame",
-				args: { shader: trame.shader, worker: trame.worker, maps: trame.maps }
+				args: {
+					feedback: trame.feedback,
+					shader: trame.shader,
+					worker: trame.worker,
+					maps: trame.maps
+				}
 			});
 
 			// settings
@@ -88,6 +94,12 @@ export default {
 			this.update_size();
 			this.update_screen_settings();
 			this.should_update();
+
+			if (!this.started)
+			{
+				this.started = true;
+				requestAnimationFrame(this.render);
+			}
 		})
 
 		// loading event
@@ -164,9 +176,6 @@ export default {
 				this.worker.postMessage({ event: "setOutputSize", args: { outputSize: size } });
 			}
 		});
-
-		// start
-		requestAnimationFrame(this.render);
 	},
 	created: function() {},
 	computed: function() {},
