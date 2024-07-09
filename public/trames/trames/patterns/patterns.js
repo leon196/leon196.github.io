@@ -5,7 +5,7 @@
 		description: "Motif",
 		author: "",
 		url_info: "",
-		shader: "trames/patterns/patterns.frag",
+		shader: "/trames/patterns/patterns.frag",
 
 		settings: [
 			{
@@ -15,13 +15,11 @@
 				type: "slider",
 				min: 5,
 				max: 300,
-				value: 50,
+				value: 20,
 				step: 1,
 				unit: "lpi",
 				uniform: "r_lineature",
-				process_to_uniform: function(input) {
-					return input
-				},
+				process_to_uniform: x => x,
 				gradient_view: {
 					bypass: true,
 					default: 4
@@ -38,28 +36,48 @@
 				step: 5,
 				unit: "°",
 				uniform: "r_angle",
-				process_to_uniform: function(input) {
-					return input * (Math.PI / 180);
-				},
-				gradient_view: {
-					bypass: false
-				}
+				process_to_uniform: x => x * Math.PI / 180,
+				gradient_view: { bypass: false }
 			},
 			{
 				label_fr: "Stretch",
 				label_en: "Stretch",
 				slug: "stretch",
 				type: "slider",
-				min: -100,
+				min: -99,
+				max: 99,
+				value: 0,
+				step: 1,
+				uniform: "stretch",
+				process_to_uniform: x => x / 100,
+				gradient_view: { bypass: false }
+			},
+			{
+				label_fr: "Variation Position",
+				label_en: "Variation Position",
+				slug: "variation_position",
+				type: "slider",
+				min: 0,
 				max: 100,
 				value: 0,
 				step: 1,
-				unit: "",
-				uniform: "stretch",
+				uniform: "variation_position",
 				process_to_uniform: x => x / 100,
-				gradient_view: {
-					bypass: false
-				}
+				gradient_view: { bypass: false }
+			},
+			{
+				label_fr: "Variation Rotation",
+				label_en: "Variation Rotation",
+				slug: "variation_rotation",
+				type: "slider",
+				min: 0,
+				max: 360,
+				value: 0,
+				step: 1,
+				unit: "°",
+				uniform: "variation_rotation",
+				process_to_uniform: x => x * Math.PI / 180,
+				gradient_view: { bypass: false }
 			},
 			{
 				label_fr: "Hexagonal",
@@ -104,12 +122,8 @@
 					}
 				],
 				uniform: "r_pattern",
-				process_to_uniform: function(input) {
-					return input;
-				},
-				gradient_view: {
-					bypass: false
-				}
+				process_to_uniform: x => x,
+				gradient_view: { bypass: false }
 			},
 		]
 	}

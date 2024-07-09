@@ -1,9 +1,13 @@
+#version 300 es
+precision mediump float;
 
 uniform sampler2D image, feedback;
 uniform vec2 resolution, format;
 #define R resolution
 #define inch_to_mm 25.4
-in vec2 vUv;
+
+in vec2 uv;
+out vec4 fragColor;
 
 uniform float tick;
 const float lod = 0.;
@@ -52,19 +56,19 @@ void getVal(vec2 p, out vec2 val, out vec2 laplacian) {
 void main()
 {
     
-    float gray = texture(image, vUv).r;
+    float gray = texture(image, uv).r;
 
     vec3 color = vec3(0.0);
     if (tick < 1.) {
-        // if (vUv.x > 0.45 && vUv.x < 0.55 && vUv.y > 0.45 && vUv.y < 0.55)
+        // if (uv.x > 0.45 && uv.x < 0.55 && uv.y > 0.45 && uv.y < 0.55)
         // {
         //     color = vec3(1.);
         // }
         float a = 1.;
         float b = step(.9, hash22(floor(gl_FragCoord.xy/pow(2., lod))).r);
-        // float b = step(0.5, gray);// smoothstep(.01,0.,length(vUv-.5)-.1);
+        // float b = step(0.5, gray);// smoothstep(.01,0.,length(uv-.5)-.1);
         color = vec3(a,b,0);
-        // color = vec3(smoothstep(.5,0.,length(vUv-.5)-.1));
+        // color = vec3(smoothstep(.5,0.,length(uv-.5)-.1));
         // color = vec3();
     } else {
      	vec2 val, laplacian;
@@ -86,5 +90,5 @@ void main()
         color = vec3(clamp(val + delta , 0., 1.), 0.0);
     }
     
-    gl_FragColor = vec4(color, 1);
+    fragColor = vec4(color, 1);
 }

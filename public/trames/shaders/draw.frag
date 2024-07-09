@@ -1,9 +1,13 @@
-in vec2 vUv;
+#version 300 es
+precision mediump float;
+
+in vec2 uv;
+out vec4 fragColor;
 
 uniform float time;
-uniform sampler2D image;
+uniform highp usampler2D image;
 
 void main()
 {
-    gl_FragColor = texture(image, vUv);
+    fragColor = vec4(vec3(texture(image, uv).r)/255., 1.);
 }

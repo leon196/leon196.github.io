@@ -1,8 +1,12 @@
+#version 300 es
+precision mediump float;
 
-uniform sampler2D image, lut;
+uniform sampler2D image;
+uniform sampler2D lut;
 uniform vec2 resolution;
 
-in vec2 vUv;
+in vec2 uv;
+out vec4 fragColor;
 
 float luminance(vec3 color)
 {
@@ -12,13 +16,9 @@ float luminance(vec3 color)
 void main()
 {
     // lut
-    vec3 color = texture(image, vUv).rgb;
-    // float gray = luminance(color);
-    float gray = color.r;
+    float gray = float(texture(image, uv).r);
+    // float gray = float(texture(image, uv).r)/255.;
     gray = texture(lut, vec2(gray, 0)).r;
-    
-    gl_FragColor = vec4(vec3(gray), 1.0);
-    // gl_FragColor = vec4(color, 1.0);
-    // gl_FragColor = texture(lut, vUv);
-    // gl_FragColor = sRGBTransferOETF(gl_FragColor);
+    fragColor = vec4(vec3(gray), 1.0);
+    // fragColor = uint(gray*255.);
 }

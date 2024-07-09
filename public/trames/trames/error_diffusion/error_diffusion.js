@@ -6,7 +6,7 @@
 		author: "",
 		url_info: "",
 
-		worker: "./trames/error_diffusion/error_diffusion.worker.js",
+		worker: "/trames/error_diffusion/error_diffusion.worker.js",
 
 		settings: [
 			{

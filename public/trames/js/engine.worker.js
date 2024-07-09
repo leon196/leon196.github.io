@@ -37,10 +37,21 @@ let data_texture = null;
 let lut_texture = null;
 
 // geometry that will panzoom
-let quad_result = null;
+let mesh_result = null;
 
-// geometry and layers
-const layer_geo = new THREE.PlaneGeometry( 2, 2 );
+// geometry
+const geo_plane = new THREE.PlaneGeometry( 2, 2 );
+const geo_particles = new THREE.BufferGeometry();
+const vertices = [];
+for ( let i = 0; i < 2000; i ++ ) {
+    const x = Math.random() * 2 - 1;
+    const y = Math.random() * 2 - 1;
+    const z = Math.random() * 2 - 1;
+    vertices.push( x, y, z );
+}
+geo_particles.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+
+// layers
 const layer_blur = new THREE.Scene();
 const layer_lut = new THREE.Scene();
 const layer_draw = new THREE.Scene();
@@ -94,6 +105,8 @@ let files_to_load = [
     "lut.frag",
     "draw.frag",
     "result.frag",
+    "particles.vert",
+    "particles.frag",
     "load.frag"
 ]
 let loaded = files_to_load.length;
@@ -118,19 +131,33 @@ files_to_load.forEach(element => {
                 result: new_shader("rect.vert", "result.frag"),
                 feedback: new_shader("fullscreen.vert", "draw.frag"),
                 load: new_shader("fullscreen.vert", "load.frag"),
+                particles: new_shader("particles.vert", "particles.frag"),
             };
-            quad_result = new THREE.Mesh( layer_geo, shaders.result );
-            layer_blur.add( new THREE.Mesh( layer_geo, shaders.blur ) );
-            layer_draw.add( new THREE.Mesh( layer_geo, shaders.draw ) );
-            layer_lut.add( new THREE.Mesh( layer_geo, shaders.lut ) );
-            layer_filter.add( new THREE.Mesh( layer_geo, shaders.filter ) );
-            layer_feedback.add( new THREE.Mesh( layer_geo, shaders.feedback ) );
-            layer_load.add( new THREE.Mesh( layer_geo, shaders.load ) );
-            layer_result.add( quad_result );
-            quad_result.scale.set(250, 250, 1);
+            mesh_result = new THREE.Mesh( geo_plane, shaders.result );
+            const material_particles = new THREE.PointsMaterial( { size: 10, depthTest: false, transparent: true  } );
+            mesh_result = new THREE.Points(geo_particles, material_particles)
+            // mesh_result = new THREE.Points(geo_particles, shaders.particles );
+            layer_blur.add( new THREE.Mesh( geo_plane, shaders.blur ) );
+            layer_draw.add( new THREE.Mesh( geo_plane, shaders.draw ) );
+            layer_lut.add( new THREE.Mesh( geo_plane, shaders.lut ) );
+            layer_filter.add( new THREE.Mesh( geo_plane, shaders.filter ) );
+            layer_feedback.add( new THREE.Mesh( geo_plane, shaders.feedback ) );
+            layer_load.add( new THREE.Mesh( geo_plane, shaders.load ) );
+            // layer_particles.add( new THREE.Mesh( geo_particles, shaders.particles ) );
+            layer_result.add( mesh_result );
+            mesh_result.scale.set(250, 250, 1);
+            
+            
+            const imgloader = new THREE.ImageBitmapLoader();
+            imgloader.setOptions( { imageOrientation: 'flipY' } );
+            imgloader.load("./../images/disk.png", function ( imageBitmap ) {
+                material_particles.alphaMap = new THREE.CanvasTexture( imageBitmap );
+                material_particles.needsUpdate = true;
+            }, x => x, e => console.log(e));
         }
     });
 });
+
 
 // main loop
 engine.render = function()
@@ -272,6 +299,40 @@ engine.render = function()
 
     }
 
+    const smoothstep = (min,max,value) =>
+    {
+        var x = Math.max(0, Math.min(1, (value-min)/(max-min)));
+        return x*x*(3 - 2*x);
+    }
+
+    let vertices = geo_particles.attributes.position.array;
+    let vector1 = new THREE.Vector3(0,0,0);
+    let vector2 = new THREE.Vector3(0,0,0);
+    let vector3 = new THREE.Vector3(0,0,0);
+    for (let i = 0; i < vertices.length-2; i+=3)
+    {
+        vector1.set(vertices[i], vertices[i+1], vertices[i+2]);
+        let dist = 1000.;
+        let closest = -1;
+        for (let j = 0; j < vertices.length; j+=3)
+        {
+            vector2.set(vertices[j], vertices[j+1], vertices[j+2]);
+            let d = vector1.distanceTo(vector2);
+            if (d > 0. && d < dist)
+            {
+                closest = j;
+                dist = d;
+            }
+        }
+        vector2.set(vertices[closest], vertices[closest+1], vertices[closest+2]);
+        const dir = vector3.subVectors(vector1, vector2);
+        vector1.add(dir.multiplyScalar(0.1 * smoothstep(.5,.01,dist)));
+        vertices[i] = vector1.x;
+        vertices[i+1] = vector1.y;
+        vertices[i+2] = vector1.z;
+    }
+    geo_particles.attributes.position.needsUpdate = true;
+
     // draw result
     renderer.setRenderTarget(null);
     renderer.render(layer_result, camera);
@@ -320,7 +381,7 @@ engine.refresh = () =>
 engine.setPanzoom = (args) =>
 {
     const rect = args.rect;
-    if (quad_result != null)
+    if (mesh_result != null)
     {
         const x = rect[0];
         const y = rect[1];
@@ -328,8 +389,8 @@ engine.setPanzoom = (args) =>
         const height = rect[3];
 
         // transform quad to match panzoom
-        quad_result.position.set(x+width/2, y+height/2, 0);
-        quad_result.scale.set(width/2, height/2, 1);
+        mesh_result.position.set(x+width/2, y+height/2, 0);
+        mesh_result.scale.set(width/2, height/2, 1);
     }
 }
 
@@ -427,7 +488,7 @@ engine.setLookUpTable = (args) =>
 engine.setImageSrc = (args) =>
 {
     const bitmap = new THREE.ImageBitmapLoader();
-	bitmap.setOptions( { imageOrientation: 'flipY' } );
+    bitmap.setOptions( { imageOrientation: 'flipY' } );
 	bitmap.load(args.src, function ( imageBitmap ) {
 		image_texture = new THREE.CanvasTexture( imageBitmap );
         uniforms.image.value = image_texture;

@@ -6,7 +6,7 @@
 		author: "",
 		url_info: "",
 
-		worker: "./trames/error_diffusion/dbscpp.worker.js",
+		worker: "/trames/error_diffusion/dbscpp.worker.js",
 		packed: true,
 
 		settings: [

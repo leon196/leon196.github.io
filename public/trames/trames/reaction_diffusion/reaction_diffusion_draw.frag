@@ -1,10 +1,13 @@
+#version 300 es
+precision mediump float;
 
 uniform sampler2D image;
-in vec2 vUv;
+in vec2 uv;
+out uint fragColor;
 
 void main()
 {
-    vec4 frame = texture(image, vUv);
-    gl_FragColor = vec4(smoothstep(.01,.0,frame.g-.2));
+    vec4 frame = texture(image, uv);
+    fragColor = uint(step(frame.g-.2, 0.)*255.);
     // gl_FragColor = frame;
 }

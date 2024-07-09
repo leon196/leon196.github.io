@@ -5,7 +5,7 @@
 		description: "Trame de simili-gravure conventionnelle. Motif rond, elliptique ou carré.",
 		author: "Kevin Donnot",
 		url_info: "",
-		shader: "trames/euclid/euclid.frag",
+		shader: "/trames/euclid/euclid.frag",
 
 		settings: [
 			{

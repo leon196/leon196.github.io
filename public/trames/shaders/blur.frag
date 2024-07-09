@@ -1,8 +1,11 @@
+#version 300 es
+precision mediump float;
 
 uniform sampler2D image;
 uniform vec2 resolution;
 
-in vec2 vUv;
+in vec2 uv;
+out vec4 fragColor;
 
 // mrharicot
 // https://www.shadertoy.com/view/XdfGDH
@@ -41,12 +44,13 @@ void main()
     {
         for (int j=-kSize; j <= kSize; ++j)
         {
-            final_colour += kernel[kSize+j]*kernel[kSize+i]*texture(image, vUv+vec2(float(i),float(j)) / resolution).rgb;
+            final_colour += kernel[kSize+j]*kernel[kSize+i]*texture(image, uv+vec2(float(i),float(j)) / resolution).rgb;
         }
     }
     
-    // gl_FragColor = texture(image, vUv);
-    gl_FragColor = vec4(final_colour/(Z*Z), 1.0);
+    // gl_FragColor = texture(image, uv);
+    fragColor = vec4(final_colour/(Z*Z), 1.0);
+    // fragColor = uint(final_colour/(Z*Z)*255.);
     // gl_FragColor = vec4(pow(final_colour/(Z*Z), vec3(1./2.2)), 1.0);
     // gl_FragColor = sRGBTransferOETF(gl_FragColor);
 }

@@ -1,16 +1,16 @@
 (function() {
 	return {
-		slug: "atlas",
-		name: "Atlas",
-		description: "Atlas",
+		slug: "mask",
+		name: "Mask",
+		description: "Mask",
 		author: "",
 		url_info: "",
 		
-		shader: "/trames/atlas/atlas.frag",
+		shader: "/trames/mask/mask.frag",
 		maps: [
 			{
-				name: "symbols",
-				path: "/trames/atlas/images/symbols.png"
+				name: "mask",
+				path: "/trames/mask/images/mask.png"
 			},
 		],
 
@@ -22,7 +22,7 @@
 				type: "slider",
 				min: 5,
 				max: 300,
-				value: 50,
+				value: 10,
 				step: 1,
 				unit: "lpi",
 				uniform: "r_lineature",

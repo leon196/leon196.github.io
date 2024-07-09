@@ -1,369 +1,420 @@
 
-// WEBGL
+import * as twgl from "./libraries/twgl-full.module.js"
 
-function CreateEngine (canvas)
+export default class Engine
 {
-    const engine =
+    constructor(canvas, callback)
     {
-        ready: false,
-        update: false,
-        panzoom: false,
-        tiles: 1,
-        bucket: 0,
-    }
-
-    const media =
-    {
-        image: {},
-        lut: {},
-    }
-
-    const gl = canvas.getContext('webgl2',
-    {
-        alpha: false,
-        antialias: true,
-        depth: true,
-        failIfMajorPerformanceCaveat: false,
-        powerPreference: "default",
-        premultipliedAlpha: true,
-        stencil: false,
-        desynchronized: false,
-        uniforms_locations: {}
-    });
-
-    gl.getExtension("OES_texture_float");
-    gl.getExtension("EXT_color_buffer_float");
-    gl.getExtension("OES_texture_float_linear");
-
-    // SHADER
-
-    const shader = {};
-
-    const shaderToLoad =
-    {
-        lut: ["shaders/frame.vert", "shaders/lut.frag"],
-        draw: ["shaders/frame.vert", "shaders/draw.frag"],
-        unpack: ["shaders/frame.vert", "shaders/unpack.frag"],
-        blur: ["shaders/frame.vert", "shaders/blur.frag"],
-        threshold: ["shaders/frame.vert", "shaders/threshold.frag"],
-    };
+        const gl = canvas.getContext('webgl2',
+        {
+            alpha: true,
+            antialias: true,
+            depth: true,
+            failIfMajorPerformanceCaveat: false,
+            powerPreference: "default",
+            premultipliedAlpha: true,
+            stencil: false,
+            desynchronized: true,
+            uniforms_locations: {}
+        });
     
-    const uniforms =
-    {
-        time: 0,
-        tick: 0,
-        sizeCanvas: [0, 0],
-        sizeInput: [0, 0],
-        sizeOutput: [0, 0],
-        image: null,
-        frame: null,
-        mouse: [0, 0],
-        clic: 0,
-    }
+        gl.getExtension("OES_texture_float");
+        gl.getExtension("EXT_color_buffer_float");
+        gl.getExtension("OES_texture_float_linear");
 
-    // MESH
+        this.gl = gl;
+        this.canvas = canvas;
+        this.width = canvas.width;
+        this.height = canvas.height;
 
-    const mesh = 
-    {
-        quad: twgl.createBufferInfoFromArrays(gl,
-        {
-            position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0]
-        })
-    }
-
-    // FRAME BUFFER
-    
-    const options = [ {
-        internalFormat: gl.RGBA32F, format: gl.RGBA, type: gl.FLOAT,
-        minMag: gl.LINEAR,
-        wrap: gl.CLAMP_TO_EDGE
-    } ];
-
-    const vec4 = (x,y,w,h) => { return { x:x|0, y:y|0, width:w|0, height:h|0 } };
-
-    const rect =
-    {
-        input: vec4(0, 0, 100, 100),
-        output: vec4(0, 0, 100, 100),
-        canvas: vec4(0, 0, 0, 0),
-        panzoom: vec4(0, 0, 0, 0),
-    }
-
-    const frame =
-    {
-        lutted: twgl.createFramebufferInfo(gl, options, rect.input.width, rect.input.height),
-        blured: twgl.createFramebufferInfo(gl, options, rect.input.width, rect.input.height),
-        result: twgl.createFramebufferInfo(gl, options, rect.output.width, rect.output.height),
-        swap: 0,
-    }
-
-    engine.media = media;
-    engine.frame = frame;
-    engine.frame.options = options;
-    engine.rect = rect;
-    engine.uniforms = uniforms;
-    engine.shader = shader;
-    engine.shaderToLoad = shaderToLoad;
-    engine.gl = gl;
-
-    engine.start = function()
-    {
-        if (engine.trame.start !== undefined)
-        {
-            engine.trame.start(engine);
+        this.mesh = {
+            quad: twgl.createBufferInfoFromArrays(gl, {
+                position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0]
+            })
         }
-        engine.ready = true;
-    }
 
-    // DRAW
+        // console.log(gl.getParameter(gl.MAX_VIEWPORT_DIMS));
 
-    engine.draw = function(filter, buffer, rect)
-    {
-        gl.bindFramebuffer(gl.FRAMEBUFFER, buffer);
-        gl.clearColor(0,0,0,0)
-        gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.viewport(rect.x, rect.y, rect.width, rect.height);
-        gl.useProgram(filter.program);
-        twgl.setBuffersAndAttributes(gl, filter, mesh.quad);
-        twgl.setUniforms(filter, engine.uniforms);
-        twgl.drawBufferInfo(gl, mesh.quad);
-    }
+        this.media = {
+            worker: null,
+        };
 
-    engine.drawTemporal = function(filter, buffer, rect)
-    {
-        gl.bindFramebuffer(gl.FRAMEBUFFER, buffer);
-        // gl.clearColor(0,0,0,0)
-        // gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.viewport(rect.x, rect.y, rect.width, rect.height);
-
-        // temporal rendering (wip)
-        // if (rect.width > 1024 || rect.height > 1024)
-        {
-            const lod = engine.tiles;
-            const i = engine.uniforms.tick % (lod*lod);
-            const w = Math.ceil(rect.width / lod);
-            const h = Math.ceil(rect.height / lod);
-            const x = rect.x + (i % lod) * w;
-            const y = rect.y + Math.floor(i / lod) * h;
-            gl.viewport(x, y, w, h);
-        }
+        this.material = {};
         
-        gl.useProgram(filter.program);
-        twgl.setBuffersAndAttributes(gl, filter, mesh.quad);
-        twgl.setUniforms(filter, engine.uniforms);
-        twgl.drawBufferInfo(gl, mesh.quad);
+        this.settings = {
+            time: 0,
+            tick: 0,
+            resolution: [0, 0],
+            format: [0, 0],
+        };
+    
+        this.attachments = [{
+            internalFormat: gl.RGBA32F, format: gl.RGBA, type: gl.FLOAT,
+            minMag: gl.NEAREST,
+            wrap: gl.CLAMP_TO_EDGE
+        }];
+    
+        this.attachments_uint = [{
+            internalFormat: gl.R8UI,
+            minMag: gl.NEAREST,
+            wrap: gl.CLAMP_TO_EDGE
+        }];
+
+        this.frame = {
+            blur: twgl.createFramebufferInfo(gl, this.attachments, this.width, this.height),
+            lut: twgl.createFramebufferInfo(gl, this.attachments, this.width, this.height),
+            read: twgl.createFramebufferInfo(gl, this.attachments, this.width, this.height),
+            write: twgl.createFramebufferInfo(gl, this.attachments, this.width, this.height),
+            trame: twgl.createFramebufferInfo(gl, this.attachments_uint, this.width, this.height),
+        };
+
+        this.state = {
+            blur: false,
+            lut: false,
+            trame: false,
+        }
+
+        this.limit = {
+            viewport: gl.getParameter(gl.MAX_VIEWPORT_DIMS),
+        }
+
+        this.trame = {};
+        this.worker = null;
+        this.tick = 0;
+
+        this.load_shaders({
+            blit: ["/shaders/rect.vert", "/shaders/blit.frag"],
+            blur: ["/shaders/rect.vert", "/shaders/blur.frag"],
+            lut: ["/shaders/rect.vert", "/shaders/lut.frag"],
+            unpack: ["/shaders/rect.vert", "/shaders/unpack.frag"],
+            draw: ["/shaders/rect.vert", "/shaders/draw.frag"],
+            trame: ["/shaders/rect.vert", "/shaders/draw.frag"],
+            uv: ["/shaders/rect.vert", "/shaders/uv.frag"],
+        }, callback);
     }
 
-    engine.render = function()
+    update(elapsed, viewport)
     {
-        if (!engine.ready) return;
+        // actual canvas is not in DOM
+        // const canvas = this.canvas;
+        // const resized = twgl.resizeCanvasToDisplaySize(canvas);
 
-        // images
-        // engine.uniforms.image = engine.media.image;
+        this.settings.time = elapsed / 1000;
+        this.settings.resolution = [this.width, this.height]
+        
+        if (!this.state.blur) this.apply_blur();
+        if (!this.state.lut) this.apply_lut();
+        if (!this.state.trame) this.apply_trame();
 
-        // canvas dimensions
-        twgl.resizeCanvasToDisplaySize(gl.canvas)
-        rect.canvas.width = gl.canvas.width;
-        rect.canvas.height = gl.canvas.height;
+        // used for debug
+        // this.settings.image = this.media.image;
+        // this.draw(this.material.blur, this.mesh.quad, this.frame.trame.framebuffer, [0, 0, this.width, this.height]);
 
-        engine.uniforms.sizeInput = [rect.input.width, rect.input.height];
-        engine.uniforms.sizeOutput = [rect.output.width, rect.output.height];
-        engine.uniforms.sizeCanvas = [rect.canvas.width, rect.canvas.height];
+        // result is drawn by EngineView instances
+        // this.settings.image = this.frame.trame.attachments[0];
+        // this.draw(this.material.draw, this.mesh.quad, null, viewport);
+    }
 
-        if (engine.update)
+    draw(material, mesh, buffer, rect)
+    {
+        // default
+        material = material || this.material.uv;
+        mesh = mesh || this.mesh.quad;
+        buffer = buffer || null;
+        rect = rect || [0, 0, this.canvas.clientWidth, this.canvas.clientHeight];
+
+        // webgl drawing
+        const gl = this.gl;
+        gl.bindFramebuffer(gl.FRAMEBUFFER, buffer);
+        gl.viewport(rect[0], rect[1], rect[2], rect[3]);
+        gl.useProgram(material.program);
+        twgl.setBuffersAndAttributes(gl, material, mesh);
+        twgl.setUniforms(material, this.settings);
+        twgl.drawBufferInfo(gl, mesh);
+    }
+
+    async load_shaders(shaders, callback)
+    {
+        const loaded = {};
+        for (const [key, item] of Object.entries(shaders)) {
+            if (item instanceof Function) continue;
+            for (let i = 0; i < item.length; ++i) {
+                const path = item[i];
+                if (loaded[path] == undefined) {
+                    await fetch(path).then(x => x.text()).then(x => loaded[path] = x);
+                }
+            }
+            this.material[key] = twgl.createProgramInfo(this.gl, [loaded[item[0]], loaded[item[1]]]);
+        }
+        if (callback != undefined) callback();
+    }
+
+    load_images(images)
+    {
+        const gl = this.gl;
+        for (const [key, path] of Object.entries(images)) {
+            this.media[key] = twgl.createTexture(gl, {
+                src: path,
+                flipY: true,
+                wrap: gl.CLAMP_TO_EDGE,
+                minMag: gl.LINEAR,
+            });
+            this.settings[key] = this.media[key];
+        }
+    }
+
+    apply_blur()
+    {
+        this.settings.image = this.media.image;
+        this.draw(this.material.blur, this.mesh.quad, this.frame.blur.framebuffer, [0, 0, this.width, this.height]);
+        this.state.blur = true;
+    }
+
+    apply_lut()
+    {
+        this.settings.image = this.frame.blur.attachments[0];
+        this.draw(this.material.lut, this.mesh.quad, this.frame.lut.framebuffer, [0, 0, this.width, this.height]);
+        this.state.lut = true;
+    }
+
+    apply_trame()
+    {
+        emitter.emit('loading_start');
+
+        this.settings.image = this.frame.lut.attachments[0];
+
+        // trame is a CPU worker
+        if (this.trame.worker != undefined)
         {
-            // apply lut
-            engine.uniforms.image = engine.media.image;
-            engine.uniforms.lut = engine.media.lut;
-            engine.draw(shader.lut, frame.lutted.framebuffer, rect.input);
-            engine.uniforms.image = frame.lutted.attachments[0];
+            this.apply_trame_worker(this.width, this.height);
+            this.state.trame = true;
+        }
+        // trame has feedback shader
+        else if (this.trame.feedback != undefined)
+        {
+            const frames = [this.frame.read, this.frame.write];
+            const read = frames[(this.tick)%2];
+            const write = frames[(this.tick+1)%2];
 
-            // blur
-            // engine.uniforms.image = frame.lutted.attachments[0];
-            // engine.draw(shader.blur, frame.blured.framebuffer, rect.input);
-
-
-            if (engine.trame.update !== undefined)
+            if (this.tick < this.trame.feedback_frames)
             {
-                engine.trame.update(engine);
+                // feedback buffer
+                this.settings.image = this.frame.lut.attachments[0];
+                this.settings.tick = this.tick;
+                this.settings.resolution = [this.width, this.height];
+                this.settings.feedback = read.attachments[0];
+                this.draw(this.material.feedback, this.mesh.quad, write.framebuffer, [0, 0, this.width, this.height]);
+
+                this.tick += 1;
+
+                emitter.emit('force_update', this);
             }
             else
             {
-                // use lutted image
-                // engine.uniforms.image = frame.blured.attachments[0];
+                // final print
+                this.settings.image = frames[this.tick%2].attachments[0]; 
+                this.draw(this.material.trame, this.mesh.quad, this.frame.trame.framebuffer, [0, 0, this.width, this.height]);
 
-                // apply filter
-                engine.drawTemporal(shader.filter, frame.result.framebuffer, rect.output)
-                engine.uniforms.image = frame.result.attachments[0];
+                // end feedback
+                this.state.trame = true;
+                emitter.emit('loading_stop');
             }
-            engine.bucket += 1;
-            
-            engine.draw(engine.trame.packed ? shader.unpack : shader.draw, null, rect.panzoom);
+        }
+        // trame is a simple shader
+        else
+        {
+            this.draw(this.material.trame, this.mesh.quad, this.frame.trame.framebuffer, [0, 0, this.width, this.height]);
+            this.state.trame = true;
+            emitter.emit('loading_stop');
+        }
+
+    }
+
+    apply_trame_worker(width, height)
+    {
+        const gl = this.gl;
+
+        if (this.worker != undefined)
+        {
+            this.worker.terminate();
+        }
         
-            if (engine.bucket >= engine.tiles*engine.tiles)
-            {
-                engine.update = false;
-                engine.bucket = 0;
+        this.worker = new Worker(this.trame.worker);
+        this.worker.onmessage = (e) => 
+        {
+            const array = e.data.array;
+            const width = e.data.width;
+            const height = e.data.height;
+            this.media.worker = twgl.createTexture(gl, {
+                src: array,
+                format: gl.RED_INTEGER,
+                internalFormat: gl.R8UI,
+                minMag: gl.NEAREST,
+                flipY: false,
+                width: width,
+                height: height,
+            });
+            emitter.emit('loading_stop');
+        }
+
+        // export settings for worker
+        const settings = {};
+        for (const [key, item] of Object.entries(this.settings)) {
+            let value = item;
+            if (typeof value === 'number') {
+                settings[key] = value;
             }
         }
 
-        if (!engine.update && engine.panzoom)
-        {
-            // draw result
-            engine.draw(engine.trame.packed ? shader.unpack : shader.draw, null, rect.panzoom);
-            engine.panzoom = false;
-        }
+        const read = new Uint8Array(width*height*4);
+        const array = new Uint8Array(width*height);
+        const buffer = twgl.createFramebufferInfo(gl, [{ format: gl.RGBA }], width, height);
 
-        engine.uniforms.tick = engine.uniforms.tick+1;
-    }
+        // draw image in buffer
+        this.draw(this.material.blit, this.mesh.quad, buffer.framebuffer, [0, 0, width, height]);
 
-    engine.drawNow = function()
-    {
-        engine.draw(engine.trame.packed ? shader.unpack : shader.draw, null, rect.panzoom);
-    }
+        // read buffer to array
+        gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, read);
 
-    engine.setTime = function(time_)
-    {
-        engine.uniforms.time = time_;
-    }
-    
-    engine.setImage = function(image_)
-    {
-        media.image = twgl.createTexture(gl, {
-            src: image_,
-            flipY: true,
-            // min: gl.NEAREST_MIPMAP_LINEAR,
+        // prepare data
+        for (let i = 0; i < width*height; ++i) array[i] = read[i*4];
+
+        this.worker.postMessage({
+            array: array, 
+            width: width,
+            height: height,
+            settings: settings,
         });
-
-        engine.refresh();
     }
 
-    engine.setTrame = function(trame_)
+    get_result()
     {
-        engine.trame = trame_;
-        shaderToLoad.filter = ["shaders/frame.vert", trame_.shader];
-        engine.reload();
-    }
-
-    engine.setPanzoom = function(rect_)
-    {
-        if (
-            rect.panzoom.x != rect_[0] ||
-            rect.panzoom.y != rect_[1] ||
-            rect.panzoom.width != rect_[2] ||
-            rect.panzoom.height != rect_[3])
+        if (this.trame.worker != undefined)
         {
-            engine.panzoom = true;
+            return this.media.worker;
         }
-        rect.panzoom.x = rect_[0];
-        rect.panzoom.y = rect_[1];
-        rect.panzoom.width = rect_[2];
-        rect.panzoom.height = rect_[3];
+        else
+        {
+            return this.frame.trame.attachments[0];
+        }
     }
 
-    engine.setLookUpTable = function(lut_)
+    set_lut(array)
     {
-        media.lut = twgl.createTexture(gl,
-        {
-            src: lut_,
+        const gl = this.gl;
+        this.settings.lut = twgl.createTexture(gl, {
+            src: array,
             format: gl.LUMINANCE,
-            width: lut_.length,
+            width: array.length,
             wrap: gl.CLAMP_TO_EDGE,
             minMag: gl.LINEAR,
         });
-
-        engine.refresh();
+        this.state.lut = false;
+        this.state.trame = false;
+        this.tick = 0;
     }
 
-    engine.setInputSize = function(width, height)
+    set_size(width, height, format_width, format_height)
     {
-        if (width != rect.input.width || height != rect.input.height)
+        if (width != this.width && height != this.height)
         {
-            rect.input.width = width;
-            rect.input.height = height;
-            twgl.resizeFramebufferInfo(gl, frame.lutted, frame.options, width, height);
-            twgl.resizeFramebufferInfo(gl, frame.blured, frame.options, width, height);
+            this.width = width;
+            this.height = height;
+            
+            const gl = this.gl;
+            const frame = this.frame;
+            twgl.resizeFramebufferInfo(gl, frame.blur, this.attachments, width, height);
+            twgl.resizeFramebufferInfo(gl, frame.lut, this.attachments, width, height);
+            twgl.resizeFramebufferInfo(gl, frame.read, this.attachments, this.width, this.height);
+            twgl.resizeFramebufferInfo(gl, frame.write, this.attachments, this.width, this.height);
+            twgl.resizeFramebufferInfo(gl, frame.trame, this.attachments_uint, width, height);
+
+            this.settings.format = [format_width, format_height];
+    
+            this.state.blur = false;
+            this.state.lut = false;
+            this.state.trame = false;
+            this.tick = 0;
         }
     }
 
-    engine.setOutputSize = function(width, height)
+    set_trame(trame)
     {
-        if (width != rect.output.width || height != rect.output.height)
+        this.trame = trame;
+
+        // clean
+        if (this.worker != null) this.worker.terminate();
+
+        // trame with shader
+        if (trame.shader != undefined)
         {
-            rect.output.width = width;
-            rect.output.height = height;
-            engine.tiles = Math.ceil(width/1024.);
-            engine.refresh()
-            twgl.resizeFramebufferInfo(gl, frame.result, frame.options, width, height);
-            if (engine.trame != undefined && engine.trame.resize != undefined)
+            // shader needs feedback
+            if (trame.feedback != undefined)
             {
-                engine.trame.resize(engine);
+                this.load_shaders({
+                    trame: ["/shaders/rect.vert", trame.shader],
+                    feedback: ["/shaders/rect.vert", trame.feedback]
+                }, () => {
+                    this.state.trame = false;
+                    this.tick = 0;
+                })
+            }
+            else
+            {
+                this.load_shaders({
+                    trame: ["/shaders/rect.vert", trame.shader]
+                }, () => {
+                    this.state.trame = false;
+                })
             }
         }
-    }
 
-    engine.refresh = function()
-    {
-        engine.update = true;
-        engine.bucket = 0;
-    }
-
-    engine.reset = function(settings)
-    {
-        if (engine.trame.reset !== undefined)
+        // trame with worker
+        else if (trame.worker != undefined)
         {
-            engine.trame.reset(engine, settings);
-        }
-        engine.uniforms.tick = 0;
-        engine.refresh();
-    }
-
-    engine.clear = function(buffer)
-    {
-        gl.bindFramebuffer(gl.FRAMEBUFFER, buffer);
-        gl.clearColor(0,0,0,0)
-        gl.clear(gl.COLOR_BUFFER_BIT);
-    }
-
-    // LOAD FILES
-
-    engine.load = (shaderName, shaderFilePath) =>
-    {
-        engine.shaderToLoad[shaderName] = ["shaders/frame.vert", shaderFilePath];
-    };
-
-    engine.loadFiles = function()
-    {
-        if (engine.trame.load !== undefined)
-        {
-            engine.trame.load(engine);
+            this.state.trame = false;
         }
 
-        let assetToLoad = [];
-        for (const [key, item] of Object.entries(engine.shaderToLoad))
+        // trame has maps to load
+        if (trame.maps != undefined)
         {
-            if (item instanceof Function) continue;
-            if (!assetToLoad.includes(item[0])) assetToLoad.push(item[0]);
-            if (!assetToLoad.includes(item[1])) assetToLoad.push(item[1]);
-        }
-    
-        loadFiles("", assetToLoad, "text", function(data)
-        {
-            for (const [key, item] of Object.entries(engine.shaderToLoad))
-            {
-                engine.shader[key] = twgl.createProgramInfo(gl, [data[item[0]], data[item[1]]]);
+            const map = {};
+            for (const [key, item] of Object.entries(trame.maps)) {
+                map[item.name] = item.path;
             }
-    
-            engine.start();
-        });
-    }
-    
-    engine.reload = function()
-    {
-        engine.ready = false;
-        engine.reset();
-        engine.loadFiles();
+            this.load_images(map);
+        }
     }
 
-    return engine;
+    set_setting(key, value)
+    {
+        if (this.settings[key] != undefined)
+        {
+            if (this.settings[key] != value)
+            {
+                this.state.trame = false;
+                this.tick = 0;
+            }
+        }
+        else
+        {
+            this.state.trame = false;
+            this.tick = 0;
+        }
+        this.settings[key] = value;
+    }
+
+    disable_blur()
+    {
+        this.load_shaders({
+            blur: ["/shaders/rect.vert", "/shaders/blit.frag"]
+        }, () => {
+            this.state.blur = false;
+            this.state.lut = false;
+            this.state.trame = false;
+        })
+    }
 }
+
+// from module to vanilla
+window.Engine = Engine;

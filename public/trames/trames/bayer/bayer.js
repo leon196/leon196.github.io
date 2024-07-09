@@ -5,7 +5,7 @@
 		description: "",
 		author: "",
 		url_info: "",
-		shader: "trames/bayer/bayer.frag",
+		shader: "/trames/bayer/bayer.frag",
 
 		settings: [
 			{
@@ -15,7 +15,7 @@
 				type: "slider",
 				min: 1,
 				max: 300,
-				value: 100,
+				value: 40,
 				step: 1,
 				unit: "lpi",
 				uniform: "r_lineature",
@@ -24,7 +24,7 @@
 				},
 				gradient_view: {
 					bypass: true,
-					default: 200
+					default: 5
 				}
 			},
 			{
@@ -32,7 +32,7 @@
 				label_en: "Steps",
 				slug: "steps",
 				type: "slider",
-				min: 2,
+				min: 1,
 				max: 5,
 				value: 4,
 				step: 1,

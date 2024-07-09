@@ -11,7 +11,7 @@ let settings = {
 		media_mode: "print",
 		format_x: 400,
 		format_y: 300,
-		resolution: 300,
+		resolution: 200,
 		definition_x: 0,
 		definition_y: 0,
 		size: 0,
@@ -21,7 +21,7 @@ let settings = {
 		levels_black_offset:0,
 		levels_white_offset:0,
 		levels_lut: [],
-		current_screen: "patterns",
+		current_screen: "mask",
 		start_time: new Date().getTime(),
 		time: 0,
 		device_pixel_ratio: 1
@@ -35,10 +35,11 @@ let settings = {
 		"seuil",
 		"error_diffusion",
 		"voronoi",
-		// "voronoi2",
 		"reaction_diffusion",
 		"quadtree",
+		"mask",
 		"dbs",
+		"stipple",
 		// "dbscpp",
 		// "error_bloc",
 	],
@@ -55,7 +56,9 @@ let settings = {
 
 	generator: {
 		output_array: null
-	}
+	},
+
+	engine: {}
 };
 
 ////////////////////////////

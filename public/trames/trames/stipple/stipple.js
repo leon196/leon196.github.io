@@ -1,11 +1,13 @@
 (function() {
 	return {
-		slug: "voronoi",
-		name: "Voronoi",
-		description: "Voronoi",
+		slug: "stipple",
+		name: "Stipple",
+		description: "Stipple",
 		author: "",
 		url_info: "",
-		shader: "/trames/voronoi/voronoi.frag",
+
+		shader: "trames/stipple/stipple.frag",
+		particles: "trames/stipple/stipple.particles.frag",
 
 		settings: [
 			{
@@ -15,7 +17,7 @@
 				type: "slider",
 				min: 5,
 				max: 300,
-				value: 100,
+				value: 50,
 				step: 1,
 				unit: "lpi",
 				uniform: "r_lineature",
@@ -29,4 +31,4 @@
 			},
 		]
 	}
-});
+})

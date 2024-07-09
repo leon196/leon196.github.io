@@ -13,7 +13,6 @@
 
 		<div id="loading">loading</div>
 
-
 		<!-- MAIN PREVIEW -->
 		<div id="panzoom_container"
 			:class="{ 'show_image' : show_original_image}">
@@ -21,7 +20,6 @@
 				@mousemove="mouse_move_on_preview($event)"
 				:src="image.source">
 		</div>
-
 
 		<webgl_view id="preview"
 			:viewport_width="views.preview.viewport_width"
@@ -93,6 +91,18 @@ export default {
 			image: settings.image,
 			global: settings.global,
 			show_original_image: false,
+			panzoom: [0,0,500,500],
+			zoom: [0,0,500,500],
+			elapsed: 0,
+			mouse: {
+				up: false,
+				down: false,
+				position: [0,0],
+				previous: [0,0],
+				elapsed: 0,
+				delay: 0.1,
+				moved: false,
+			},
 			views: {
 				"preview": {
 					canvas_width: 0,
@@ -111,6 +121,7 @@ export default {
 	},
 	mounted: function() {
 		settings.global.device_pixel_ratio = this.getDevicePixelRatio();
+		this.init_webgl();
 
 		emitter.on('image_loaded', (trigger) => {
 			this.init_panzoom();
@@ -128,15 +139,231 @@ export default {
 
 	},
 	methods: {
+
+		init_webgl: function()
+		{
+			const global = this.global;
+
+			// virtual canvas
+			const canvas = document.createElement("canvas");
+			canvas.width = 500;
+			canvas.height = 500;
+
+			this.dom_debug = document.getElementById("debug");
+
+			// create engine
+			const engine = new Engine(canvas, () => {
+				engine.set_lut(global.levels_lut);
+				engine.set_trame(settings.screen);
+				engine.set_size(global.definition_x, global.definition_y, global.format_x, global.format_y);
+				this.init_events();
+				this.update_settings();
+				this.update_trame();
+				requestAnimationFrame(this.update);
+			});
+
+			// preview render
+			this.previewView = new EngineView(document.getElementById("preview"));
+
+			// zoon on result
+			this.zoomView = new EngineView(document.getElementById("zoom"));
+
+			// create engine for gradient steps
+			const gradient_steps = document.getElementById("gradient_steps");
+			const engine_gradient_steps = new Engine(canvas, () => {
+				engine_gradient_steps.disable_blur();
+				engine_gradient_steps.set_lut(global.levels_lut);
+				engine_gradient_steps.set_trame(settings.screen);
+				engine_gradient_steps.set_size(gradient_steps.clientWidth, gradient_steps.clientHeight, gradient_steps.clientWidth, gradient_steps.clientHeight);
+			});
+			this.gradientStepsView = new EngineView(gradient_steps);
+
+			// create engine for gradient continuous
+			const gradient_continuous = document.getElementById("gradient_continuous");
+			const engine_gradient_continuous = new Engine(canvas, () => {
+				engine_gradient_continuous.disable_blur();
+				engine_gradient_continuous.set_lut(global.levels_lut);
+				engine_gradient_continuous.set_trame(settings.screen);
+				engine_gradient_continuous.set_size(gradient_continuous.clientWidth, gradient_continuous.clientHeight, gradient_continuous.clientWidth, gradient_continuous.clientHeight);
+			});
+			this.gradientContinuousView = new EngineView(gradient_continuous);
+
+			// load images
+			engine.load_images({
+				image: settings.image.source,
+			});
+			engine_gradient_steps.load_images({
+				image: "/images/grayscale_steps.png",
+			});
+			engine_gradient_continuous.load_images({
+				image: "/images/grayscale_continuous.png",
+			});
+
+			// todo: fix async startup
+			setTimeout(() => {
+				this.update_trame();
+			}, 1000);
+
+			// main engine
+			this.engine = engine;
+			this.engine_gradient_steps = engine_gradient_steps;
+			this.engine_gradient_continuous = engine_gradient_continuous;
+
+			// loading dom
+			this.loading_dom = document.getElementById("loading");
+		},
+
+		init_events: function()
+		{
+			const engine = this.engine;
+			const global = this.global;
+			const engine_gradient_steps = this.engine_gradient_steps;
+			const engine_gradient_continuous = this.engine_gradient_continuous;
+
+			emitter.on('screen_loaded', () => {
+				engine.set_trame(settings.screen);
+				engine_gradient_steps.set_trame(settings.screen);
+				engine_gradient_continuous.set_trame(settings.screen);
+				this.update_settings();
+
+				// todo: fix async startup
+				setTimeout(() => {
+					this.update_trame();
+				}, 1000);
+			})
+
+			const triggers = {
+				lut: ["levels_black", "levels_white", "levels_grey", "levels_black_offset", "levels_white_offset"],
+				size: ["format_x", "format_y", "resolution", "definition_x", "definition_y"],
+			}
+			
+			emitter.on('update_view', (trigger) =>
+			{
+				emitter.emit('loading_start');
+
+				if (triggers.lut.includes(trigger))
+				{
+					engine.set_lut(global.levels_lut);
+					engine_gradient_steps.set_lut(global.levels_lut);
+					engine_gradient_continuous.set_lut(global.levels_lut);
+				}
+
+				else if (triggers.size.includes(trigger))
+				{
+					engine.set_size(
+						global.definition_x, global.definition_y,
+						global.format_x, global.format_y,
+					);
+				}
+
+				else
+				{
+					this.update_settings();
+				}
+			});
+
+			window.addEventListener("mousedown", (e) => {
+				this.mouse.down = true;
+			});
+
+			window.addEventListener("mouseup", (e) => {
+				this.mouse.up = true;
+			});
+
+			window.addEventListener("mousemove", (e) => {
+				this.mouse.position = [e.clientX, e.clientY];
+			});
+
+			emitter.on('loading_start', () => {
+				if (this.loading_dom != undefined) {
+					this.loading_dom.style.zIndex = "4";
+					this.loading_dom.style.display = "inline-block";
+				}
+			});
+
+			emitter.on('loading_stop', () => {
+				if (this.loading_dom != undefined) {
+					this.loading_dom.style.zIndex = "0";
+					this.loading_dom.style.display = "none";
+				}
+			});
+
+			emitter.on('force_update', (self) => {
+				self.update(this.elapsed);
+			})
+		},
+
+		update_trame: function()
+		{
+			const elapsed = this.elapsed;
+			const engine = this.engine;
+			const engine_gradient_steps = this.engine_gradient_steps;
+			const engine_gradient_continuous = this.engine_gradient_continuous;
+
+			// process trame
+			engine.update(elapsed);
+			engine_gradient_steps.update(elapsed);
+			engine_gradient_continuous.update(elapsed);
+		},
+		
+		update: function(elapsed)
+		{
+			const engine = this.engine;
+			const steps = this.engine_gradient_steps;
+			const continuous = this.engine_gradient_continuous;
+
+			// frame rate
+			const delta = elapsed/1000. - this.elapsed;
+			// const frameRate = Math.ceil(1.0/delta);
+			// this.dom_debug.textContent = frameRate;
+			this.elapsed = elapsed/1000.;
+
+			// detect user activity to update trame
+			this.mouse_activity(delta);
+
+			// draw trame
+			const result = engine.get_result();
+			this.previewView.update(result, this.panzoom);
+			this.zoomView.update(result, this.zoom);
+			
+			// gradients
+			this.gradientStepsView.update(steps.get_result());
+			this.gradientContinuousView.update(continuous.get_result());
+
+			// loop
+			requestAnimationFrame(this.update);
+		},
+
+		update_settings: function()
+		{
+			const engine = this.engine;
+			const steps = this.engine_gradient_steps;
+			const continuous = this.engine_gradient_continuous;
+
+			for (const [key, setting] of Object.entries(settings.screen.settings))
+			{
+				// process value for trame
+				let value = setting.process_to_uniform(setting.value);
+				engine.set_setting(setting.uniform, value);
+
+				// gradients
+				if (setting.gradient_view.bypass) {
+					value = setting.gradient_view.default;
+				}
+				steps.set_setting(setting.uniform, value);
+				continuous.set_setting(setting.uniform, value);
+			}
+		},
+
 		init_panzoom: function() {
 
 			const viewport = $("#viewport");
-			const container = $("#panzoom_container");
 			const image = $("#panzoom_image");
 			const ruler = $("#ruler");
 
 			let image_element = image[0];
 			this.panzoom_image = image_element;
+			this.dom_zoom = document.getElementById("zoom");
 
 			let start_x = viewport.width() / 2 - image.width() / 2;
 			let start_y = (viewport.height() - ruler.height()) / 2 - image.height() / 2;
@@ -147,8 +374,8 @@ export default {
 				startScale: 1,
 				startX: start_x,
 				startY: start_y,
-				maxScale: 100,
-				minScale: 0.1,
+				maxScale: 20,
+				minScale: 1,
 			});
 			
 			let parent = image_element.parentElement;
@@ -160,21 +387,64 @@ export default {
 				let height = this.image.image_object.height;
 
 				// panzoom transform
-				// todo: check panzoom doc to get matrix instead of parsing css
-				const style = window.getComputedStyle(this.panzoom_image)
+				const style = window.getComputedStyle(image_element)
 				const matrix = style.transform;// || style.webkitTransform || style.mozTransform
 				const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ')
 				const scale = parseFloat(matrixValues[0]);
-				const x = parseFloat(matrixValues[4]) + (width - width * scale) / 2;
-				const y = parseFloat(matrixValues[5]) + (height - height * scale) / 2;
 
-				this.views.preview.viewport_width = width * scale;
-				this.views.preview.viewport_height = height * scale;
-				this.views.preview.viewport_x = x;
-				this.views.preview.viewport_y = - height * scale - y;
-				
-				emitter.emit('update_view')
+				// css panzoom to webgl panzoom
+				let x = parseFloat(matrixValues[4]) + (width - width * scale) / 2;
+				let y = parseFloat(matrixValues[5]) + (height - height * scale) / 2;
+				y = viewport.height() - y - height * scale;
+				let w = width * scale;
+				let h = height * scale;
+
+				// viewport for webgl
+				this.panzoom = [x, y, w, h];
 			});
+		},
+
+		mouse_activity: function(delta)
+		{
+			let update = false;
+
+			if(this.mouse.down
+			&& this.mouse.moved
+			&& this.mouse.position[0] == this.mouse.previous[0]
+			&& this.mouse.position[1] == this.mouse.previous[1])
+			{
+				this.mouse.elapsed += delta;
+			}
+			else
+			{
+				this.mouse.elapsed = 0;
+			}
+
+			if (this.mouse.position[0] != this.mouse.previous[0]
+			 || this.mouse.position[1] != this.mouse.previous[1])
+			{
+				this.mouse.moved = true;
+			}
+
+			this.mouse.previous[0] = this.mouse.position[0];
+			this.mouse.previous[1] = this.mouse.position[1];
+
+			if (this.mouse.down && this.mouse.elapsed > this.mouse.delay && this.mouse.moved)
+			{
+				update = true;
+				this.mouse.moved = false;
+			}
+
+			if (this.mouse.up)
+			{
+				update = true;
+				this.mouse.up = false;
+			}
+
+			if (update)
+			{
+				this.update_trame();
+			}
 		},
 
 		mouse_move_on_preview: function(event)
@@ -182,14 +452,21 @@ export default {
 			let mouse_x = event.offsetX;
 			let mouse_y = event.offsetY;
 
+			if (this.panzoom_image == undefined) return;
+
 			let width = this.panzoom_image.width;
 			let height = this.panzoom_image.height;
 
 			this.views.zoom.zoom_x = mouse_x/width;
 			this.views.zoom.zoom_y = 1-mouse_y/height;
+			
+			const zoom = 2;
+			const w = this.global.definition_x * zoom;
+			const h = this.global.definition_y * zoom;
+			const x = -this.views.zoom.zoom_x * w + this.dom_zoom.clientWidth/2;
+			const y = -this.views.zoom.zoom_y * h + this.dom_zoom.clientHeight/2;
 
-			emitter.emit('update_view')
-
+			this.zoom = [x, y, w, h];
 		},
 
 		getDevicePixelRatio: function() {
@@ -238,6 +515,7 @@ export default {
 	bottom: 0;
 	background-color: var(--viewport_background);
 	z-index: 1;
+	/* opacity: 0.5; */
 	text-align: center;
 }
 
@@ -248,8 +526,9 @@ export default {
 	right: 0;
 	bottom: var(--gui_base_height);
 	background-color: var(--viewport_background);
+	/* opacity: 0.5; */
 	opacity: 0;
-	z-index:3 ;
+	z-index: 3;
 }
 
 #panzoom_image {
@@ -285,6 +564,21 @@ export default {
 	top: 50%;
 	cursor: default;
 	background-color: white;
+	padding: 10px;
+	text-align: center;
+}
+
+#debug
+{
+	position: absolute;
+	display: inline-block;
+	z-index: 10;
+	font-size: 20px;
+	left: 10%;
+	top: 10%;
+	cursor: default;
+	color: white;
+	background-color: black;
 	padding: 10px;
 	text-align: center;
 }
