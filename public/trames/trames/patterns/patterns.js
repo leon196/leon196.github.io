@@ -5,7 +5,7 @@
 		description: "Motif",
 		author: "",
 		url_info: "",
-		shader: "/trames/patterns/patterns.frag",
+		shader: "trames/patterns/patterns.frag",
 
 		settings: [
 			{

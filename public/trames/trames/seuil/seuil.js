@@ -5,7 +5,7 @@
 		description: "Seuil",
 		author: "",
 		url_info: "",
-		shader: "/trames/seuil/seuil.frag",
+		shader: "trames/seuil/seuil.frag",
 
 		settings: [{
 				label_fr: "Seuil",

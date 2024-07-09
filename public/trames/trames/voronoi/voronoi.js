@@ -5,7 +5,7 @@
 		description: "Voronoi",
 		author: "",
 		url_info: "",
-		shader: "/trames/voronoi/voronoi.frag",
+		shader: "trames/voronoi/voronoi.frag",
 
 		settings: [
 			{

@@ -5,7 +5,7 @@
 		description: "",
 		author: "",
 		url_info: "",
-		shader: "/trames/bayer/bayer.frag",
+		shader: "trames/bayer/bayer.frag",
 
 		settings: [
 			{

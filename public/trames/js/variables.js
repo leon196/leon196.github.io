@@ -39,7 +39,7 @@ let settings = {
 		"quadtree",
 		"mask",
 		"dbs",
-		"stipple",
+		// "stipple",
 		// "dbscpp",
 		// "error_bloc",
 	],

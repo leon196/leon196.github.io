@@ -6,8 +6,8 @@
 		author: "",
 		url_info: "",
 		
-		feedback: "/trames/reaction_diffusion/reaction_diffusion_buffer.frag",
-		shader: "/trames/reaction_diffusion/reaction_diffusion_draw.frag",
+		feedback: "trames/reaction_diffusion/reaction_diffusion_buffer.frag",
+		shader: "trames/reaction_diffusion/reaction_diffusion_draw.frag",
 
 		feedback_frames: 120,
 

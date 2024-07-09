@@ -83,13 +83,13 @@ export default class Engine
         this.tick = 0;
 
         this.load_shaders({
-            blit: ["/shaders/rect.vert", "/shaders/blit.frag"],
-            blur: ["/shaders/rect.vert", "/shaders/blur.frag"],
-            lut: ["/shaders/rect.vert", "/shaders/lut.frag"],
-            unpack: ["/shaders/rect.vert", "/shaders/unpack.frag"],
-            draw: ["/shaders/rect.vert", "/shaders/draw.frag"],
-            trame: ["/shaders/rect.vert", "/shaders/draw.frag"],
-            uv: ["/shaders/rect.vert", "/shaders/uv.frag"],
+            blit: ["shaders/rect.vert", "shaders/blit.frag"],
+            blur: ["shaders/rect.vert", "shaders/blur.frag"],
+            lut: ["shaders/rect.vert", "shaders/lut.frag"],
+            unpack: ["shaders/rect.vert", "shaders/unpack.frag"],
+            draw: ["shaders/rect.vert", "shaders/draw.frag"],
+            trame: ["shaders/rect.vert", "shaders/draw.frag"],
+            uv: ["shaders/rect.vert", "shaders/uv.frag"],
         }, callback);
     }
 
@@ -352,8 +352,8 @@ export default class Engine
             if (trame.feedback != undefined)
             {
                 this.load_shaders({
-                    trame: ["/shaders/rect.vert", trame.shader],
-                    feedback: ["/shaders/rect.vert", trame.feedback]
+                    trame: ["shaders/rect.vert", trame.shader],
+                    feedback: ["shaders/rect.vert", trame.feedback]
                 }, () => {
                     this.state.trame = false;
                     this.tick = 0;
@@ -362,7 +362,7 @@ export default class Engine
             else
             {
                 this.load_shaders({
-                    trame: ["/shaders/rect.vert", trame.shader]
+                    trame: ["shaders/rect.vert", trame.shader]
                 }, () => {
                     this.state.trame = false;
                 })
@@ -407,7 +407,7 @@ export default class Engine
     disable_blur()
     {
         this.load_shaders({
-            blur: ["/shaders/rect.vert", "/shaders/blit.frag"]
+            blur: ["shaders/rect.vert", "shaders/blit.frag"]
         }, () => {
             this.state.blur = false;
             this.state.lut = false;

@@ -6,11 +6,11 @@
 		author: "",
 		url_info: "",
 		
-		shader: "/trames/atlas/atlas.frag",
+		shader: "trames/atlas/atlas.frag",
 		maps: [
 			{
 				name: "symbols",
-				path: "/trames/atlas/images/symbols.png"
+				path: "trames/atlas/images/symbols.png"
 			},
 		],
 

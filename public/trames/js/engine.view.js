@@ -37,7 +37,7 @@ export default class EngineView
         };
 
         this.load_shaders({
-            draw: ["/shaders/viewport.vert", "/shaders/draw.frag"],
+            draw: ["shaders/viewport.vert", "shaders/draw.frag"],
         }, callback);
     }
 

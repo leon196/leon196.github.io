@@ -6,11 +6,11 @@
 		author: "",
 		url_info: "",
 		
-		shader: "/trames/mask/mask.frag",
+		shader: "trames/mask/mask.frag",
 		maps: [
 			{
 				name: "mask",
-				path: "/trames/mask/images/mask.png"
+				path: "trames/mask/images/mask.png"
 			},
 		],
 

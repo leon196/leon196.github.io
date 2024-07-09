@@ -193,10 +193,10 @@ export default {
 				image: settings.image.source,
 			});
 			engine_gradient_steps.load_images({
-				image: "/images/grayscale_steps.png",
+				image: "images/grayscale_steps.png",
 			});
 			engine_gradient_continuous.load_images({
-				image: "/images/grayscale_continuous.png",
+				image: "images/grayscale_continuous.png",
 			});
 
 			// todo: fix async startup

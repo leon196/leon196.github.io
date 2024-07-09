@@ -9,6 +9,6 @@
 		settings: [
 		],
 
-		worker: "/trames/dbs/dbs.worker.js",
+		worker: "trames/dbs/dbs.worker.js",
 	}
 });

@@ -5,7 +5,7 @@
 		description: "Quad Tree",
 		author: "",
 		url_info: "",
-		shader: "/trames/quadtree/quadtree.frag",
+		shader: "trames/quadtree/quadtree.frag",
 
 		settings: [
 			{
