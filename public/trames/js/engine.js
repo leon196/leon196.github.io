@@ -7,7 +7,7 @@ export default class Engine
     {
         const gl = canvas.getContext('webgl2',
         {
-            alpha: true,
+            alpha: false,
             antialias: true,
             depth: true,
             failIfMajorPerformanceCaveat: false,
@@ -21,6 +21,7 @@ export default class Engine
         gl.getExtension("OES_texture_float");
         gl.getExtension("EXT_color_buffer_float");
         gl.getExtension("OES_texture_float_linear");
+        gl.getExtension("OES_element_index_uint");
 
         this.gl = gl;
         this.canvas = canvas;
@@ -30,15 +31,11 @@ export default class Engine
         this.mesh = {
             quad: twgl.createBufferInfoFromArrays(gl, {
                 position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0]
-            })
+            }),
         }
 
-        // console.log(gl.getParameter(gl.MAX_VIEWPORT_DIMS));
-
-        this.media = {
-            worker: null,
-        };
-
+        this.trame = {};
+        this.media = {};
         this.material = {};
         
         this.settings = {
@@ -53,19 +50,13 @@ export default class Engine
             minMag: gl.NEAREST,
             wrap: gl.CLAMP_TO_EDGE
         }];
-    
-        this.attachments_uint = [{
-            internalFormat: gl.R8UI,
-            minMag: gl.NEAREST,
-            wrap: gl.CLAMP_TO_EDGE
-        }];
 
         this.frame = {
             blur: twgl.createFramebufferInfo(gl, this.attachments, this.width, this.height),
             lut: twgl.createFramebufferInfo(gl, this.attachments, this.width, this.height),
             read: twgl.createFramebufferInfo(gl, this.attachments, this.width, this.height),
             write: twgl.createFramebufferInfo(gl, this.attachments, this.width, this.height),
-            trame: twgl.createFramebufferInfo(gl, this.attachments_uint, this.width, this.height),
+            trame: twgl.createFramebufferInfo(gl, this.attachments, this.width, this.height),
         };
 
         this.state = {
@@ -78,8 +69,6 @@ export default class Engine
             viewport: gl.getParameter(gl.MAX_VIEWPORT_DIMS),
         }
 
-        this.trame = {};
-        this.worker = null;
         this.tick = 0;
 
         this.load_shaders({
@@ -93,26 +82,14 @@ export default class Engine
         }, callback);
     }
 
-    update(elapsed, viewport)
+    update(elapsed)
     {
-        // actual canvas is not in DOM
-        // const canvas = this.canvas;
-        // const resized = twgl.resizeCanvasToDisplaySize(canvas);
-
         this.settings.time = elapsed / 1000;
         this.settings.resolution = [this.width, this.height]
         
         if (!this.state.blur) this.apply_blur();
         if (!this.state.lut) this.apply_lut();
         if (!this.state.trame) this.apply_trame();
-
-        // used for debug
-        // this.settings.image = this.media.image;
-        // this.draw(this.material.blur, this.mesh.quad, this.frame.trame.framebuffer, [0, 0, this.width, this.height]);
-
-        // result is drawn by EngineView instances
-        // this.settings.image = this.frame.trame.attachments[0];
-        // this.draw(this.material.draw, this.mesh.quad, null, viewport);
     }
 
     draw(material, mesh, buffer, rect)
@@ -128,6 +105,10 @@ export default class Engine
         gl.bindFramebuffer(gl.FRAMEBUFFER, buffer);
         gl.viewport(rect[0], rect[1], rect[2], rect[3]);
         gl.useProgram(material.program);
+        gl.clearColor(0,0,0,0)
+        gl.disable(gl.BLEND);
+        gl.enable(gl.DEPTH_TEST);
+        gl.clear(gl.COLOR_BUFFER_BIT);
         twgl.setBuffersAndAttributes(gl, material, mesh);
         twgl.setUniforms(material, this.settings);
         twgl.drawBufferInfo(gl, mesh);
@@ -146,7 +127,7 @@ export default class Engine
             }
             this.material[key] = twgl.createProgramInfo(this.gl, [loaded[item[0]], loaded[item[1]]]);
         }
-        if (callback != undefined) callback();
+        if (callback != undefined && callback != null) callback();
     }
 
     load_images(images)
@@ -165,133 +146,60 @@ export default class Engine
 
     apply_blur()
     {
-        this.settings.image = this.media.image;
-        this.draw(this.material.blur, this.mesh.quad, this.frame.blur.framebuffer, [0, 0, this.width, this.height]);
+        const image = this.media.image;
+        const material = this.material.blur;
+        const mesh = this.mesh.quad;
+        const buffer = this.frame.blur.framebuffer;
+        const viewport = [0, 0, this.width, this.height];
+
+        this.settings.image = image;
+        this.draw(material, mesh, buffer, viewport);
         this.state.blur = true;
     }
 
     apply_lut()
     {
-        this.settings.image = this.frame.blur.attachments[0];
-        this.draw(this.material.lut, this.mesh.quad, this.frame.lut.framebuffer, [0, 0, this.width, this.height]);
+        const image = this.frame.blur.attachments[0];
+        const material = this.material.lut;
+        const mesh = this.mesh.quad;
+        const buffer = this.frame.lut.framebuffer;
+        const viewport = [0, 0, this.width, this.height];
+
+        this.settings.image = image;
+        this.draw(material, mesh, buffer, viewport);
         this.state.lut = true;
     }
 
     apply_trame()
     {
-        emitter.emit('loading_start');
-
-        this.settings.image = this.frame.lut.attachments[0];
-
-        // trame is a CPU worker
-        if (this.trame.worker != undefined)
+        // trame has custom update
+        if (this.trame.update != undefined)
         {
-            this.apply_trame_worker(this.width, this.height);
-            this.state.trame = true;
+            this.trame.update(this);
         }
-        // trame has feedback shader
-        else if (this.trame.feedback != undefined)
-        {
-            const frames = [this.frame.read, this.frame.write];
-            const read = frames[(this.tick)%2];
-            const write = frames[(this.tick+1)%2];
-
-            if (this.tick < this.trame.feedback_frames)
-            {
-                // feedback buffer
-                this.settings.image = this.frame.lut.attachments[0];
-                this.settings.tick = this.tick;
-                this.settings.resolution = [this.width, this.height];
-                this.settings.feedback = read.attachments[0];
-                this.draw(this.material.feedback, this.mesh.quad, write.framebuffer, [0, 0, this.width, this.height]);
-
-                this.tick += 1;
-
-                emitter.emit('force_update', this);
-            }
-            else
-            {
-                // final print
-                this.settings.image = frames[this.tick%2].attachments[0]; 
-                this.draw(this.material.trame, this.mesh.quad, this.frame.trame.framebuffer, [0, 0, this.width, this.height]);
-
-                // end feedback
-                this.state.trame = true;
-                emitter.emit('loading_stop');
-            }
-        }
-        // trame is a simple shader
+        // update trame
         else
         {
-            this.draw(this.material.trame, this.mesh.quad, this.frame.trame.framebuffer, [0, 0, this.width, this.height]);
+            const image = this.frame.lut.attachments[0];
+            const material = this.material.trame;
+            const mesh = this.mesh.quad;
+            const buffer = this.frame.trame.framebuffer;
+            const viewport = [0, 0, this.width, this.height];
+
+            this.settings.image = image;
+            this.draw(material, mesh, buffer, viewport);
             this.state.trame = true;
+
             emitter.emit('loading_stop');
         }
-
-    }
-
-    apply_trame_worker(width, height)
-    {
-        const gl = this.gl;
-
-        if (this.worker != undefined)
-        {
-            this.worker.terminate();
-        }
-        
-        this.worker = new Worker(this.trame.worker);
-        this.worker.onmessage = (e) => 
-        {
-            const array = e.data.array;
-            const width = e.data.width;
-            const height = e.data.height;
-            this.media.worker = twgl.createTexture(gl, {
-                src: array,
-                format: gl.RED_INTEGER,
-                internalFormat: gl.R8UI,
-                minMag: gl.NEAREST,
-                flipY: false,
-                width: width,
-                height: height,
-            });
-            emitter.emit('loading_stop');
-        }
-
-        // export settings for worker
-        const settings = {};
-        for (const [key, item] of Object.entries(this.settings)) {
-            let value = item;
-            if (typeof value === 'number') {
-                settings[key] = value;
-            }
-        }
-
-        const read = new Uint8Array(width*height*4);
-        const array = new Uint8Array(width*height);
-        const buffer = twgl.createFramebufferInfo(gl, [{ format: gl.RGBA }], width, height);
-
-        // draw image in buffer
-        this.draw(this.material.blit, this.mesh.quad, buffer.framebuffer, [0, 0, width, height]);
-
-        // read buffer to array
-        gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, read);
-
-        // prepare data
-        for (let i = 0; i < width*height; ++i) array[i] = read[i*4];
-
-        this.worker.postMessage({
-            array: array, 
-            width: width,
-            height: height,
-            settings: settings,
-        });
     }
 
     get_result()
     {
-        if (this.trame.worker != undefined)
+        // trame has custom result
+        if (this.trame.get_result != undefined)
         {
-            return this.media.worker;
+            return this.trame.get_result(this);
         }
         else
         {
@@ -325,11 +233,14 @@ export default class Engine
             const frame = this.frame;
             twgl.resizeFramebufferInfo(gl, frame.blur, this.attachments, width, height);
             twgl.resizeFramebufferInfo(gl, frame.lut, this.attachments, width, height);
-            twgl.resizeFramebufferInfo(gl, frame.read, this.attachments, this.width, this.height);
-            twgl.resizeFramebufferInfo(gl, frame.write, this.attachments, this.width, this.height);
-            twgl.resizeFramebufferInfo(gl, frame.trame, this.attachments_uint, width, height);
+            twgl.resizeFramebufferInfo(gl, frame.read, this.attachments, width, height);
+            twgl.resizeFramebufferInfo(gl, frame.write, this.attachments, width, height);
+            twgl.resizeFramebufferInfo(gl, frame.trame, this.attachments, width, height);
 
             this.settings.format = [format_width, format_height];
+
+            // trame has custom resize
+            if (this.trame.set_size != undefined) this.trame.set_size(this);
     
             this.state.blur = false;
             this.state.lut = false;
@@ -340,39 +251,25 @@ export default class Engine
 
     set_trame(trame)
     {
-        this.trame = trame;
-
-        // clean
-        if (this.worker != null) this.worker.terminate();
-
-        // trame with shader
-        if (trame.shader != undefined)
+        // clear previous trame
+        if (this.trame.stop != undefined)
         {
-            // shader needs feedback
-            if (trame.feedback != undefined)
-            {
-                this.load_shaders({
-                    trame: ["shaders/rect.vert", trame.shader],
-                    feedback: ["shaders/rect.vert", trame.feedback]
-                }, () => {
-                    this.state.trame = false;
-                    this.tick = 0;
-                })
-            }
-            else
-            {
-                this.load_shaders({
-                    trame: ["shaders/rect.vert", trame.shader]
-                }, () => {
-                    this.state.trame = false;
-                })
-            }
+            this.trame.stop(this);
         }
 
-        // trame with worker
-        else if (trame.worker != undefined)
+        this.trame = trame;
+
+        // trame has custom start
+        if (trame.start != undefined) trame.start(this);
+
+        // trame with shader
+        else if (trame.shader != undefined)
         {
-            this.state.trame = false;
+            this.load_shaders({
+                trame: ["shaders/rect.vert", trame.shader]
+            }, () => {
+                this.state.trame = false;
+            })
         }
 
         // trame has maps to load
@@ -388,19 +285,15 @@ export default class Engine
 
     set_setting(key, value)
     {
-        if (this.settings[key] != undefined)
-        {
-            if (this.settings[key] != value)
-            {
-                this.state.trame = false;
-                this.tick = 0;
-            }
-        }
-        else
+        // update trame if value is new
+        const setting = this.settings[key];
+        const update = setting == undefined || setting != undefined && setting != value;
+        if (update)
         {
             this.state.trame = false;
             this.tick = 0;
         }
+
         this.settings[key] = value;
     }
 
@@ -418,3 +311,4 @@ export default class Engine
 
 // from module to vanilla
 window.Engine = Engine;
+window.twgl = twgl;

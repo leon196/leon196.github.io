@@ -9,7 +9,7 @@ uniform vec2 resolution, format;
 in vec2 uv;
 out vec4 fragColor;
 
-uniform float tick;
+uniform float tick, parameter_f, parameter_k, dynamic_k;
 const float lod = 0.;
 
 // Dave Hoskins
@@ -65,8 +65,11 @@ void main()
         //     color = vec3(1.);
         // }
         float a = 1.;
-        float b = step(.9, hash22(floor(gl_FragCoord.xy/pow(2., lod))).r);
-        // float b = step(0.5, gray);// smoothstep(.01,0.,length(uv-.5)-.1);
+        float rng = hash22(floor(gl_FragCoord.xy)).r;
+        float b = step(.9, rng);
+        if (dynamic_k < 0.5) {
+            b *= 1.-gray;// smoothstep(.01,0.,length(uv-.5)-.1);
+        }
         color = vec3(a,b,0);
         // color = vec3(smoothstep(.5,0.,length(uv-.5)-.1));
         // color = vec3();
@@ -77,8 +80,8 @@ void main()
         vec2 delta;
         // float F = .0367;//.055;//mix(0.04, 0.06, gray);
         // float K = .0649;//.062;//mix(.05, 0.07, gray);
-        float F = 0.07;// mix(.045, .07, gray);
-        float K = mix(.05, .1, gray);
+        float F = mix(.045, .07, parameter_f);
+        float K = mix(.05, .1, mix(parameter_k, gray, dynamic_k));
         float Da = 1.;// - .1 * gray;
         float Db = 0.2;// - 0.1 * gray;
         // val.x = min(val.x, 1.);

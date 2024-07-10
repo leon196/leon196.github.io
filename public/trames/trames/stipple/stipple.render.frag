@@ -4,8 +4,9 @@ precision mediump float;
 in vec2 uv;
 out vec4 fragColor;
 
+uniform sampler2D image;
+
 void main()
 {
-    float shape = step(length(uv-.5)-.5, 0.);
-	fragColor = vec4(shape);
+	fragColor = vec4(1.-texture(image, uv).b);
 }

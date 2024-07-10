@@ -6,7 +6,7 @@ uniform vec2 resolution, format;
 #define R resolution
 #define inch_to_mm 25.4
 in vec2 uv;
-out uint fragColor;
+out vec4 fragColor;
 
 uniform float r_lineature, r_angle, r_pattern, hexagonal, stretch, mode, variation_position, variation_rotation;
 
@@ -55,5 +55,5 @@ void main()
   else if (r_pattern == 1.) trame = max(abs(cell.x), abs(cell.y))-gray; // square
   else if (r_pattern == 2.) trame = abs(cell.x)-gray; // line
 
-  fragColor = uint(step(trame, 0.)*255.);
+  fragColor = vec4(step(trame, 0.));
 }

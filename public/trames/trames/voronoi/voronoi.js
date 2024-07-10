@@ -15,7 +15,7 @@
 				type: "slider",
 				min: 5,
 				max: 300,
-				value: 100,
+				value: 20,
 				step: 1,
 				unit: "lpi",
 				uniform: "r_lineature",

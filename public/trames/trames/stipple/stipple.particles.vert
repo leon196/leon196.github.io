@@ -9,6 +9,7 @@ out vec2 id;
 
 uniform sampler2D image;
 uniform vec2 resolution;
+uniform float atomic_size;
 
 // Dave Hoskins
 // https://www.shadertoy.com/view/4djSRW
@@ -25,7 +26,7 @@ void main()
     id = quantity;
     vec2 aspect = vec2(resolution.x/resolution.y, 1);
     vec4 data = texture(image, position.xy);
-    float size = 0.01;
+    float size = atomic_size;
 
     size *= data.z;
     vec2 pos = data.xy + texcoord * size / aspect;

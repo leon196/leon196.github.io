@@ -7,7 +7,7 @@ uniform vec2 resolution, format;
 #define R resolution
 #define inch_to_mm 25.4
 in vec2 uv;
-out uint fragColor;
+out vec4 fragColor;
 
 uniform float r_lineature, r_angle, r_pattern, hexagonal, stretch, mode, variation_position, variation_rotation;
 
@@ -52,5 +52,5 @@ void main()
 
   // trame *= crop;
 
-	fragColor = uint(step(trame, gray)*255.*crop);
+	fragColor = vec4(step(trame, gray)*crop);
 }

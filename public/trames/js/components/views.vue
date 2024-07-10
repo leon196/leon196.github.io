@@ -94,6 +94,7 @@ export default {
 			panzoom: [0,0,500,500],
 			zoom: [0,0,500,500],
 			elapsed: 0,
+			force_update: false,
 			mouse: {
 				up: false,
 				down: false,
@@ -254,6 +255,7 @@ export default {
 						global.definition_x, global.definition_y,
 						global.format_x, global.format_y,
 					);
+					console.log(trigger)
 				}
 
 				else
@@ -289,7 +291,8 @@ export default {
 			});
 
 			emitter.on('force_update', (self) => {
-				self.update(this.elapsed);
+				// self.update(this.elapsed);
+				this.force_update = true;
 			})
 		},
 
@@ -320,6 +323,12 @@ export default {
 
 			// detect user activity to update trame
 			this.mouse_activity(delta);
+
+			// this.update_trame();
+			if (this.force_update)
+			{
+				this.update_trame();
+			}
 
 			// draw trame
 			const result = engine.get_result();

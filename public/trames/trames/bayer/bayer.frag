@@ -6,7 +6,7 @@ uniform vec2 resolution, format;
 uniform float r_lineature, steps;
 
 in vec2 uv;
-out uint fragColor;
+out vec4 fragColor;
 
 #define MAX_LEVEL 4
 #define inch_to_mm 25.4
@@ -30,5 +30,5 @@ void main()
 	vec2 p = uv*lod;
 	float gray = texture(image, floor(uv*lod)/lod).r;
 	// vec3 color = vec3(step(bayer(p), gray));
-	fragColor = uint(step(bayer(p), gray)*255.);
+	fragColor = vec4(step(bayer(p), gray));
 }

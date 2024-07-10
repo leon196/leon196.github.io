@@ -7,7 +7,7 @@ uniform vec2 resolution, format;
 #define inch_to_mm 25.4
 
 in vec2 uv;
-out uint fragColor;
+out vec4 fragColor;
 
 uniform float r_lineature, threshold;
 
@@ -113,5 +113,5 @@ void main()
   vec2 uvAbs = abs(nUv-0.5);
   float s = step(0.5-uvAbs.x, lWidth.x*divs) + step(0.5-uvAbs.y, lWidth.y*divs);
 
-	fragColor = uint(s * 255.);
+	fragColor = vec4(s);
 }

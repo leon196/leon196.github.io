@@ -50,7 +50,7 @@ void main()
     
     // gl_FragColor = texture(image, uv);
     fragColor = vec4(final_colour/(Z*Z), 1.0);
-    // fragColor = uint(final_colour/(Z*Z)*255.);
+    // fragColor = vec4((final_colour/(Z*Z)*255.);
     // gl_FragColor = vec4(pow(final_colour/(Z*Z), vec3(1./2.2)), 1.0);
     // gl_FragColor = sRGBTransferOETF(gl_FragColor);
 }

@@ -7,7 +7,7 @@ uniform vec2 resolution, format;
 #define inch_to_mm 25.4
 
 in vec2 uv;
-out uint fragColor;
+out vec4 fragColor;
 
 uniform float r_lineature, size, edge;
 
@@ -79,5 +79,5 @@ void main()
     //     value = smoothstep(0.0,.01,vor.x-(1.-gray)*.7 + .01);
     // }
     float value = smoothstep(0.0,.01,vor.x-(1.-gray)*.55 + .01);
-	fragColor = uint(value*255.);
+	fragColor = vec4(value);
 }

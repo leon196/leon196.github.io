@@ -5,9 +5,9 @@ in vec2 uv;
 out vec4 fragColor;
 
 uniform float time;
-uniform highp usampler2D image;
+uniform sampler2D image;
 
 void main()
 {
-    fragColor = vec4(vec3(texture(image, uv).r)/255., 1.);
+    fragColor = vec4(vec3(texture(image, uv).r), 1.);
 }

@@ -8,7 +8,7 @@ uniform float rows, columns;
 #define inch_to_mm 25.4
 
 in vec2 uv;
-out uint fragColor;
+out vec4 fragColor;
 
 uniform float r_lineature, r_angle, shape, elipse_angle;
 
@@ -31,5 +31,5 @@ void main()
 	float trame = cos1 * elipse.x + cos2 * elipse.y;
 
 	// vec3 color = vec3(step(0.5, gray+trame));
-	fragColor = uint(step(0.5, gray+trame)*255.);
+	fragColor = vec4(step(0.5, gray+trame));
 }

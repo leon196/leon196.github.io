@@ -2,7 +2,7 @@
 precision mediump float;
 
 in vec2 uv;
-out uint fragColor;
+out vec4 fragColor;
 
 uniform sampler2D image;
 uniform float r_seuil, r_invert;
@@ -19,5 +19,5 @@ void main()
     gray = r_invert > 0.5 ? 1.-gray : gray;
 
 	// fragColor = vec4(vec3(gray), 1.0);
-    fragColor = uint(gray*255.);
+    fragColor = vec4(gray);
 }

@@ -9,8 +9,8 @@ let inch_to_mm = 25.4;
 let settings = {
 	global: {
 		media_mode: "print",
-		format_x: 400,
-		format_y: 300,
+		format_x: 500,
+		format_y: 500,
 		resolution: 200,
 		definition_x: 0,
 		definition_y: 0,
@@ -21,7 +21,7 @@ let settings = {
 		levels_black_offset:0,
 		levels_white_offset:0,
 		levels_lut: [],
-		current_screen: "mask",
+		current_screen: "stipple",
 		start_time: new Date().getTime(),
 		time: 0,
 		device_pixel_ratio: 1
@@ -39,7 +39,7 @@ let settings = {
 		"quadtree",
 		"mask",
 		"dbs",
-		// "stipple",
+		"stipple",
 		// "dbscpp",
 		// "error_bloc",
 	],
@@ -50,7 +50,7 @@ let settings = {
 	},
 
 	image: {
-		source: "images/image.jpg",
+		source: "images/chat_carre.png",
 		filename: "image.jpg",
 	},
 
