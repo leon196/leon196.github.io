@@ -57,6 +57,7 @@ export default class Engine
             read: twgl.createFramebufferInfo(gl, this.attachments, this.width, this.height),
             write: twgl.createFramebufferInfo(gl, this.attachments, this.width, this.height),
             trame: twgl.createFramebufferInfo(gl, this.attachments, this.width, this.height),
+            post: twgl.createFramebufferInfo(gl, this.attachments, this.width, this.height),
         };
 
         this.state = {
@@ -78,6 +79,7 @@ export default class Engine
             unpack: ["shaders/rect.vert", "shaders/unpack.frag"],
             draw: ["shaders/rect.vert", "shaders/draw.frag"],
             trame: ["shaders/rect.vert", "shaders/draw.frag"],
+            post: ["shaders/rect.vert", "shaders/post.frag"],
             uv: ["shaders/rect.vert", "shaders/uv.frag"],
         }, callback);
     }
@@ -139,7 +141,15 @@ export default class Engine
                 flipY: true,
                 wrap: gl.CLAMP_TO_EDGE,
                 minMag: gl.LINEAR,
+            }, () => {
+                this.state.blur = false;
+                this.state.lut = false;
+                this.state.trame = false;
+                this.tick = 0;
+                emitter.emit('force_update');
             });
+
+            // will send the image to shaders
             this.settings[key] = this.media[key];
         }
     }
@@ -175,7 +185,7 @@ export default class Engine
         // trame has custom update
         if (this.trame.update != undefined)
         {
-            this.trame.update(this);
+            this.trame.update(this, () => this.apply_post());
         }
         // update trame
         else
@@ -189,22 +199,34 @@ export default class Engine
             this.settings.image = image;
             this.draw(material, mesh, buffer, viewport);
             this.state.trame = true;
-
+            this.apply_post();
+            
             emitter.emit('loading_stop');
         }
     }
 
-    get_result()
+    apply_post()
     {
+        let image = this.frame.trame.attachments[0];
+
         // trame has custom result
         if (this.trame.get_result != undefined)
         {
-            return this.trame.get_result(this);
+            image = this.trame.get_result(this);
         }
-        else
-        {
-            return this.frame.trame.attachments[0];
-        }
+
+        const material = this.material.draw;
+        const mesh = this.mesh.quad;
+        const buffer = this.frame.post.framebuffer;
+        const viewport = [0, 0, this.width, this.height];
+
+        this.settings.image = image;
+        this.draw(material, mesh, buffer, viewport);
+    }
+
+    get_result()
+    {
+        return this.frame.post.attachments[0];
     }
 
     set_lut(array)
@@ -236,6 +258,7 @@ export default class Engine
             twgl.resizeFramebufferInfo(gl, frame.read, this.attachments, width, height);
             twgl.resizeFramebufferInfo(gl, frame.write, this.attachments, width, height);
             twgl.resizeFramebufferInfo(gl, frame.trame, this.attachments, width, height);
+            twgl.resizeFramebufferInfo(gl, frame.post, this.attachments, width, height);
 
             this.settings.format = [format_width, format_height];
 
@@ -281,6 +304,8 @@ export default class Engine
             }
             this.load_images(map);
         }
+        
+        emitter.emit('force_update');
     }
 
     set_setting(key, value)

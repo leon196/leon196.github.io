@@ -49,19 +49,6 @@
 				gradient_view: { bypass: false }
 			},
 			{
-				label_fr: "Stretch",
-				label_en: "Stretch",
-				slug: "stretch",
-				type: "slider",
-				min: -99,
-				max: 99,
-				value: 0,
-				step: 1,
-				uniform: "stretch",
-				process_to_uniform: x => x / 100,
-				gradient_view: { bypass: false }
-			},
-			{
 				label_fr: "Variation Position",
 				label_en: "Variation Position",
 				slug: "variation_position",

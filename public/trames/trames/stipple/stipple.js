@@ -92,7 +92,7 @@
             // twgl.resizeFramebufferInfo(gl, engine.frame.write, attachments, dim, dim);
 		},
 
-		update(engine)
+		update(engine, oncomplete)
 		{
 			if (engine.material.particles == undefined
 			||  engine.material.particles_render == undefined) return;
@@ -140,6 +140,7 @@
 				// end feedback
 				engine.state.trame = true;
 				emitter.emit('loading_stop');
+				if (oncomplete != undefined) oncomplete();
 			}
 		},
 

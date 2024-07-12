@@ -200,11 +200,6 @@ export default {
 				image: "images/grayscale_continuous.png",
 			});
 
-			// todo: fix async startup
-			setTimeout(() => {
-				this.update_trame();
-			}, 1000);
-
 			// main engine
 			this.engine = engine;
 			this.engine_gradient_steps = engine_gradient_steps;
@@ -226,11 +221,7 @@ export default {
 				engine_gradient_steps.set_trame(settings.screen);
 				engine_gradient_continuous.set_trame(settings.screen);
 				this.update_settings();
-
-				// todo: fix async startup
-				setTimeout(() => {
-					this.update_trame();
-				}, 1000);
+				this.update_trame();
 			})
 
 			const triggers = {
@@ -255,7 +246,6 @@ export default {
 						global.definition_x, global.definition_y,
 						global.format_x, global.format_y,
 					);
-					console.log(trigger)
 				}
 
 				else

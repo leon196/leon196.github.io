@@ -81,7 +81,7 @@
             twgl.resizeFramebufferInfo(gl, engine.frame.write, attachments, engine.width, engine.height);
 		},
 
-		update(engine)
+		update(engine, oncomplete)
 		{
 			const gl = engine.gl;
 			const frames = [engine.frame.read, engine.frame.write];
@@ -108,6 +108,7 @@
 				// end feedback
 				engine.state.trame = true;
 				emitter.emit('loading_stop');
+				if (oncomplete != undefined) oncomplete();
 			}
 		},
 	}

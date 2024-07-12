@@ -16,7 +16,7 @@
             engine.state.trame = false;
 		},
 
-		update(engine)
+		update(engine, oncomplete)
 		{
 			const gl = engine.gl;
 			const width = engine.width;
@@ -42,6 +42,7 @@
 					height: height,
 				});
 				emitter.emit('loading_stop');
+				if (oncomplete != undefined) oncomplete();
 			}
 	
 			// export settings for worker

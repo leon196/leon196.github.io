@@ -21,7 +21,7 @@ let settings = {
 		levels_black_offset:0,
 		levels_white_offset:0,
 		levels_lut: [],
-		current_screen: "stipple",
+		current_screen: "patterns",
 		start_time: new Date().getTime(),
 		time: 0,
 		device_pixel_ratio: 1

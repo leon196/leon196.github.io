@@ -20,7 +20,7 @@
 				label_en: "Linéature",
 				slug: "lineature",
 				type: "slider",
-				min: 5,
+				min: 1,
 				max: 300,
 				value: 10,
 				step: 1,
@@ -62,19 +62,6 @@
 				gradient_view: { bypass: false }
 			},
 			{
-				label_fr: "Variation Position",
-				label_en: "Variation Position",
-				slug: "variation_position",
-				type: "slider",
-				min: 0,
-				max: 100,
-				value: 0,
-				step: 1,
-				uniform: "variation_position",
-				process_to_uniform: x => x / 100,
-				gradient_view: { bypass: false }
-			},
-			{
 				label_fr: "Variation Rotation",
 				label_en: "Variation Rotation",
 				slug: "variation_rotation",
@@ -99,12 +86,22 @@
 				gradient_view: { bypass: false }
 			},
 			{
-				label_fr: "Mode",
-				label_en: "Mode",
-				slug: "mode",
+				label_fr: "Per Pixel",
+				label_en: "Per Pixel",
+				slug: "per_pixel",
 				type: "checkbox",
 				value: true,
-				uniform: "mode",
+				uniform: "per_pixel",
+				process_to_uniform: x => x ? 1 : 0,
+				gradient_view: { bypass: false }
+			},
+			{
+				label_fr: "Fullscreen",
+				label_en: "Fullscreen",
+				slug: "fullscreen",
+				type: "checkbox",
+				value: false,
+				uniform: "fullscreen",
 				process_to_uniform: x => x ? 1 : 0,
 				gradient_view: { bypass: false }
 			},

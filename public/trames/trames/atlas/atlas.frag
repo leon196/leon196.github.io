@@ -31,13 +31,12 @@ void main()
   // transformed coordinates
   vec2 aspect = vec2(format.x/format.y,1);
   vec2 p = (uv-.5)*aspect*rot(r_angle)*r_lineature*format.y/inch_to_mm;
-  p.x *= (1.+stretch);
   if (hexagonal > 0.5) p.x += floor(mod(p.y,2.))/2.;
 
   // image coordinates
   vec2 q = p;
   vec2 grid = ceil(q);
-  q = grid/vec2((1.+stretch),1.)*inch_to_mm*rot(-r_angle)/aspect/r_lineature/format.y+.5;
+  q = grid*inch_to_mm*rot(-r_angle)/aspect/r_lineature/format.y+.5;
 
   // image sample
 	float gray = texture(image, q).r;

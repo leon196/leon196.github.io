@@ -44,8 +44,8 @@
 				label_en: "Stretch",
 				slug: "stretch",
 				type: "slider",
-				min: -99,
-				max: 99,
+				min: 0,
+				max: 100,
 				value: 0,
 				step: 1,
 				uniform: "stretch",
@@ -114,11 +114,6 @@
 						mode: 1,
 						label_fr: "Carré",
 						label_en: "Square"
-					},
-					{
-						mode: 2,
-						label_fr: "Ligne",
-						label_en: "Line"
 					}
 				],
 				uniform: "r_pattern",

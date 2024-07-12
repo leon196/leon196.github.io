@@ -30,7 +30,7 @@ void main()
   // transformed coordinates
   vec2 aspect = vec2(format.x/format.y,1);
   vec2 p = (uv-.5)*aspect*rot(r_angle)*r_lineature*format.y/inch_to_mm;
-  p.x *= (1.+stretch);
+  // p.x *= (1.+stretch);
   if (mode > 0.5) p = (p-.5);
   if (hexagonal > 0.5) p.x += floor(mod(p.y,2.))/2.;
 
@@ -38,7 +38,8 @@ void main()
   vec2 q = p;
   vec2 grid = ceil(q);
   if (mode > 0.5) q = grid;
-  q = q/vec2((1.+stretch),1.)*inch_to_mm*rot(-r_angle)/aspect/r_lineature/format.y+.5;
+  // q = q/vec2((1.+stretch),1.)*inch_to_mm*rot(-r_angle)/aspect/r_lineature/format.y+.5;
+  q = q*inch_to_mm*rot(-r_angle)/aspect/r_lineature/format.y+.5;
 
   // image sample
 	float gray = texture(image, q).r/2.;
@@ -47,13 +48,14 @@ void main()
   vec2 cell = fract(p)-.5;
   cell += (hash22(grid)-.5)*(.5-gray)*variation_position*2.;
   cell *= rot(hash22(grid+196.).x*variation_rotation);
+  cell.x *= 1.-stretch;
 
   float trame = 0.;
 
   // shapes
   if (r_pattern == 0.) trame = length(cell)-gray; // circle
   else if (r_pattern == 1.) trame = max(abs(cell.x), abs(cell.y))-gray; // square
-  else if (r_pattern == 2.) trame = abs(cell.x)-gray; // line
+  // else if (r_pattern == 2.) trame = abs(cell.x)-gray; // line
 
   fragColor = vec4(step(trame, 0.));
 }

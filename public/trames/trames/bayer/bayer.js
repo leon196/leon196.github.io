@@ -1,6 +1,6 @@
 (function() {
 	return {
-		slug: "Bayer",
+		slug: "bayer",
 		name: "Bayer",
 		description: "",
 		author: "",
