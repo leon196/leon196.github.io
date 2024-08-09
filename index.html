@@ -1,30 +1,204 @@
 <!DOCTYPE html>
 <html>
+
   <head>
+
     <title>Leon Denise</title>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="style.css" />
-    <script src="script/lib/twgl-full.min.js"></script>
-    <script src="script/lib/load.js"></script>
-    <script src="script/webgl.js"></script>
-    <script src="script/web.js"></script>
-  </head>
-  <body oncontextmenu="return false">
-    <div id="card">
-      <img src="media/images/logoBW.png" draggable="false">
-      <h1 id="leon" class="shadow">Leon&nbsp;Denise</h1>
-      <p class="shadow">Tech Art</p>
-      <ul>
-        <li><a href="mailto:neondelice&#64;gmail.com" title="contact">
-          <img src="media/social/email.svg" draggable="false"></a></li>
-        <li><a href="https://twitter.com/leondenise" title="twitter">
-          <img src="media/social/twitter.svg" draggable="false"></a></li>
-        <li><a href="https://www.instagram.com/neondelice/" title="instagram">
-            <img src="media/social/insta.svg" draggable="false"></a></li>
-      </ul>
-    </div>
+
+    <link rel="stylesheet" href="/style/style.css" />
+    <link rel="stylesheet" href="/style/grid.css" />
+    <link rel="stylesheet" href="/style/responsive.css" />
+
+    <script src="/script/lib/twgl-full.min.js"></script>
+    <script src="/script/lib/virtual-webgl2.js"></script>
+    <script type="module" src="/script/shader-view.js" defer></script>
+
+</head>
+
+  <body>
+
     
-    <canvas id="magic"></canvas>
+<div class="nav">
+
+    <div class="name"><a href="/about/">Leon Denise</a></div>
+    
+    <div class="buttons">
+        <a href="/"><img class="button" src="/media/icon/function_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></a>
+        <a href="/gifs/"><img class="button" src="/media/icon/experiment_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></a>
+    </div>
+
+</div>
+
+<style>
+
+    .nav 
+    {
+        position: absolute;
+        font-size: 20px;
+        text-align: center;
+        left: 50%;
+        transform: translate(-50%,0);
+        top: 0;
+    }
+
+    .name
+    {
+        line-height: var(--navigation-size);
+    }
+
+    .buttons img
+    {
+        vertical-align: middle;
+    }
+
+    .nav div
+    {
+        display: inline-block;
+    }
+
+    .nav a:hover
+    {
+        filter: drop-shadow(0 0 5px white);
+    }
+
+</style>
+
+    <div class="grid">
+  
+  <div class="cell">
+    <a href="shadertoy/blockalitos/">
+      <img class="borders shadow" src="/shader/2024/blockalitos.png"></img>
+      <shader-view
+        preview=""
+        id="Blockalitos"
+        src="/shader/2024/blockalitos.frag"
+        iChannel0="/shader/common/font-octavio-good.png">
+        <canvas class="borders"></canvas>
+      </shader-view>
+    </a>
+  </div>
+  
+  <div class="cell">
+    <a href="shadertoy/ink-1/">
+      <img class="borders shadow" src="/shader/2024/07-03/ink-1.png"></img>
+      <shader-view
+        preview=""
+        id="Ink 1"
+        src="/shader/2024/07-03/2.buffer.frag"
+        iChannel0="">
+        <canvas class="borders"></canvas>
+      </shader-view>
+    </a>
+  </div>
+  
+  <div class="cell">
+    <a href="shadertoy/ink-2/">
+      <img class="borders shadow" src="/shader/2024/07-03/ink-2.png"></img>
+      <shader-view
+        preview=""
+        id="Ink 2"
+        src="/shader/2024/07-03/3.frag"
+        iChannel0="">
+        <canvas class="borders"></canvas>
+      </shader-view>
+    </a>
+  </div>
+  
+  <div class="cell">
+    <a href="shadertoy/ink-3/">
+      <img class="borders shadow" src="/shader/2024/07-03/ink-3.png"></img>
+      <shader-view
+        preview=""
+        id="Ink 3"
+        src="/shader/2024/07-03/4.buffer.frag"
+        iChannel0="">
+        <canvas class="borders"></canvas>
+      </shader-view>
+    </a>
+  </div>
+  
+  <div class="cell">
+    <a href="shadertoy/curling-smoke/">
+      <img class="borders shadow" src="/shader/2023/curling-smoke.png"></img>
+      <shader-view
+        preview=""
+        id="Curling Smoke"
+        src="/shader/2023/curling-smoke.buffer.frag"
+        iChannel0="">
+        <canvas class="borders"></canvas>
+      </shader-view>
+    </a>
+  </div>
+  
+  <div class="cell">
+    <a href="shadertoy/liquid-toy/">
+      <img class="borders shadow" src="/shader/2022/liquid-toy.png"></img>
+      <shader-view
+        preview=""
+        id="Liquid Toy"
+        src="/shader/2022/liquid-toy.buffer.frag"
+        iChannel0="">
+        <canvas class="borders"></canvas>
+      </shader-view>
+    </a>
+  </div>
+  
+  <div class="cell">
+    <a href="shadertoy/taste-of-noise-14c/">
+      <img class="borders shadow" src="/shader/2021/taste-of-noise/14c.png"></img>
+      <shader-view
+        preview=""
+        id="Taste of Noise 14c"
+        src="/shader/2021/taste-of-noise/14c.buffer.frag"
+        iChannel0="">
+        <canvas class="borders"></canvas>
+      </shader-view>
+    </a>
+  </div>
+  
+  <div class="cell">
+    <a href="shadertoy/taste-of-noise-7/">
+      <img class="borders shadow" src="/shader/2021/taste-of-noise/7.png"></img>
+      <shader-view
+        preview=""
+        id="Taste of Noise 7"
+        src="/shader/2021/taste-of-noise/7.buffer.frag"
+        iChannel0="">
+        <canvas class="borders"></canvas>
+      </shader-view>
+    </a>
+  </div>
+  
+  <div class="cell">
+    <a href="shadertoy/crypt-roots/">
+      <img class="borders shadow" src="/shader/2019/crypt-roots.png"></img>
+      <shader-view
+        preview=""
+        id="Crypt Roots"
+        src="/shader/2019/crypt-roots.frag"
+        iChannel0="">
+        <canvas class="borders"></canvas>
+      </shader-view>
+    </a>
+  </div>
+  
+  <div class="cell">
+    <a href="shadertoy/tribute-to-marc-antoine-mathieu/">
+      <img class="borders shadow" src="/shader/2017/tribute-marc.png"></img>
+      <shader-view
+        preview=""
+        id="Tribute to Marc-Antoine Mathieu"
+        src="/shader/2017/tribute-marc.frag"
+        iChannel0="">
+        <canvas class="borders"></canvas>
+      </shader-view>
+    </a>
+  </div>
+  
+</div>
+
   </body>
 </html>

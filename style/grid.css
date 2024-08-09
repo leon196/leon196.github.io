@@ -1,0 +1,55 @@
+
+.grid
+{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 10px;
+  margin: var(--navigation-size) 10px;
+}
+
+.cell
+{
+  display: grid;
+  position: relative;
+}
+
+.cell shader-view
+{
+  aspect-ratio: 1;
+  transition: opacity 1s;
+  opacity: 0;
+}
+
+.cell shader-view:hover
+{
+  opacity: 1;
+}
+
+.cell canvas
+{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.cell img
+{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.cell video
+{
+  height: 100%;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.cell a
+{
+  display: grid;
+}
