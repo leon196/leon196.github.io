@@ -35,6 +35,7 @@ class ShaderView extends Thumbnail
             iTime: 0,
             iTimeDelta: 0,
             iFrame: 0,
+            iDate: [0, 0, 0, 0],
             iResolution: [0, 0],
             iMouse: [0, 0, 0, 0],
             alphabet: twgl.createTexture(gl, { 
@@ -53,6 +54,12 @@ class ShaderView extends Thumbnail
             format: gl.RGBA,
             type: gl.FLOAT
         }]
+
+        const date = new Date();
+        this.uniforms.iDate[0] = date.getFullYear();
+        this.uniforms.iDate[1] = date.getMonth();
+        this.uniforms.iDate[2] = date.getDate();
+        // console.log(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()*3600 + date.getMinutes() * 60 + date.getSeconds())
     }
     
     async connectedCallback()
@@ -158,6 +165,9 @@ class ShaderView extends Thumbnail
         uniforms.iTime += deltaTime;
         uniforms.iFrame = this.tick;
         uniforms.iResolution = [gl.canvas.width, gl.canvas.height];
+
+        const date = new Date();
+        this.uniforms.iDate[3] = date.getHours()*3600 + date.getMinutes()*60 + date.getSeconds();
 
         // feedback effect
         this.feedback(resized);

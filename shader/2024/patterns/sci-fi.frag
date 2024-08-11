@@ -6,7 +6,7 @@ out vec4 fragColor;
 
 uniform float iTime, iTimeDelta, iFrame;
 uniform vec2 iResolution;
-uniform sampler2D iChannel0, iChannel1, iChannel2, iChannel3;
+uniform sampler2D framebuffer, bluenoise, iChannel2, iChannel3;
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord);
 
@@ -21,10 +21,10 @@ void main()
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     vec2 uv = fragCoord/iResolution.xy;
-    vec4 frame = texture(iChannel0, uv);
+    vec4 frame = texture(framebuffer, uv);
     
     // coordinates distance
-    #define T(u) texture(iChannel0, uv+u/iResolution.xy).x
+    #define T(u) texture(framebuffer, uv+u/iResolution.xy).x
     float z = T(0.);
     
     float edge = 0.;
@@ -36,7 +36,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         // blue noise scroll https://www.shadertoy.com/view/tlySzR
         ivec2 pp = ivec2(fragCoord);
         pp = (pp+(int(a))*ivec2(113,127)) & 1023;
-        vec3 blu = texelFetch(iChannel1,pp,0).xyz;
+        vec3 blu = texelFetch(bluenoise,pp,0).xyz;
         
         // edge detection
         float f = a/count;

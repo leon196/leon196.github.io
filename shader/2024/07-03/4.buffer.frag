@@ -6,7 +6,7 @@ out vec4 fragColor;
 
 uniform float iTime, iTimeDelta, iFrame;
 uniform vec2 iResolution;
-uniform sampler2D iChannel0, iChannel1, iChannel2, iChannel3;
+uniform sampler2D framebuffer, bluenoise, iChannel2, iChannel3;
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord);
 
@@ -41,7 +41,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec2 uv = fragCoord/R.xy;
     vec2 p = (2.*fragCoord-R.xy)/R.y;
     vec2 aspect = vec2(R.x/R.y, 1.);
-    vec3 blu = texture(iChannel1, fragCoord/1024.).rgb;
+    vec3 blu = texture(bluenoise, fragCoord/1024.).rgb;
     
     
     vec3 normal = vec3(0);
@@ -76,7 +76,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     //move *= 1.+2.*blu.z;
     move /= R;
     
-    vec3 frame = texture(iChannel0, uv+move).rgb;
+    vec3 frame = texture(framebuffer, uv+move).rgb;
     
     color = max(color, frame - iTimeDelta/20.);
     
