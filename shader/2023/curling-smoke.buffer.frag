@@ -6,7 +6,7 @@ out vec4 fragColor;
 
 uniform float iTime, iTimeDelta, iFrame;
 uniform vec2 iResolution;
-uniform sampler2D iChannel0, iChannel1, iChannel2, iChannel3;
+uniform sampler2D framebuffer;
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord);
 
@@ -58,7 +58,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     // displace buffer sampler coordinates
     uv += offset*.002*vec2(R.y/R.x, 1);
-    vec3 frame = texture(iChannel0, uv).rgb;
+    vec3 frame = texture(framebuffer, uv).rgb;
     
     // spawn from edge
     bool spawn = fragCoord.x < 1. || fragCoord.x > R.x - 1.

@@ -7,7 +7,7 @@ out vec4 fragColor;
 uniform float iTime, iTimeDelta, iFrame;
 uniform vec2 iResolution;
 uniform vec4 iMouse;
-uniform sampler2D iChannel0, iChannel1, iChannel2, iChannel3;
+uniform sampler2D framebuffer;
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord);
 
@@ -200,7 +200,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // temporal buffer
     float fade = 0.001;
     fade += step(0.5, iMouse.z);
-    vec4 frame = texture(iChannel0, gl_FragCoord.xy/iResolution.xy);
+    vec4 frame = texture(framebuffer, gl_FragCoord.xy/iResolution.xy);
     fragColor.rgb = max(fragColor.rgb, frame.rgb - fade);
 }
 

@@ -5,8 +5,9 @@ precision mediump float;
 out vec4 fragColor;
 
 uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution, iMouse;
-uniform sampler2D iChannel0, iChannel1, iChannel2, iChannel3;
+uniform vec2 iResolution;
+uniform vec4 iMouse;
+uniform sampler2D framebuffer;
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord);
 
@@ -112,15 +113,19 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 eye = vec3(1,1,1.);
     vec3 at = vec3(0,0,0);
     vec3 z = normalize(at-eye);
-    vec3 x = normalize(cross(z, vec3(0,1,0)));
-    vec3 y = cross(x, z);
-    vec3 ray = normalize(vec3(z + uv.x * x + uv.y * y));
-    vec3 pos = eye;
     
     // camera control
-    vec2 M = 6.28*(iMouse.xy-.5);
-    ray.xz *= rot(M.x), pos.xz *= rot(M.x);
-    ray.xy *= rot(M.y), pos.xy *= rot(M.y);
+    // if (iMouse.z > .5)
+    {
+        vec2 M = 6.28*(iMouse.xy/iResolution.xy);
+        z.yz *= rot(M.y);
+        z.xz *= rot(M.x);
+    }
+
+    vec3 x = normalize(cross(z, vec3(0,1,0)));
+    vec3 y = normalize(cross(x, z));
+    vec3 ray = normalize(vec3(z + uv.x * x + uv.y * y));
+    vec3 pos = eye;
     
     // white noise
     vec3 seed = vec3(fragCoord.xy, iTime);
@@ -164,7 +169,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // pixel color
     fragColor.rgb = (tint + light) * shade;
 
+    float fade = 0.01;
+
+    if (iMouse.z > .5) fade = 1.;
+
     // temporal buffer
-    fragColor = max(fragColor, texture(iChannel0, fragCoord/iResolution.xy) - 0.01);
+    fragColor = max(fragColor, texture(framebuffer, fragCoord/iResolution.xy) - fade);
 }
 

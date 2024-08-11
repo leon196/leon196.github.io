@@ -6,7 +6,7 @@ out vec4 fragColor;
 
 uniform float iTime, iTimeDelta, iFrame;
 uniform vec2 iResolution;
-uniform sampler2D iChannel0, iChannel1, iChannel2, iChannel3;
+uniform sampler2D framebuffer, bluenoise;
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord);
 
@@ -23,10 +23,7 @@ void main()
 // (samed speed and look at different frame size)
 
 // shortcut to sample texture
-#define TEX(uv) texture(iChannel0, uv).r
-#define TEX1(uv) texture(iChannel1, uv).r
-#define TEX2(uv) texture(iChannel2, uv).r
-#define TEX3(uv) texture(iChannel3, uv).r
+#define TEX(uv) texture(framebuffer, uv).r
 
 // shorcut for smoothstep uses
 #define trace(edge, thin) smoothstep(thin,.0,edge)
@@ -37,10 +34,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     
     // coordinates
     vec2 uv = fragCoord.xy / iResolution.xy;
-    vec3 dither = texture(iChannel1, fragCoord.xy / 1024.).rgb;
+    vec3 dither = texture(bluenoise, fragCoord.xy / 1024.).rgb;
     
     // value from buffer A
-    vec4 data =  texture(iChannel0, uv);
+    vec4 data =  texture(framebuffer, uv);
     float gray = data.x;
     
     // gradient normal from gray value

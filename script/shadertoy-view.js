@@ -1,7 +1,5 @@
 
-import Thumbnail from "./thumbnail-view.js"
-
-class ShadertoyView extends Thumbnail
+class ShadertoyView extends HTMLElement
 {    
     constructor()
     {

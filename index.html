@@ -65,17 +65,17 @@
     }
 
 </style>
-
+    
     <div class="grid">
   
   <div class="cell">
     <a href="shadertoy/blockalitos/">
-      <img class="borders shadow" src="/shader/2024/blockalitos.png"></img>
+      <img class="borders shadow" src="/shader/2024/blockalitos.jpg"></img>
       <shader-view
         preview=""
         id="Blockalitos"
         src="/shader/2024/blockalitos.frag"
-        iChannel0="/shader/common/font-octavio-good.png">
+        iChannel0="">
         <canvas class="borders"></canvas>
       </shader-view>
     </a>
@@ -83,7 +83,7 @@
   
   <div class="cell">
     <a href="shadertoy/ink-1/">
-      <img class="borders shadow" src="/shader/2024/07-03/ink-1.png"></img>
+      <img class="borders shadow" src="/shader/2024/07-03/ink-1.jpg"></img>
       <shader-view
         preview=""
         id="Ink 1"
@@ -96,7 +96,7 @@
   
   <div class="cell">
     <a href="shadertoy/ink-2/">
-      <img class="borders shadow" src="/shader/2024/07-03/ink-2.png"></img>
+      <img class="borders shadow" src="/shader/2024/07-03/ink-2.jpg"></img>
       <shader-view
         preview=""
         id="Ink 2"
@@ -109,7 +109,7 @@
   
   <div class="cell">
     <a href="shadertoy/ink-3/">
-      <img class="borders shadow" src="/shader/2024/07-03/ink-3.png"></img>
+      <img class="borders shadow" src="/shader/2024/07-03/ink-3.jpg"></img>
       <shader-view
         preview=""
         id="Ink 3"
@@ -122,7 +122,7 @@
   
   <div class="cell">
     <a href="shadertoy/curling-smoke/">
-      <img class="borders shadow" src="/shader/2023/curling-smoke.png"></img>
+      <img class="borders shadow" src="/shader/2023/curling-smoke.jpg"></img>
       <shader-view
         preview=""
         id="Curling Smoke"
@@ -135,7 +135,7 @@
   
   <div class="cell">
     <a href="shadertoy/liquid-toy/">
-      <img class="borders shadow" src="/shader/2022/liquid-toy.png"></img>
+      <img class="borders shadow" src="/shader/2022/liquid-toy.jpg"></img>
       <shader-view
         preview=""
         id="Liquid Toy"
@@ -148,7 +148,7 @@
   
   <div class="cell">
     <a href="shadertoy/taste-of-noise-14c/">
-      <img class="borders shadow" src="/shader/2021/taste-of-noise/14c.png"></img>
+      <img class="borders shadow" src="/shader/2021/taste-of-noise/14c.jpg"></img>
       <shader-view
         preview=""
         id="Taste of Noise 14c"
@@ -161,7 +161,7 @@
   
   <div class="cell">
     <a href="shadertoy/taste-of-noise-7/">
-      <img class="borders shadow" src="/shader/2021/taste-of-noise/7.png"></img>
+      <img class="borders shadow" src="/shader/2021/taste-of-noise/7.jpg"></img>
       <shader-view
         preview=""
         id="Taste of Noise 7"
@@ -174,7 +174,7 @@
   
   <div class="cell">
     <a href="shadertoy/crypt-roots/">
-      <img class="borders shadow" src="/shader/2019/crypt-roots.png"></img>
+      <img class="borders shadow" src="/shader/2019/crypt-roots.jpg"></img>
       <shader-view
         preview=""
         id="Crypt Roots"
@@ -187,7 +187,7 @@
   
   <div class="cell">
     <a href="shadertoy/tribute-to-marc-antoine-mathieu/">
-      <img class="borders shadow" src="/shader/2017/tribute-marc.png"></img>
+      <img class="borders shadow" src="/shader/2017/tribute-marc.jpg"></img>
       <shader-view
         preview=""
         id="Tribute to Marc-Antoine Mathieu"
@@ -199,6 +199,23 @@
   </div>
   
 </div>
+
+<style>
+
+  .cell shader-view
+  {
+    aspect-ratio: 1;
+    transition: opacity 1s;
+    opacity: 0;
+  }
+
+  .cell shader-view:hover
+  {
+    opacity: 1;
+    cursor: zoom-in;
+  }
+  
+</style>
 
   </body>
 </html>

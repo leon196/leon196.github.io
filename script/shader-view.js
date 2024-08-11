@@ -36,8 +36,16 @@ class ShaderView extends Thumbnail
             iTimeDelta: 0,
             iFrame: 0,
             iResolution: [0, 0],
-            iChannel0: 0,
-            iChannel1: twgl.createTexture(gl, { src: "/shader/common/bluenoise-shadertoy.png", flipY: true }),
+            iMouse: [0, 0, 0, 0],
+            alphabet: twgl.createTexture(gl, { 
+                src: "/shader/common/font-octavio-good.png",
+                flipY: true,
+                minMag: gl.LINEAR
+            }),
+            bluenoise: twgl.createTexture(gl, {
+                src: "/shader/common/bluenoise-shadertoy.png",
+                flipY: true
+            }),
         };
         
         this.attachments = [ {
@@ -58,13 +66,8 @@ class ShaderView extends Thumbnail
         is_buffer = columns[columns.length-2] == "buffer";
         path = path.replace(".buffer", "");
 
+        // const stamp = "";
         const stamp = "?t="+Date.now();
-
-        const iChannel0 = this.getAttribute("iChannel0");
-        if (iChannel0 != "")
-        {
-            this.uniforms.iChannel0 = twgl.createTexture(gl, { src: iChannel0, flipY: true, minMag: gl.LINEAR })
-        }
 
         // load shader files
         await fetch("/shader/common/frame.vert").then(e => e.text()).then(e => this.vertex = e);
@@ -93,11 +96,35 @@ class ShaderView extends Thumbnail
         {
             // hover
             this.addEventListener("mouseenter", e => { this.update = true });
+            this.addEventListener("mousemove", e => { this.update = true });
             this.addEventListener("mouseout", e => { this.update = false });
         }
         else
         {
             this.update = true;
+        }
+
+        if (this.filter.includes("iMouse") || this.filter_feedback.includes("iMouse"))
+        {
+            // mouse interaction
+            this.addEventListener("mousemove", e => {
+                const down = this.uniforms.iMouse[2] > 0.5;
+                if (down) {
+                    this.uniforms.iMouse[0] = e.offsetX;
+                    this.uniforms.iMouse[1] = this.canvas.height - e.offsetY;
+                }
+            });
+            this.addEventListener("mousedown", e => {
+                this.uniforms.iMouse[0] = e.offsetX;
+                this.uniforms.iMouse[1] = this.canvas.height - e.offsetY;
+                this.uniforms.iMouse[2] = 1;
+            });
+            this.addEventListener("mouseup", e => {
+                this.uniforms.iMouse[2] = 0;
+            });
+
+            // cursor
+            this.style.cursor = "pointer";
         }
 
         // main loop
@@ -110,8 +137,6 @@ class ShaderView extends Thumbnail
 
         const item = this.getBoundingClientRect();
         const visible = item.top >= -item.height && item.bottom <= window.innerHeight+item.height
-
-        
 
         if (visible && this.update) this.render(time - this.elapsed);
         this.elapsed = time;
@@ -176,7 +201,7 @@ class ShaderView extends Thumbnail
         const write = (tick + 1) % 2;
 
         // apply feedback effect
-        uniforms.iChannel0 = frames[read].attachments[0];
+        uniforms.framebuffer = frames[read].attachments[0];
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         gl.bindFramebuffer(gl.FRAMEBUFFER, frames[write].framebuffer);
         gl.useProgram(material.program);

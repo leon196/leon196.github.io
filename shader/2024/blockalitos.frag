@@ -6,7 +6,7 @@ out vec4 fragColor;
 
 uniform float iTime, iTimeDelta, iFrame;
 uniform vec2 iResolution;
-uniform sampler2D iChannel0, iChannel1, iChannel2, iChannel3;
+uniform sampler2D alphabet;
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord);
 
@@ -76,7 +76,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     }
     
     // font sample
-    float letter = texture(iChannel0, atlas/16.).r;
+    float letter = texture(alphabet, atlas/16.).r;
     
     // color palette https://iquilezles.org/articles/palettes/
     vec3 tint = .5+.5*cos(vec3(1,2,3)*4.5+rng.x*5.);

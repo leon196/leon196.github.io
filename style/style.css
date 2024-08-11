@@ -17,10 +17,22 @@
 
 html,
 body {
-  background-color: #222;
   color: #eee;
   font-family: monospace;
+  background-color: #222;
   background-image: url("/media/images/bluenoise-shadertoy-20.png");
+}
+
+.background
+{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-image: url("/media/images/bluenoise-shadertoy.png");
+  opacity: 0.5;
+  z-index: -1;
 }
 
 /* fonts */

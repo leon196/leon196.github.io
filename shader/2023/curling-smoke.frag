@@ -6,7 +6,7 @@ out vec4 fragColor;
 
 uniform float iTime, iTimeDelta, iFrame;
 uniform vec2 iResolution;
-uniform sampler2D iChannel0, iChannel1, iChannel2, iChannel3;
+uniform sampler2D framebuffer, bluenoise;
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord);
 
@@ -29,14 +29,14 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec2 uv = fragCoord/iResolution.xy;
     
     // noise
-    vec3 blu = texture(iChannel1, fragCoord/1024.).rgb;
+    vec3 blu = texture(bluenoise, fragCoord/1024.).rgb;
     
     // frame
-    vec3 color = texture(iChannel0, uv).rgb;
+    vec3 color = texture(framebuffer, uv).rgb;
     
     // normal
     vec2 e = vec2(pow(blu.x, 3.)*0.084,0);
-    #define T(u) texture(iChannel0, uv+u).r
+    #define T(u) texture(framebuffer, uv+u).r
     vec3 normal = vec3(
         T(e.xy)-T(-e.xy), 
         T(-e.yx)-T(e.yx),

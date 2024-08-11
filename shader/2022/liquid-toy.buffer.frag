@@ -6,7 +6,8 @@ out vec4 fragColor;
 
 uniform float iTime, iTimeDelta, iFrame;
 uniform vec2 iResolution;
-uniform sampler2D iChannel0, iChannel1, iChannel2, iChannel3;
+uniform vec4 iMouse;
+uniform sampler2D framebuffer;
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord);
 
@@ -19,10 +20,7 @@ void main()
 // Playing with shading with a fake fluid heightmap
 
 // shortcut to sample texture
-#define TEX(uv) texture(iChannel0, uv).r
-#define TEX1(uv) texture(iChannel1, uv).r
-#define TEX2(uv) texture(iChannel2, uv).r
-#define TEX3(uv) texture(iChannel3, uv).r
+#define TEX(uv) texture(framebuffer, uv).r
 
 // shorcut for smoothstep uses
 #define trace(edge, thin) smoothstep(thin,.0,edge)
@@ -42,7 +40,7 @@ float fbm(vec3 p)
     float result = 0., amplitude = 0.5;
     for (float index = 0.; index < 5.; ++index)
     {
-        // result += texture(iChannel0, p/amplitude).xyz * amplitude;
+        // result += texture(framebuffer, p/amplitude).xyz * amplitude;
         result += gyroid(p/amplitude) * amplitude;
         amplitude /= falloff;
     }
@@ -58,16 +56,16 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     
     // draw circle at mouse or in motion
     float t = iTime*2.;
-    // vec2 mouse = (iMouse.xy - iResolution.xy / 2.)/iResolution.y;
-    // if (iMouse.z > .5) uv -= mouse;
-    // else uv -= vec2(cos(t),sin(t))*.3;
-    uv -= vec2(cos(t),sin(t))*.3;
+    vec2 mouse = (iMouse.xy - iResolution.xy / 2.)/iResolution.y;
+    if (iMouse.z > .5) uv -= mouse;
+    else uv -= vec2(cos(t),sin(t))*.3;
+    // uv -= vec2(cos(t),sin(t))*.3;
     float paint = trace(length(uv),.1);
     
     // expansion
     vec2 offset = vec2(0);
     uv = fragCoord.xy / iResolution.xy;
-    vec4 data = texture(iChannel0, uv);
+    vec4 data = texture(framebuffer, uv);
     vec3 unit = vec3(range/472./aspect,0);
     vec3 normal = normalize(vec3(
         TEX(uv - unit.xz)-TEX(uv + unit.xz),
@@ -93,7 +91,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     uv += strength * offset / aspect / 472.;
     
     // sample buffer
-    vec4 frame = texture(iChannel0, uv);
+    vec4 frame = texture(framebuffer, uv);
     
     // temporal fading buffer
     paint = max(paint, frame.x - iTimeDelta * fade);
