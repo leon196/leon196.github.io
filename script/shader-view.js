@@ -31,13 +31,18 @@ class ShaderView extends Thumbnail
         this.filter_feedback = "";
         
         // shader settings
+        const date = new Date();
         this.uniforms = {
             iTime: 0,
             iTimeDelta: 0,
             iFrame: 0,
-            iDate: [0, 0, 0, 0],
             iResolution: [0, 0],
             iMouse: [0, 0, 0, 0],
+            iDate: [
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate(),
+                0],
             alphabet: twgl.createTexture(gl, { 
                 src: "/shader/common/font-octavio-good.png",
                 flipY: true,
@@ -54,18 +59,10 @@ class ShaderView extends Thumbnail
             format: gl.RGBA,
             type: gl.FLOAT
         }]
-
-        const date = new Date();
-        this.uniforms.iDate[0] = date.getFullYear();
-        this.uniforms.iDate[1] = date.getMonth();
-        this.uniforms.iDate[2] = date.getDate();
-        // console.log(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()*3600 + date.getMinutes() * 60 + date.getSeconds())
     }
-    
+
     async connectedCallback()
     {
-        const gl = this.gl;
-
         // detect shader type
         let path = this.getAttribute("src");
         let is_buffer = false;
@@ -99,43 +96,52 @@ class ShaderView extends Thumbnail
             ];
         }
 
+        // mouse event
+        this.events();
+
+        // main loop
+        requestAnimationFrame((time) => this.loop(time));
+    }
+
+    events()
+    {
         if (this.hasAttribute("preview"))
         {
             // hover
             this.addEventListener("mouseenter", e => { this.update = true });
             this.addEventListener("mousemove", e => { this.update = true });
             this.addEventListener("mouseout", e => { this.update = false });
+            
+            // loading
+            this.parentNode.querySelector(".loading").style.display = "none";
         }
         else
         {
             this.update = true;
-        }
 
-        if (this.filter.includes("iMouse") || this.filter_feedback.includes("iMouse"))
-        {
-            // mouse interaction
-            this.addEventListener("mousemove", e => {
-                const down = this.uniforms.iMouse[2] > 0.5;
-                if (down) {
+            if (this.filter.includes("iMouse") || this.filter_feedback.includes("iMouse"))
+            {
+                // mouse interaction
+                this.addEventListener("mousemove", e => {
+                    const down = this.uniforms.iMouse[2] > 0.5;
+                    if (down) {
+                        this.uniforms.iMouse[0] = e.offsetX;
+                        this.uniforms.iMouse[1] = this.canvas.height - e.offsetY;
+                    }
+                });
+                this.addEventListener("mousedown", e => {
                     this.uniforms.iMouse[0] = e.offsetX;
                     this.uniforms.iMouse[1] = this.canvas.height - e.offsetY;
-                }
-            });
-            this.addEventListener("mousedown", e => {
-                this.uniforms.iMouse[0] = e.offsetX;
-                this.uniforms.iMouse[1] = this.canvas.height - e.offsetY;
-                this.uniforms.iMouse[2] = 1;
-            });
-            this.addEventListener("mouseup", e => {
-                this.uniforms.iMouse[2] = 0;
-            });
+                    this.uniforms.iMouse[2] = 1;
+                });
+                this.addEventListener("mouseup", e => {
+                    this.uniforms.iMouse[2] = 0;
+                });
 
-            // cursor
-            this.style.cursor = "pointer";
+                // cursor
+                this.style.cursor = "pointer";
+            }
         }
-
-        // main loop
-        requestAnimationFrame((time) => this.loop(time));
     }
 
     loop(time)
