@@ -10,66 +10,23 @@
 
     <link rel="stylesheet" href="/style/style.css" />
     <link rel="stylesheet" href="/style/grid.css" />
-    <link rel="stylesheet" href="/style/responsive.css" />
 
     <script src="/script/lib/twgl-full.min.js"></script>
-    <!-- <script src="/script/lib/virtual-webgl2.js"></script> -->
-    <script type="module" src="/script/shader-view.js" defer></script>
+    <script src="/script/lib/virtual-webgl2.js"></script>
+    <script type="module" src="/script/shader-view.js"></script>
+    <!-- <script type="module" src="/script/shadertoy-view.js" defer></script> -->
 
 </head>
 
   <body>
-
-    
-<div class="nav">
-
-    <div class="name"><a href="/about/">Leon Denise</a></div>
-    
-    <div class="buttons">
-        <a href="/"><img class="button" src="/media/icon/function_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></a>
-        <a href="/gifs/"><img class="button" src="/media/icon/experiment_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></a>
-    </div>
-
-</div>
-
-<style>
-
-    .nav 
-    {
-        position: absolute;
-        font-size: 20px;
-        text-align: center;
-        left: 50%;
-        transform: translate(-50%,0);
-        top: 0;
-    }
-
-    .name
-    {
-        line-height: var(--navigation-size);
-    }
-
-    .buttons img
-    {
-        vertical-align: middle;
-    }
-
-    .nav div
-    {
-        display: inline-block;
-    }
-
-    .nav a:hover
-    {
-        filter: drop-shadow(0 0 5px white);
-    }
-
-</style>
     
     <div class="grid">
+  <div class="cell about borders">
+    <a class="cell-link" href="/about/"></a>
+  </div>
   
   <div class="cell">
-    <a href="shadertoy/blockalitos/">
+    <a class="cell-link" href="/shadertoy/blockalitos/">
       <img class="view borders shadow" src="/shader/2024/blockalitos.jpg"></img>
       <img class="loading" src="/media/icon/hourglass_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></img>
       <shader-view
@@ -84,7 +41,7 @@
   </div>
   
   <div class="cell">
-    <a href="shadertoy/subatomics/">
+    <a class="cell-link" href="/shadertoy/subatomics/">
       <img class="view borders shadow" src="/shader/2024/subatomics.png"></img>
       <img class="loading" src="/media/icon/hourglass_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></img>
       <shader-view
@@ -99,7 +56,7 @@
   </div>
   
   <div class="cell">
-    <a href="shadertoy/spaceship-generator/">
+    <a class="cell-link" href="/shadertoy/spaceship-generator/">
       <img class="view borders shadow" src="/shader/2024/spaceship-generator.png"></img>
       <img class="loading" src="/media/icon/hourglass_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></img>
       <shader-view
@@ -114,7 +71,7 @@
   </div>
   
   <div class="cell">
-    <a href="shadertoy/sci-fi-pattern/">
+    <a class="cell-link" href="/shadertoy/sci-fi-pattern/">
       <img class="view borders shadow" src="/shader/2024/patterns/sci-fi.png"></img>
       <img class="loading" src="/media/icon/hourglass_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></img>
       <shader-view
@@ -129,7 +86,7 @@
   </div>
   
   <div class="cell">
-    <a href="shadertoy/ink-1/">
+    <a class="cell-link" href="/shadertoy/ink-1/">
       <img class="view borders shadow" src="/shader/2024/07-03/ink-1.jpg"></img>
       <img class="loading" src="/media/icon/hourglass_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></img>
       <shader-view
@@ -144,7 +101,7 @@
   </div>
   
   <div class="cell">
-    <a href="shadertoy/ink-2/">
+    <a class="cell-link" href="/shadertoy/ink-2/">
       <img class="view borders shadow" src="/shader/2024/07-03/ink-2.jpg"></img>
       <img class="loading" src="/media/icon/hourglass_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></img>
       <shader-view
@@ -159,7 +116,7 @@
   </div>
   
   <div class="cell">
-    <a href="shadertoy/ink-3/">
+    <a class="cell-link" href="/shadertoy/ink-3/">
       <img class="view borders shadow" src="/shader/2024/07-03/ink-3.jpg"></img>
       <img class="loading" src="/media/icon/hourglass_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></img>
       <shader-view
@@ -174,7 +131,7 @@
   </div>
   
   <div class="cell">
-    <a href="shadertoy/curling-smoke/">
+    <a class="cell-link" href="/shadertoy/curling-smoke/">
       <img class="view borders shadow" src="/shader/2023/curling-smoke.jpg"></img>
       <img class="loading" src="/media/icon/hourglass_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></img>
       <shader-view
@@ -189,7 +146,7 @@
   </div>
   
   <div class="cell">
-    <a href="shadertoy/liquid-toy/">
+    <a class="cell-link" href="/shadertoy/liquid-toy/">
       <img class="view borders shadow" src="/shader/2022/liquid-toy.jpg"></img>
       <img class="loading" src="/media/icon/hourglass_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></img>
       <shader-view
@@ -204,7 +161,7 @@
   </div>
   
   <div class="cell">
-    <a href="shadertoy/taste-of-noise-14c/">
+    <a class="cell-link" href="/shadertoy/taste-of-noise-14c/">
       <img class="view borders shadow" src="/shader/2021/taste-of-noise/14c.jpg"></img>
       <img class="loading" src="/media/icon/hourglass_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></img>
       <shader-view
@@ -219,7 +176,7 @@
   </div>
   
   <div class="cell">
-    <a href="shadertoy/taste-of-noise-7/">
+    <a class="cell-link" href="/shadertoy/taste-of-noise-7/">
       <img class="view borders shadow" src="/shader/2021/taste-of-noise/7.jpg"></img>
       <img class="loading" src="/media/icon/hourglass_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></img>
       <shader-view
@@ -234,7 +191,7 @@
   </div>
   
   <div class="cell">
-    <a href="shadertoy/crypt-roots/">
+    <a class="cell-link" href="/shadertoy/crypt-roots/">
       <img class="view borders shadow" src="/shader/2019/crypt-roots.jpg"></img>
       <img class="loading" src="/media/icon/hourglass_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></img>
       <shader-view
@@ -249,7 +206,7 @@
   </div>
   
   <div class="cell">
-    <a href="shadertoy/tribute-to-marc-antoine-mathieu/">
+    <a class="cell-link" href="/shadertoy/tribute-to-marc-antoine-mathieu/">
       <img class="view borders shadow" src="/shader/2017/tribute-marc.jpg"></img>
       <img class="loading" src="/media/icon/hourglass_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></img>
       <shader-view
@@ -293,6 +250,19 @@
     animation: spin 1s linear infinite;
   }
 
+  .about
+  {
+    background: center / cover url("/media/images/photo-2.webp");
+  }
+
+  .about img
+  {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
+
   @keyframes spin
   {
     from {
@@ -306,4 +276,5 @@
 </style>
 
   </body>
+  
 </html>

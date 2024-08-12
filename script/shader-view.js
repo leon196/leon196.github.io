@@ -70,11 +70,15 @@ class ShaderView extends Thumbnail
         is_buffer = columns[columns.length-2] == "buffer";
         path = path.replace(".buffer", "");
 
-        // const stamp = "";
-        const stamp = "?t="+Date.now();
+        const stamp = "";
+        // const stamp = "?t="+Date.now();
 
         // load shader files
-        await fetch("/shader/common/frame.vert").then(e => e.text()).then(e => this.vertex = e);
+        // await fetch("/shader/common/frame.vert").then(e => e.text()).then(e => this.vertex = e);
+        this.vertex = `#version 300 es
+        precision mediump float;
+        in vec4 position;
+        void main() { gl_Position = position; }`
         await fetch(path+stamp).then(e => e.text()).then(e => this.filter = e);
         
         // shader set up

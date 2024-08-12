@@ -10,114 +10,107 @@
 
     <link rel="stylesheet" href="/style/style.css" />
     <link rel="stylesheet" href="/style/grid.css" />
-    <link rel="stylesheet" href="/style/responsive.css" />
 
     <script src="/script/lib/twgl-full.min.js"></script>
-    <!-- <script src="/script/lib/virtual-webgl2.js"></script> -->
-    <script type="module" src="/script/shader-view.js" defer></script>
+    <script src="/script/lib/virtual-webgl2.js"></script>
+    <script type="module" src="/script/shader-view.js"></script>
+    <!-- <script type="module" src="/script/shadertoy-view.js" defer></script> -->
 
 </head>
 
   <body>
-
     
-<div class="nav">
-
-    <div class="name"><a href="/about/">Leon Denise</a></div>
     
-    <div class="buttons">
-        <a href="/"><img class="button" src="/media/icon/function_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></a>
-        <a href="/gifs/"><img class="button" src="/media/icon/experiment_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"></a>
+<div class="grid">
+
+    <div class="cell">
+        <img class="borders shadow" src="/media/images/photo-2.webp"/>
     </div>
 
-</div>
+    <div class="cell bubble borders column">
 
-<style>
+        <p>Hi 👋 I'm Leon Denise. I'm using video games tools to explore and experiment digital playgrounds, my work is about image filters, glitch effects, fractal shapes, particles systems behaviours and mathematical sculptures. I'm a freelancer shader coder and technical artist, working mostly with creative studios on VR standalone headsets and with artists to make interactive installations, playful devices, immersive projections and new media movies.</p>
 
-    .nav 
-    {
-        position: absolute;
-        font-size: 20px;
-        text-align: center;
-        left: 50%;
-        transform: translate(-50%,0);
-        top: 0;
-    }
-
-    .name
-    {
-        line-height: var(--navigation-size);
-    }
-
-    .buttons img
-    {
-        vertical-align: middle;
-    }
-
-    .nav div
-    {
-        display: inline-block;
-    }
-
-    .nav a:hover
-    {
-        filter: drop-shadow(0 0 5px white);
-    }
-
-</style>
-    
-    <div class="column">
-
-        <p>Using video games tools to explore and experiment digital playgrounds, my work is about image filters, glitch effects, fractal shapes, particles systems behaviours and mathematical sculptures. I'm a freelancer shader coder and technical artist, working mostly with creative studios on VR standalone headsets and with artists to make interactive installations, playful devices, immersive projections and new media movies.</p>
-        <img class="borders shadow" src="/media/images/photo-2.webp"/>
+        <p>I participate in the organization of the <a href="https://cookie.paris/">Cookie Collective</a> which gathers digital artists involved in real-time creation. This covers video games, art installations, video mapping, demoscene and live coding. We collaborate with festivals and institutions to promote live coding audio visual performances and playful alternative installations.</p>
         
-        <p>I participate in the organization of the <a href="https://cookie.paris/">Cookie Collective</a> which gathers digital artists involved in real-time creation. This covers video games, art installations, video mapping, demoscene, live coding, etc. We collaborate with festivals and institutions to promote live coding audio visual performances and playful alternative installations.</p>
-        <img class="borders shadow" src="/media/images/photo-5.webp"/>
-        
+        <p>Inspired by Shader Showdown from demoparty <a href="https://revision-party.net/">Revision</a> and live coders like <a href="https://www.shadertoy.com/user/lj">Jan Scheurer</a> and <a href="http://shadertoy.com/user/evvvvil">Aurelien Prunier</a>, I've started live coding shaders with members of the Cookie Collective, <a href="https://koltes.digital/">Jonathan Giroux</a>, <a href="https://shadertoy.com/user/flopine">Florine Fouquart</a>, <a href="https://www.shadertoy.com/user/nusan">NuSan</a> and many other. Recently I've been partipating mostly in algoraves with musician as live coding VJ with <a href="https://linktr.ee/azertype">azertype</a>, <a href="https://afalfl.bandcamp.com/album/undulor-at-027">afalfl</a>, <a href="https://linktr.ee/julescipher">julescipher</a>, <a href="https://linktr.ee/z0rg">z0rg</a>, <a href="https://www.instagram.com/vjblind">vjblind</a>, <a href="http://ralt144mi.remigeorges.fr/">ralt144mi</a>, <a href="http://raphaelforment.fr/">bubobubo</a>.</p>
+
         <p>I'm part of an artist duo with <a href="https://www.minuitdigital.com/">Dorian Rigal</a>: <a href="https://www.neonminuit.xyz">Neon Minuit</a>. We capture pieces of reality to stage them in our playground: the virtual world. Our artistic approach is inspired by scientific experimentation and serendipity. Our work is about immersive interactive digital art and representation of volumetric content data.</p>
-        <img class="borders shadow" src="/media/images/photo-neon-minuit-2.jpg"/>
 
         <p>I'm also working with <a href="https://playful-machines.com/">Emilie Breslavetz</a> on playful installations. Together we build alternative controllers and experimental games.</p>
-        <img class="borders shadow" src="/media/images/photo-trio.jpg"/>
+
+        <p><a href="/">return to gallery</a></p>
+
+    </div>
+    
+    <img class="cell borders shadow" src="/media/images/photo-3.webp"/>
+    <img class="cell borders shadow" src="/media/images/live-coding.png"/>
+    <img class="cell borders shadow" src="/media/images/photo-4.webp"/>
+    <img class="cell borders shadow" src="/media/images/photo-neon-minuit.jpg"/>
+    <img class="cell borders shadow" src="/media/images/photo-trio.jpg"/>
+
 </div>
 
 <style>
+
+    .grid
+    {
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    }
+
+    .double
+    {
+        grid-column: span 2;
+    }
 
     .column
     {
-        max-width: 600px;
-        margin: var(--navigation-size) auto;
+        grid-row: 1 / 3;
     }
-
-    .column p
+    
+    .home
     {
-        margin: 10px 0;
-        color: #fff;
-        padding: 8px;
+        padding: 10px;
+        grid-row: 4;
+        grid-column: 1;
     }
 
-    .column img
+    .bubble
+    {
+        padding: 10px;
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .grid p
+    {
+        padding-bottom: 10px;
+    }
+
+    .grid img
     {
         position: relative;
-        width: 100%;
         height: 100%;
+        width: 100%;
+        object-fit: cover;
     }
 
-    .column a,
-    .column a:link,
-    .column a:visited,
-    .column a:hover,
-    .column a:active
+    .grid a,
+    .grid a:link,
+    .grid a:visited,
+    .grid a:hover,
+    .grid a:active
     {
         text-decoration: underline;
     }
 
-    .column a:hover
+    .grid a:hover
     {
-        filter: drop-shadow(0 0 5px white);
+        filter: drop-shadow(0 0 5px black);
     }
     
 </style>
 
   </body>
+  
 </html>
