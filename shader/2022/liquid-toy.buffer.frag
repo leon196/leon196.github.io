@@ -29,7 +29,7 @@ void main()
 const float speed = .1;
 const float scale = 2.;
 const float falloff = 2.;
-const float fade = .4;
+const float fade = .3;
 const float strength = 1.;
 const float range = 5.;
 
@@ -79,7 +79,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // offset += vec2(cos(spice),sin(spice));
     
     // noise
-    vec3 e = vec3(.01*aspect, 0.);
+    vec3 e = vec3(vec2(.001), 0.);
     #define F(u) fbm(vec3(uv*scale+u,iTime*speed))
     #define P(u) vec3(uv+u, F(u))
     vec3 spice = cross(normalize(P(e.xz)-P(-e.xz)), normalize(P(e.zy)-P(-e.zy)));
