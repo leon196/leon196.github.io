@@ -19,7 +19,7 @@ class ShaderView extends Thumbnail
         this.tick = 0;
         this.gl = gl;
 
-        // fancy webgl
+        // fancy webgl (mobile compatible)
         gl.getExtension("OES_texture_float");
         gl.getExtension("OES_texture_float_linear");
         gl.getExtension("OES_texture_half_float");
@@ -56,6 +56,7 @@ class ShaderView extends Thumbnail
                 src: "/shader/common/bluenoise-shadertoy.png",
                 flipY: true
             }),
+            final_pass: false,
         };
         
         this.attachments = [ {
@@ -63,52 +64,98 @@ class ShaderView extends Thumbnail
             format: gl.RGBA,
             type: gl.HALF_FLOAT
         }]
-    }
 
-    async connectedCallback()
-    {
-        // detect shader type
-        let path = this.getAttribute("src");
-        let is_buffer = false;
-        const columns = path.split('.');
-        is_buffer = columns[columns.length-2] == "buffer";
-        path = path.replace(".buffer", "");
+        this.frames = [
+            twgl.createFramebufferInfo(gl, this.attachments),
+            twgl.createFramebufferInfo(gl, this.attachments),
+        ];
 
-        const stamp = "";
-        // const stamp = "?t="+Date.now();
-
-        // load shader files
-        // await fetch("/shader/common/frame.vert").then(e => e.text()).then(e => this.vertex = e);
         this.vertex = `#version 300 es
         precision mediump float;
         in vec4 position;
         void main() { gl_Position = position; }`
-        await fetch(path+stamp).then(e => e.text()).then(e => this.filter = e);
+        
+        this.filter = this.querySelector("canvas").textContent;
         
         // shader set up
         this.material = twgl.createProgramInfo(this.gl, [this.vertex, this.filter]);
+    }
 
-        // feedback set up
-        if (is_buffer)
-        {
-            // load file
-            path = this.getAttribute("src");
-            await fetch(path+stamp).then(e => e.text()).then(e => this.filter_feedback = e);
-            
-            // webgl components
-            const gl = this.gl;
-            this.material_feedback = twgl.createProgramInfo(gl, [this.vertex, this.filter_feedback]);
-            this.frames = [
-                twgl.createFramebufferInfo(gl, this.attachments),
-                twgl.createFramebufferInfo(gl, this.attachments),
-            ];
-        }
-
+    connectedCallback()
+    {
         // mouse event
         this.events();
 
         // main loop
         requestAnimationFrame((time) => this.loop(time));
+    }
+
+    loop(time)
+    {
+        time /= 1000;
+
+        // const item = this.getBoundingClientRect();
+        // const visible = item.top >= -item.height && item.bottom <= window.innerHeight+item.height
+
+        if (this.update) this.render(time - this.elapsed);
+        this.elapsed = time;
+
+        requestAnimationFrame((time) => this.loop(time));
+    }
+
+    render(deltaTime)
+    {
+        // webgl components
+        const gl = this.gl;
+        const mesh = this.mesh;
+        const material = this.material;
+        const uniforms = this.uniforms;
+        const frames = this.frames;
+        const attachments = this.attachments;
+        const tick = this.tick;
+        const resized = twgl.resizeCanvasToDisplaySize(gl.canvas);
+
+        if (resized)
+        {
+            twgl.resizeFramebufferInfo(gl, frames[0], attachments);
+            twgl.resizeFramebufferInfo(gl, frames[1], attachments);
+        }
+
+        // shader settings
+        uniforms.iTimeDelta = deltaTime;
+        uniforms.iTime += deltaTime;
+        uniforms.iFrame = this.tick;
+        uniforms.iResolution = [gl.canvas.width, gl.canvas.height];
+
+        const date = new Date();
+        this.uniforms.iDate[3] = date.getHours()*3600 + date.getMinutes()*60 + date.getSeconds();
+
+        // framebuffer swap
+        const read = tick % 2;
+        const write = (tick + 1) % 2;
+
+        // framebuffer
+        uniforms.final_pass = false;
+        uniforms.framebuffer = frames[read].attachments[0];
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, frames[write].framebuffer);
+        gl.useProgram(material.program);
+        twgl.setBuffersAndAttributes(gl, material, mesh);
+        twgl.setUniforms(material, uniforms);
+        twgl.drawBufferInfo(gl, mesh);
+
+        // render final pass
+        uniforms.final_pass = true;
+        uniforms.framebuffer = frames[write].attachments[0];
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        gl.useProgram(material.program);
+        twgl.setBuffersAndAttributes(gl, material, mesh);
+        twgl.setUniforms(material, uniforms);
+        twgl.drawBufferInfo(gl, mesh);
+
+        // loop
+        this.tick += 1;
     }
 
     events()
@@ -151,90 +198,6 @@ class ShaderView extends Thumbnail
             }
         }
     }
-
-    loop(time)
-    {
-        time /= 1000;
-
-        const item = this.getBoundingClientRect();
-        const visible = item.top >= -item.height && item.bottom <= window.innerHeight+item.height
-
-        if (visible && this.update) this.render(time - this.elapsed);
-        this.elapsed = time;
-
-        requestAnimationFrame((time) => this.loop(time));
-    }
-
-    render(deltaTime)
-    {
-        // webgl components
-        const gl = this.gl;
-        const mesh = this.mesh;
-        const material = this.material;
-        const uniforms = this.uniforms;
-        const resized = twgl.resizeCanvasToDisplaySize(gl.canvas);
-
-        // shader settings
-        uniforms.iTimeDelta = deltaTime;
-        uniforms.iTime += deltaTime;
-        uniforms.iFrame = this.tick;
-        uniforms.iResolution = [gl.canvas.width, gl.canvas.height];
-
-        const date = new Date();
-        this.uniforms.iDate[3] = date.getHours()*3600 + date.getMinutes()*60 + date.getSeconds();
-
-        // feedback effect
-        this.feedback(resized);
-
-        // draw effect
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-        gl.useProgram(material.program);
-        twgl.setBuffersAndAttributes(gl, material, mesh);
-        twgl.setUniforms(material, uniforms);
-        twgl.drawBufferInfo(gl, mesh);
-
-        // loop
-        this.tick += 1;
-    }
-
-    feedback(resized)
-    {
-        // only if there is feedback
-        const material = this.material_feedback;
-        if (material == null) return;
-
-        // webgl components
-        const gl = this.gl;
-        const mesh = this.mesh;
-        const uniforms = this.uniforms;
-        const frames = this.frames;
-        const attachments = this.attachments;
-        const tick = this.tick;
-
-
-        // resize event
-        if (resized)
-        {
-            twgl.resizeFramebufferInfo(gl, frames[0], attachments);
-            twgl.resizeFramebufferInfo(gl, frames[1], attachments);
-        }
-                    
-        // framebuffer swap
-        const read = tick % 2;
-        const write = (tick + 1) % 2;
-
-        // apply feedback effect
-        uniforms.framebuffer = frames[read].attachments[0];
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-        gl.bindFramebuffer(gl.FRAMEBUFFER, frames[write].framebuffer);
-        gl.useProgram(material.program);
-        twgl.setBuffersAndAttributes(gl, material, mesh);
-        twgl.setUniforms(material, uniforms);
-        twgl.drawBufferInfo(gl, mesh);
-    }
 }
 
 customElements.define("shader-view", ShaderView);
-
-// export ShaderView

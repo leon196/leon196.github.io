@@ -11,18 +11,23 @@
 {
   display: grid;
   position: relative;
+  min-height: 300px;
 }
 
-.cell shader-view
+.cell-2x1
 {
-  aspect-ratio: 1;
-  transition: opacity 1s;
-  opacity: 0;
+  grid-column: span 2;
 }
 
-.cell shader-view:hover
+.cell-2x2
 {
-  opacity: 1;
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.cell-1x2
+{
+  grid-row: span 2;
 }
 
 .cell canvas
