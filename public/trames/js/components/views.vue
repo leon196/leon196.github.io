@@ -77,7 +77,6 @@ import webgl_view from './webgl_view.vue'
 import click_button from './ui_elements/click_button.vue'
 import ruler from './ui_elements/ruler.vue'
 
-
 export default {
 	components: {
 		webgl_view,
@@ -95,15 +94,7 @@ export default {
 			zoom: [0,0,500,500],
 			elapsed: 0,
 			force_update: false,
-			mouse: {
-				up: false,
-				down: false,
-				position: [0,0],
-				previous: [0,0],
-				elapsed: 0,
-				delay: 0.1,
-				moved: false,
-			},
+			mouse: new Mouse(),
 			views: {
 				"preview": {
 					canvas_width: 0,
@@ -157,7 +148,6 @@ export default {
 				engine.set_lut(global.levels_lut);
 				engine.set_trame(settings.screen);
 				engine.set_size(global.definition_x, global.definition_y, global.format_x, global.format_y);
-				this.init_events();
 				this.update_settings();
 				this.update_trame();
 				requestAnimationFrame(this.update);
@@ -207,6 +197,8 @@ export default {
 
 			// loading dom
 			this.loading_dom = document.getElementById("loading");
+			
+			this.init_events();
 		},
 
 		init_events: function()
@@ -216,6 +208,12 @@ export default {
 			const engine_gradient_steps = this.engine_gradient_steps;
 			const engine_gradient_continuous = this.engine_gradient_continuous;
 
+			this.mouse.init_events();
+			
+			emitter.on('force_update', () => {
+				this.force_update = true;
+			})
+
 			emitter.on('screen_loaded', () => {
 				engine.set_trame(settings.screen);
 				engine_gradient_steps.set_trame(settings.screen);
@@ -223,6 +221,21 @@ export default {
 				this.update_settings();
 				this.update_trame();
 			})
+
+			const gradient_steps = document.getElementById("gradient_steps");
+			const gradient_continuous = document.getElementById("gradient_continuous");
+			window.addEventListener("resize", (event) => {
+				this.update_panzoom();
+
+
+				engine_gradient_steps.set_size(gradient_steps.clientWidth, gradient_steps.clientHeight, gradient_steps.clientWidth, gradient_steps.clientHeight);
+				engine_gradient_continuous.set_size(gradient_continuous.clientWidth, gradient_continuous.clientHeight, gradient_continuous.clientWidth, gradient_continuous.clientHeight);
+
+				const elapsed = this.elapsed;
+				engine_gradient_steps.update(elapsed);
+				engine_gradient_continuous.update(elapsed);
+			});
+
 
 			const triggers = {
 				lut: ["levels_black", "levels_white", "levels_grey", "levels_black_offset", "levels_white_offset"],
@@ -254,18 +267,6 @@ export default {
 				}
 			});
 
-			window.addEventListener("mousedown", (e) => {
-				this.mouse.down = true;
-			});
-
-			window.addEventListener("mouseup", (e) => {
-				this.mouse.up = true;
-			});
-
-			window.addEventListener("mousemove", (e) => {
-				this.mouse.position = [e.clientX, e.clientY];
-			});
-
 			emitter.on('loading_start', () => {
 				if (this.loading_dom != undefined) {
 					this.loading_dom.style.zIndex = "4";
@@ -279,11 +280,6 @@ export default {
 					this.loading_dom.style.display = "none";
 				}
 			});
-
-			emitter.on('force_update', (self) => {
-				// self.update(this.elapsed);
-				this.force_update = true;
-			})
 		},
 
 		update_trame: function()
@@ -312,12 +308,16 @@ export default {
 			this.elapsed = elapsed/1000.;
 
 			// detect user activity to update trame
-			this.mouse_activity(delta);
+			if (this.mouse.activity(delta))
+			{
+				this.force_update = true;
+			}
 
 			// this.update_trame();
 			if (this.force_update)
 			{
 				this.update_trame();
+				this.force_update = false;
 			}
 
 			// draw trame
@@ -362,10 +362,16 @@ export default {
 
 			let image_element = image[0];
 			this.panzoom_image = image_element;
+			this.panzoom_viewport = viewport;
 			this.dom_zoom = document.getElementById("zoom");
 
 			let start_x = viewport.width() / 2 - image.width() / 2;
 			let start_y = (viewport.height() - ruler.height()) / 2 - image.height() / 2;
+
+			// max scale from webgl viewport size limit
+			const size = Math.max(image_element.width, image_element.height);
+			const limit = this.engine.limit.viewport[0];
+			const maxScale = Math.floor(limit/size) - 1;
 
 			// INIT PANZOOM WITH RAW IMAGE 
 			let panzoom = Panzoom(image_element, {
@@ -373,77 +379,36 @@ export default {
 				startScale: 1,
 				startX: start_x,
 				startY: start_y,
-				maxScale: 20,
+				maxScale: maxScale,
 				minScale: 1,
 			});
 			
 			let parent = image_element.parentElement;
 			parent.addEventListener('wheel', panzoom.zoomWithWheel)
-			image_element.addEventListener('panzoomchange', (event) => {
-				
-				// image dimensions
-				let width = this.image.image_object.width;
-				let height = this.image.image_object.height;
-
-				// panzoom transform
-				const style = window.getComputedStyle(image_element)
-				const matrix = style.transform;// || style.webkitTransform || style.mozTransform
-				const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ')
-				const scale = parseFloat(matrixValues[0]);
-
-				// css panzoom to webgl panzoom
-				let x = parseFloat(matrixValues[4]) + (width - width * scale) / 2;
-				let y = parseFloat(matrixValues[5]) + (height - height * scale) / 2;
-				y = viewport.height() - y - height * scale;
-				let w = width * scale;
-				let h = height * scale;
-
-				// viewport for webgl
-				this.panzoom = [x, y, w, h];
-			});
+			image_element.addEventListener('panzoomchange', (event) => this.update_panzoom());
 		},
 
-		mouse_activity: function(delta)
+		update_panzoom: function()
 		{
-			let update = false;
+			// image dimensions
+			let width = this.image.image_object.width;
+			let height = this.image.image_object.height;
 
-			if(this.mouse.down
-			&& this.mouse.moved
-			&& this.mouse.position[0] == this.mouse.previous[0]
-			&& this.mouse.position[1] == this.mouse.previous[1])
-			{
-				this.mouse.elapsed += delta;
-			}
-			else
-			{
-				this.mouse.elapsed = 0;
-			}
+			// panzoom transform
+			const style = window.getComputedStyle(this.panzoom_image)
+			const matrix = style.transform;// || style.webkitTransform || style.mozTransform
+			const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ')
+			const scale = parseFloat(matrixValues[0]);
 
-			if (this.mouse.position[0] != this.mouse.previous[0]
-			 || this.mouse.position[1] != this.mouse.previous[1])
-			{
-				this.mouse.moved = true;
-			}
+			// css panzoom to webgl panzoom
+			let x = parseFloat(matrixValues[4]) + (width - width * scale) / 2;
+			let y = parseFloat(matrixValues[5]) + (height - height * scale) / 2;
+			y = this.panzoom_viewport.height() - y - height * scale;
+			let w = width * scale;
+			let h = height * scale;
 
-			this.mouse.previous[0] = this.mouse.position[0];
-			this.mouse.previous[1] = this.mouse.position[1];
-
-			if (this.mouse.down && this.mouse.elapsed > this.mouse.delay && this.mouse.moved)
-			{
-				update = true;
-				this.mouse.moved = false;
-			}
-
-			if (this.mouse.up)
-			{
-				update = true;
-				this.mouse.up = false;
-			}
-
-			if (update)
-			{
-				this.update_trame();
-			}
+			// viewport for webgl
+			this.panzoom = [x, y, w, h];
 		},
 
 		mouse_move_on_preview: function(event)

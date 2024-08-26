@@ -37,6 +37,7 @@ export default class Engine
         this.trame = {};
         this.media = {};
         this.material = {};
+        this.loaded = false;
         
         this.settings = {
             time: 0,
@@ -86,6 +87,8 @@ export default class Engine
 
     update(elapsed)
     {
+        if (!this.loaded) return;
+
         this.settings.time = elapsed / 1000;
         this.settings.resolution = [this.width, this.height]
         
@@ -130,6 +133,8 @@ export default class Engine
             this.material[key] = twgl.createProgramInfo(this.gl, [loaded[item[0]], loaded[item[1]]]);
         }
         if (callback != undefined && callback != null) callback();
+        this.loaded = true;
+        emitter.emit('force_update');
     }
 
     load_images(images)
@@ -215,7 +220,7 @@ export default class Engine
             image = this.trame.get_result(this);
         }
 
-        const material = this.material.draw;
+        const material = this.material.post;
         const mesh = this.mesh.quad;
         const buffer = this.frame.post.framebuffer;
         const viewport = [0, 0, this.width, this.height];
@@ -223,7 +228,7 @@ export default class Engine
         this.settings.image = image;
         this.draw(material, mesh, buffer, viewport);
     }
-
+    
     get_result()
     {
         return this.frame.post.attachments[0];
@@ -246,7 +251,7 @@ export default class Engine
 
     set_size(width, height, format_width, format_height)
     {
-        if (width != this.width && height != this.height)
+        if (width != this.width || height != this.height)
         {
             this.width = width;
             this.height = height;
@@ -292,6 +297,7 @@ export default class Engine
                 trame: ["shaders/rect.vert", trame.shader]
             }, () => {
                 this.state.trame = false;
+                emitter.emit('force_update');
             })
         }
 
@@ -304,7 +310,7 @@ export default class Engine
             }
             this.load_images(map);
         }
-        
+
         emitter.emit('force_update');
     }
 

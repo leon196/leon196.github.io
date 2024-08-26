@@ -45,23 +45,6 @@ export default class EngineView
     {        
         twgl.resizeCanvasToDisplaySize(this.canvas);
         this.settings.image = image;
-        
-        // viewport = viewport || [0, 0, this.canvas.clientWidth, this.canvas.clientHeight];
-        // const canvas_width = this.canvas.clientWidth;
-        // const canvas_height = this.canvas.clientHeight;
-        // const m4 = twgl.m4;
-        // // const x = viewport[0];
-        // // const y = viewport[1];
-        // const w = viewport[2];
-        // const h = viewport[3];
-        // const ww = w/this.canvas.clientWidth;
-        // const hh = h/this.canvas.clientHeight;
-        // // const xx = x/w;
-        // // const yy = y/h;
-        // const aspect = canvas_width/canvas_height;
-        // this.settings.view = (m4.ortho(-aspect, aspect, -1, 1, -1., 1.));
-        // // this.settings.panzoom = m4.translation([xx,yy,0]);
-        // this.settings.panzoom = m4.scaling([w/h,1,1]);
         this.draw(this.material.draw, this.mesh.quad, null, viewport);
     }
 
@@ -72,8 +55,17 @@ export default class EngineView
         mesh = mesh || this.mesh.quad;
         buffer = buffer || null;
         rect = rect || [0, 0, this.canvas.clientWidth, this.canvas.clientHeight];
-        // rect = [0, 0, this.canvas.clientWidth, this.canvas.clientHeight];
-        // rect = [-this.canvas.clientWidth, this.canvas.clientHeight, this.canvas.clientWidth, -this.canvas.clientHeight];
+
+        const f = x => Math.floor(x);
+        const w = f(rect[2]) - f(rect[0]);
+        const h = f(rect[3]) - f(rect[1]);
+        const x = w / 2;
+        const y = h / 2;
+        // rect[0] = x - w / 2;
+        // rect[0] = y - h / 2;
+        // rect[2] = x + w / 2;
+        // rect[3] = y + h / 2;
+        // console.log(rect)
 
         // webgl drawing
         const gl = this.gl;
