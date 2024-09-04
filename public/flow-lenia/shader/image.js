@@ -159,3 +159,44 @@ class SubShader extends FragShader{
 		super.run();
 	}
 }
+class ZoomShader extends FragShader{
+	constructor(){
+		super(
+			glsl`#version 300 es
+				#define TAU ${TAU}
+				precision highp float;
+				precision highp sampler2D;
+				
+				uniform sampler2D aTex;
+				uniform vec2 offset;
+				uniform float scale;
+				
+				in vec2 pos;
+				out vec4 outColor;
+
+				${SHADER_FUNCS.GAMMA}
+
+				void main(){
+					vec2 pos2=(pos+1.)*.5;
+					vec4 v=texture(aTex,(pos2-offset)/scale+offset);
+					outColor=vec4(gammaShift(v.xyz),v.w);
+				}
+			`,
+		);
+	}
+	run(scale,offset,aTex,bTex){
+		this.uniforms={
+			aTex:aTex.tex,
+			aSize:aTex.size,
+			scale:scale,
+			offset:offset,
+		};
+		this.attachments=[
+			{
+				attachment:bTex.tex,
+				...sizeObj(bTex.size)
+			}
+		];
+		super.run();
+	}
+}

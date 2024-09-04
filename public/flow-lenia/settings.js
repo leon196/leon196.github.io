@@ -13,3 +13,16 @@ let mutationBorderStrength=1.;
 let mutationBorderDelay=100;
 
 //----------------------------------
+
+const settings = {
+	velocitySpeed: 1,
+	gradientSpeed: 0.25,
+	colorDNA: 0.,
+	colorVariation: 0.,
+	hd: false,
+	secondLayer: true,
+	spawnEdge: true,
+	blendImageInGradient: true,
+	blendImageInLenia: false,
+	zooming: false,
+}

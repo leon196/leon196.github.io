@@ -44,10 +44,10 @@ class RenderShader extends FragShader{
 					vec2 pos2=(pos+1.)*.5;
 					pos2=vec2(pos2.x,1.-pos2.y);
 					vec2 ratio=canvasSize/imgSize;
-					pos2=(pos2)*vec2(
-						min(ratio.x/ratio.y,1.),
-						min(ratio.y/ratio.x,1.)
-					)/camZoom-camPos;
+					// pos2=(pos2)*vec2(
+					// 	min(ratio.x/ratio.y,1.),
+					// 	min(ratio.y/ratio.x,1.)
+					// )/camZoom-camPos;
 					vec4 lenia1 = texture(leniaTex1,pos2);
 					vec4 lenia2 = texture(leniaTex2,pos2);
 					vec4 dna = texture(dnaTex,pos2);
@@ -91,7 +91,7 @@ class RenderShader extends FragShader{
 			`,
 		);
 	}
-	run(cam,imgSize,canvasSize,leniaMaterials,dnaTex,gradientTex,imageTex,dnaSelect,settings){
+	run(cam,imgSize,canvasSize,leniaMaterials,dnaTex,gradientTex,imageTex,dnaSelect,settings,renderTex){
 		this.uniforms={
 			camZoom:cam.zoom,
 			camPos:cam.pos,
@@ -107,6 +107,12 @@ class RenderShader extends FragShader{
 			colorDNA:settings.colorDNA,
 			colorVariation:settings.colorVariation,
 		};
+		this.attachments=[
+			{
+				attachment:renderTex.tex,
+				...sizeObj(renderTex.size)
+			}
+		];
 		super.run();
 	}
 }
