@@ -67,9 +67,9 @@ void main()
         float a = 1.;
         float rng = hash22(floor(gl_FragCoord.xy)).r;
         float b = step(.9, rng);
-        if (dynamic_k < 0.5) {
-            b *= 1.-gray;// smoothstep(.01,0.,length(uv-.5)-.1);
-        }
+        // if (dynamic_k < 0.5) {
+        //     b *= 1.-gray;// smoothstep(.01,0.,length(uv-.5)-.1);
+        // }
         color = vec3(a,b,0);
         // color = vec3(smoothstep(.5,0.,length(uv-.5)-.1));
         // color = vec3();
@@ -81,7 +81,7 @@ void main()
         // float F = .0367;//.055;//mix(0.04, 0.06, gray);
         // float K = .0649;//.062;//mix(.05, 0.07, gray);
         float F = mix(.045, .07, parameter_f);
-        float K = mix(.05, .1, mix(parameter_k, gray, dynamic_k));
+        float K = mix(.05, .1, gray);//mix(parameter_k, gray, dynamic_k));
         float Da = 1.;// - .1 * gray;
         float Db = 0.2;// - 0.1 * gray;
         // val.x = min(val.x, 1.);

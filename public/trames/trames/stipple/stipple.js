@@ -126,6 +126,7 @@
 				engine.draw(engine.material.trame, engine.mesh.quad, engine.frame.trame.framebuffer, [0, 0, engine.width, engine.height]);
 	
 				emitter.emit('force_update', engine);
+				engine.should_update = true;
 			}
 			else
 			{
@@ -139,6 +140,7 @@
 	
 				// end feedback
 				engine.state.trame = true;
+				engine.should_update = false;
 				emitter.emit('loading_stop');
 				if (oncomplete != undefined) oncomplete();
 			}

@@ -240,6 +240,7 @@ export default {
 			const triggers = {
 				lut: ["levels_black", "levels_white", "levels_grey", "levels_black_offset", "levels_white_offset"],
 				size: ["format_x", "format_y", "resolution", "definition_x", "definition_y"],
+				blur: ["blur_size", "blur_threshold"],
 			}
 			
 			emitter.on('update_view', (trigger) =>
@@ -259,6 +260,15 @@ export default {
 						global.definition_x, global.definition_y,
 						global.format_x, global.format_y,
 					);
+				}
+
+				else if (triggers.blur.includes(trigger))
+				{
+					const size = global.blur_size;
+					const threshold = global.blur_threshold/255.;
+					engine.set_blur(size, threshold);
+					engine_gradient_steps.set_blur(size, threshold);
+					engine_gradient_continuous.set_blur(size, threshold);
 				}
 
 				else
@@ -314,7 +324,7 @@ export default {
 			}
 
 			// this.update_trame();
-			if (this.force_update)
+			if (this.force_update || engine.should_update)
 			{
 				this.update_trame();
 				this.force_update = false;

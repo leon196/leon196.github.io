@@ -9,17 +9,17 @@ uniform vec2 resolution, format;
 in vec2 uv;
 out vec4 fragColor;
 
-uniform float r_lineature, threshold;
+uniform float r_lineature;
 
 // ciphered
 // https://www.shadertoy.com/view/wslcWf
 
 
 // the number of divisions at the start
-#define MIN_DIVISIONS 3.0
+#define MIN_DIVISIONS 2.0
 
 // the numer of possible quad divisions
-#define MAX_ITERATIONS 7
+#define MAX_ITERATIONS 8
 
 // the number of samples picked fter each quad division
 #define SAMPLES_PER_ITERATION 30
@@ -68,6 +68,7 @@ vec4 quadColorVariation (in vec2 center, in float size) {
     var-= pow(avg, vec3(2.0));
         
     return vec4(avg, (var.x+var.y+var.z)/3.0);
+    // return vec4(avg.x);
 }
 
 void main()
@@ -76,10 +77,8 @@ void main()
 
   vec2 dim = aspect*r_lineature*format.y/inch_to_mm;
 
-  // coordinates
-  vec2 p = (uv-.5)*dim;
+  float threshold = 0.001;
 
-  
   // number of space divisions
   float divs = MIN_DIVISIONS;
 
@@ -102,8 +101,6 @@ void main()
       quadSize/= 2.0;
   }
   
-
-  
   
   // the coordinates of the quad
   vec2 nUv = fract(uv * divs);
@@ -112,6 +109,7 @@ void main()
   vec2 lWidth = vec2(1.5/resolution.x, 1.5/resolution.y);
   vec2 uvAbs = abs(nUv-0.5);
   float s = step(0.5-uvAbs.x, lWidth.x*divs) + step(0.5-uvAbs.y, lWidth.y*divs);
+  s = 1.-s;
 
-	fragColor = vec4(s);
+	fragColor = vec4(vec3(s),1.);
 }

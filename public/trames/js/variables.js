@@ -21,6 +21,8 @@ let settings = {
 		levels_black_offset:0,
 		levels_white_offset:0,
 		levels_lut: [],
+		blur_size: 1,
+		blur_threshold: 128,
 		current_screen: "patterns",
 		start_time: new Date().getTime(),
 		time: 0,

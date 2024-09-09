@@ -95,6 +95,12 @@
 			<slider id="levels_grey" label="Tons moyens" :value="global_settings.levels_grey" min_value="0" max_value="255" step="1" unit="false" @change_value="{global_settings.levels_grey = $event; update_view('levels_grey')}"></slider>
 			<slider id="levels_black_offset" label="Décalage noir" :value="global_settings.levels_black_offset" min_value="0" max_value="128" step="1" unit="false" @change_value="{global_settings.levels_black_offset = $event; update_view('levels_black_offset')}"></slider>
 			<slider id="levels_white_offset" label="Décalage blanc" :value="global_settings.levels_white_offset" min_value="0" max_value="128" step="1" unit="false" @change_value="{global_settings.levels_white_offset = $event; update_view('levels_white_offset')}"></slider>
+			
+			<!-- //////////////// -->
+			<!-- //////////////// -->
+			<!-- BLUR -->
+			<slider id="blur_size" label="Flou Taille" :value="global_settings.blur_size" min_value="1" max_value="11" step="1" unit="false" @change_value="{global_settings.blur_size = $event; update_view('blur_size')}"></slider>
+			<slider id="blur_threshold" label="Flou Seuil" :value="global_settings.blur_threshold" min_value="0" max_value="255" step="1" unit="false" @change_value="{global_settings.blur_threshold = $event; update_view('blur_threshold')}"></slider>
 
 
 

@@ -38,6 +38,7 @@ export default class Engine
         this.media = {};
         this.material = {};
         this.loaded = false;
+        this.should_update = false;
         
         this.settings = {
             time: 0,
@@ -328,6 +329,7 @@ export default class Engine
         this.settings[key] = value;
     }
 
+    // pre blur
     disable_blur()
     {
         this.load_shaders({
@@ -337,6 +339,15 @@ export default class Engine
             this.state.lut = false;
             this.state.trame = false;
         })
+    }
+
+    // post blur
+    set_blur(size, threshold)
+    {
+        this.settings.blur_size = size;
+        this.settings.blur_threshold = threshold;
+        this.apply_post();
+        emitter.emit('loading_stop');
     }
 }
 
