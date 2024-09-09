@@ -66,6 +66,7 @@ export default class Engine
             blur: false,
             lut: false,
             trame: false,
+            post: false,
         }
 
         this.limit = {
@@ -191,6 +192,7 @@ export default class Engine
         // trame has custom update
         if (this.trame.update != undefined)
         {
+            this.state.post = false;
             this.trame.update(this, () => this.apply_post());
         }
         // update trame
@@ -205,6 +207,7 @@ export default class Engine
             this.settings.image = image;
             this.draw(material, mesh, buffer, viewport);
             this.state.trame = true;
+            this.state.post = false;
             this.apply_post();
             
             emitter.emit('loading_stop');
@@ -228,11 +231,15 @@ export default class Engine
 
         this.settings.image = image;
         this.draw(material, mesh, buffer, viewport);
+        this.state.post = true;
     }
     
     get_result()
     {
-        return this.frame.post.attachments[0];
+        if (this.state.trame.post)
+            return this.frame.post.attachments[0];
+        else
+            return this.frame.trame.attachments[0];
     }
 
     set_lut(array)
