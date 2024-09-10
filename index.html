@@ -20,2736 +20,728 @@
 
   <body>
     
-    <div class="grid">
-  <div class="cell">
-    <a class="cell-link" href="/about/">
-      <img class="view borders shadow" src="/media/images/photo-2.webp"/>
-      <div class="text-center">about</div>
+    <div class="container">
+    <a href="/about/">
+        <div class="label">
+            <h2 class="center">Leon Denise</h2>
+        </div>
+        <img src="/media/images/photo-2.webp"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/blockalitos/">
-      <img class="view borders shadow loading" src="/shader/2024/blockalitos.jpg"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Blockalitos"
-        src="/shader/2024/blockalitos.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-uniform sampler2D alphabet;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    mainImage(fragColor, gl_FragCoord.xy);
-}
-
-// Blockalitos
-// Leon Denise 2024-08-03
-
-#define R iResolution.xy
-float[] hello = float[] (184., 181., 188., 188., 191., 209.);
-float[] cookie = float[] (179., 191., 191., 187., 185., 181.);
-
-// Dave Hoskins https://www.shadertoy.com/view/4djSRW
-vec3 hash33(vec3 p3)
-{
-	p3 = fract(p3 * vec3(.1031, .1030, .0973));
-    p3 += dot(p3, p3.yxz+33.33);
-    return fract((p3.xxy + p3.yxx)*p3.zyx);
-}
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-    // coordinates
-    vec2 uv = fragCoord/R;
-    vec2 p = (2.*fragCoord-R)/R.y;
-    vec2 q = p;
     
-    // layers
-    float pattern = 0.;
-    const float count = 4.;
-    for (float i = 0.; i < count; ++i) {
-        float factor = i/count;
-        float scale = 20./pow(2., i);
-        vec2 cell = floor(p*scale);
-        float seed = i+floor(iTime*.5-length(cell)/scale/2.)*196.;
-        vec3 rng = hash33(vec3(cell, seed));
-        float mask = step(factor*1.5, rng.y);
-        pattern = mix(pattern, rng.x, mask);
-        q = mix(q, p*scale, mask);
-    }
-
-    // background
-    vec2 cell = floor(q);
-    vec2 atlas = fract(q);
-    vec3 rng = hash33(vec3(cell,floor(pattern*100.)));
     
-    // random symbol within range
-    float char = 224.+floor(rng.z*32.);
+<a class="" href="/project/crashboard">
+    <img src="/content/game/crashboard/cover.jpg"></img>
+</a>
     
-    // pick in word
-    char = rng.y > .4 ? char : cookie[int(rng.z*6.)];
     
-    atlas += vec2(mod(char,16.),floor(char/16.));
+<a class="" href="/project/mapping-inverse">
+    <img src="/content/project/mapping-inverse/cover.png"></img>
+</a>
     
-    // title
-    q = abs(p)-vec2(1.,.2);
-    float box = max(q.x,q.y);
-    if (box < 0.) {
-        p = (p+vec2(0.,0.35/2.))*3.;
-        char = hello[int(floor(p.x+3.))];
-        atlas = fract(p)+vec2(mod(char,16.),floor(char/16.));
-        rng.x = floor(p.x);
-        pattern = 1.;
-    }
     
-    // font sample
-    float letter = texture(alphabet, atlas/16.).r;
+<a class="" href="/project/miroir-arcade">
+    <img src="/content/project/miroir-arcade/cover.jpg"></img>
+</a>
     
-    // color palette https://iquilezles.org/articles/palettes/
-    vec3 tint = .5+.5*cos(vec3(1,2,3)*4.5+rng.x*5.);
     
-    // style
-    bool bw = pattern > .6;
-    vec3 color = (pattern > .7 ? tint * (1.-letter) : vec3(bw ? 1.-letter : letter));
-    //vec3 color = tint * (pattern > .6 ? 1.-letter : letter);
-    fragColor = vec4(color, 1);
-}
-        </canvas>
-      </shader-view>
+<a class="" href="/project/les-confines">
+    <img src="/content/project/les-confines/les_confines.mp4-poster.png"></img>
+</a>
+    
+    
+<a class="" href="/project/heterotopia-miroirs-et-perspectives">
+    <img src="/content/project/heterotopia-mp/cover.jpg"></img>
+</a>
+    
+    
+<a class="" href="/project/heterotopia">
+    <img src="/content/project/heterotopia/cover.png"></img>
+</a>
+    
+    
+<a class="" href="/project/attrape-reve">
+    <img src="/content/project/attrape-reve/cover.png"></img>
+</a>
+    
+    
+<a class="" href="/project/the-salt-please">
+    <img src="/content/game/the-salt-please/cover.png"></img>
+</a>
+    
+    
+    
+<a class="" href="/shader/ink-1">
+    <img src="/content/shader/ink-1.png"></img>
+</a>
+    
+    
+<a class="" href="/shader/vegetal-1">
+    <img src="/content/shader/vegetal-1.png"></img>
+</a>
+    
+    
+<a class="" href="/shader/spaceship-1">
+    <img src="/content/shader/spaceship-1.png"></img>
+</a>
+    
+    
+<a class="" href="/shader/smoke-1">
+    <img src="/content/shader/smoke-1.png"></img>
+</a>
+    
+    
+<a class="" href="/shader/pattern-sci-fi">
+    <img src="/content/shader/pattern-sci-fi.png"></img>
+</a>
+    
+    
+<a class="" href="/shader/mineral-1">
+    <img src="/content/shader/mineral-1.png"></img>
+</a>
+    
+    
+<a class="" href="/shader/liquid-1">
+    <img src="/content/shader/liquid-1.png"></img>
+</a>
+    
+    
+<a class="" href="/shader/kif-inercia">
+    <img src="/content/shader/kif-inercia.png"></img>
+</a>
+    
+    
+<a class="" href="/shader/ink-4">
+    <img src="/content/shader/ink-4.png"></img>
+</a>
+    
+    
+<a class="" href="/shader/dude-1">
+    <img src="/content/shader/dude-1.png"></img>
+</a>
+    
+    
+<a class="head" href="/shader/code-2">
+    <img src="/content/shader/code-2.png"></img>
+</a>
+    
+    
+<a class="portrait" href="/shader/code-1">
+    <img src="/content/shader/code-1.png"></img>
+</a>
+    
+    
+<a class="" href="/shader/cloud-1">
+    <img src="/content/shader/cloud-1.png"></img>
+</a>
+    
+    
+<a class="" href="/shader/city-2">
+    <img src="/content/shader/city-2.png"></img>
+</a>
+    
+    
+<a class="" href="/shader/city-1">
+    <img src="/content/shader/city-1.png"></img>
+</a>
+    
+    
+<a class="" href="/shader/bim-boom-bam">
+    <img src="/content/shader/2024/bim-boom-bam.png"></img>
+</a>
+    
+    
+<a class="" href="/shader/subatomics">
+    <img src="/content/shader/2024/subatomics.png"></img>
+</a>
+    
+    
+    
+    <a class="gif" onClick="show_player(0)">
+        <img src="/media/webm/0.png"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/decodering/">
-      <img class="view borders shadow loading" src="/shader/2023/decodering.png"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Decodering"
-        src="/shader/2023/decodering.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-uniform sampler2D alphabet;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    mainImage(fragColor, gl_FragCoord.xy);
-}
-
-// Decodering
-// Leon Denise 2023-10-29
-// inspired by Ryoiji Ikeda and Evangelion
-
-// 2023-10-31: updated code from Fabrice Neyret suggestions
-
-// Blackle Mori
-// https://suricrasia.online/blog/shader-functions/
-#define erot(p,A,a) mix(dot(A, p)*A, p, cos(a)) + cross(A,p)*sin(a)
-
-// Dave Hoskins
-// https://www.shadertoy.com/view/4djSRW
-float hash11(float p)
-{
-    p = fract(p * .1031);
-    p *= p + 33.33;
-    p *= p + p;
-    return fract(p);
-}
-vec2 hash22(vec2 p)
-{
-	vec3 p3 = fract(vec3(p.xyx) * vec3(.1031, .1030, .0973));
-    p3 += dot(p3, p3.yzx+33.33);
-    return fract((p3.xx+p3.yz)*p3.zy);
-}
-
-void mainImage( out vec4 color, in vec2 pixel )
-{
-    color = vec4(0,0,0,1);
     
-    // coordinates
-    vec2 p = (pixel-iResolution.xy/2.)/iResolution.y;
     
-    // perspective
-    vec3 q = vec3(p, 1.);
-    q = erot(q, vec3(1,1,1), -.5);
-    p = q.xy/q.z;
-    
-    // scroll
-    p.y += iTime*.1;
-    
-    // grid
-    float grid = 16.;
-    vec2 cell = floor(p*grid);
-    
-    // column animation
-    float mask = floor(iTime*hash11(cell.x));
-    mask = step(.5,sin(mask));
-    float speed = 40.*hash11(cell.x+75.);
-    cell.y += floor(iTime*speed)*mask;
-    
-    // random per cell
-    vec2 rng = hash22(cell);
-    
-    // character selection
-    int char = int(iTime * rng.x);
-    int grd = int(grid);
-    char = (char % 50)+145;
-    vec2 offset = vec2(char%grd, char/grd);
-    
-    // atlas coordinates
-    p = mod(p, 1./grid);
-    p += offset/grid;
-    vec4 map = textureLod(alphabet, p, 1.5/q.z);
-    
-    // color
-    bool colorful = sin(rng.y*6.+iTime) > 0.5;
-    if (colorful)
-    {
-        color.rgb = .5+.5*cos(vec3(0,2,4)+floor(cell.y*.1));
-        color.rgb *= 1.-map.r;
-    }
-    else
-    {
-        color.rgb = vec3(map.r);
-    }
-}
-        </canvas>
-      </shader-view>
+    <a class="gif" onClick="show_player(1)">
+        <img src="/media/webm/1.png"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/ink-3/">
-      <img class="view borders shadow loading" src="/shader/2024/07-03/ink-3.jpg"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Ink 3"
-        src="/shader/2024/07-03/4.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform bool final_pass;
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-uniform sampler2D framebuffer, bluenoise;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-void post_process(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    if (final_pass)
-    {
-        post_process(fragColor, gl_FragCoord.xy);
-    }
-    else
-    {
-        mainImage(fragColor, gl_FragCoord.xy);
-    }
-}
-
-// Fork of "blue noise range normal gradient" by leon. https://shadertoy.com/view/mt2GWd
-// 2024-04-15 12:16:24
-
-
-#define R iResolution.xy
-#define N(v) normalize(v)
-#define T(u) noise(vec3(p+u,iTime*.01))
-#define P(u) vec3(uv+u, T(u))
-float gyroid (vec3 p) { return dot(sin(p),cos(p.yzx)); }
-float noise (vec3 p)
-{
-    float result = 0., a = .5;
-    for (float i = 0.; i < 6.; ++i, a/=2.)
-    {
-        p.z += result*.5;
-        result += abs(atan(gyroid(p/a)))*a;
-    }
-    //return result;
-    return abs(result-.7);
-}
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-    vec2 uv = fragCoord/R.xy;
-    vec2 p = (2.*fragCoord-R.xy)/R.y;
-    vec2 aspect = vec2(R.x/R.y, 1.);
-    vec3 blu = texture(bluenoise, fragCoord/1024.).rgb;
     
     
-    vec3 normal = vec3(0);
-    for (float i = 0.; i < 4.; ++i)
-    {
-        vec2 range = (1.+i*10.)*aspect/1000.;
-        vec3 e = vec3(range,0);
-        normal += vec3(T(0.)-vec3(T(e.xz),T(e.zy), 0.));
-    }
-    normal.z *= .1;
-    normal = normalize(normal);
-    /*
-    vec3 z = P(0.);
-    vec2 range = 20.*aspect/1000.;
-    vec3 e = vec3(range,0);
-    vec3 normal = vec3(cross(N(z-P(e.xz)), N(z-P(e.zy))));
-    normal = normalize(normal);
-    */
-    
-    vec3 dir = normalize(vec3(0,1,0));
-    float light = dot(normal, dir);
-    
-    vec3 color = vec3(1);
-    
-    color *= max(
-                max(step(fragCoord.y, 1.), step(R.y-1.,fragCoord.y)),
-                max(step(fragCoord.x, 1.), step(R.x-1.,fragCoord.x)));
-    //color *= pow(light*.5+.5, .5);
-    
-    vec2 move = vec2(normal.y, -normal.x);
-    
-    //move *= 1.+2.*blu.z;
-    move /= R;
-    
-    vec3 frame = texture(framebuffer, uv+move).rgb;
-    
-    color = max(color, frame - iTimeDelta/20.);
-    
-    //color = color + frame;
-      
-    fragColor = vec4(color,1.0);
-}
-
-// Fork of "noisey123" by leon. https://shadertoy.com/view/X3cXDs
-// 2024-07-01 16:56:21
-
-// Fork of "blue noise range normal gradient" by leon. https://shadertoy.com/view/mt2GWd
-// 2024-04-15 12:16:24
-
-
-#define R iResolution.xy
-#define N(v) normalize(v)
-#define TT(u) texture(framebuffer, uv+u).r
-#define PP(u) vec3(uv+u, TT(u))
-
-void post_process( out vec4 fragColor, in vec2 fragCoord )
-{
-    vec2 uv = fragCoord/R.xy;
-    vec2 aspect = vec2(R.x/R.y, 1.);
-    vec3 frame = texture(framebuffer, uv).rgb;
-    vec3 blu = texture(bluenoise, fragCoord/1024.).rgb;
-    
-    
-    vec2 range = 1./R.xy;
-    vec3 e = vec3(range,0.);
-    //vec3 normal = vec3(T(0.)-vec3(T(e.xz),T(e.zy), 0.));
-    //normal.z *= .05;
-    vec3 z = PP(0.);
-    vec3 normal = N(cross(N(z-PP(e.xz)), N(z-PP(e.zy))));
-    
-    
-    float dt = dot(normal, N(vec3(0,1,1)));// + blu.x*.2;
-    float light = pow(dt*.5+.5, .5);
-    //float mask = clamp(frame.r/iTime/iFrameRate, 0., 1.);
-    
-    dt = dot(normal, N(vec3(0,-1,2)));// + blu.x*.2;
-    float shadow = smoothstep(.0,.5,(dt)-.5);
-    
-    //vec3 color = 1.-abs(fract(frame/100.)-.5)*2.;
-    vec3 color = vec3(1.);
-    //color = mix(color, .5+.5*cos(vec3(1,2,3)*4.+frame.r*4.+4.+uv.y*10.), shadow);
-    
-    color *= light;
-    //color = texture(iChannel2, normal, 0.).rgb;
-    //color = vec3(normal.x+normal.y)/2.;
-    color = normal;
-    //color *= 1.-shadow;
-    //color *= pow(light*.5+.5, .5);
-    //color *= smoothstep(.0,.1,abs(fract(mask)-.5)-.25);
-    float border = 1.-max(
-                    max(step(fragCoord.y, 1.), step(R.y-1.,fragCoord.y)),
-                    max(step(fragCoord.x, 1.), step(R.x-1.,fragCoord.x)));
-    vec3 back = vec3(.25);
-    back *= 1.-clamp(texture(framebuffer, uv, 6.).r, 0., 1.);
-    color = mix(back, color, smoothstep(.0,.01,frame.r)*border);
-    fragColor = vec4(color, 1.);
-}
-
-
-
-        </canvas>
-      </shader-view>
+    <a class="gif" onClick="show_player(2)">
+        <img src="/media/webm/2.png"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/subatomics/">
-      <img class="view borders shadow loading" src="/shader/2024/subatomics.png"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Subatomics"
-        src="/shader/2024/subatomics.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform bool final_pass;
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-uniform sampler2D framebuffer, bluenoise;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    mainImage(fragColor, gl_FragCoord.xy);
-}
-
-// Dave Hoskins
-// https://www.shadertoy.com/view/4djSRW
-vec3 hash33(vec3 p3)
-{
-	p3 = fract(p3 * vec3(.1031, .1030, .0973));
-    p3 += dot(p3, p3.yxz+33.33);
-    return fract((p3.xxy + p3.yxx)*p3.zyx);
-}
-vec3 hash31(float p)
-{
-   vec3 p3 = fract(vec3(p) * vec3(.1031, .1030, .0973));
-   p3 += dot(p3, p3.yzx+33.33);
-   return fract((p3.xxy+p3.yzz)*p3.zyx); 
-}
-
-// rotation matrix
-mat2 rot(float a) { return mat2(cos(a),-sin(a),sin(a),cos(a)); }
-
-float gyroid (vec3 p) { return dot(cos(p),sin(p.yzx)); }
-
-float jump(float time, float curve)
-{
-    return pow(fract(time), curve) + floor(time);
-}
-
-#define repeat(p,r) (mod(p,r)-r/2.)
-
-// Subatomics
-// 2024-07-16 Leon Denise
-
-// Revisiting "Taste of Noise 12"
-// https://shadertoy.com/view/7sGSW3
-
-// global variable
-float delay = 6.;
-float bounces;
-vec3 rng;
-
-float fbm(vec3 p) {
-    float result = 0., a = .5;
-    for (float i = 0.; i < 3.; ++i) {
-        p += result*.5;
-        result += ((gyroid(p/a))*a);
-        a /= 2.;
-    }
-    return result;
-}
-
-float fbm2(vec3 p) {
-    float result = 0., a = .5;
-    for (float i = 0.; i < 3.; ++i) {
-        p += result*.5;
-        result += ((gyroid(p/a))*a);
-        a /= 2.;
-    }
-    return result;
-}
-
-// geometry
-float map (vec3 p)
-{
-    float scene = 1000.;
-    float shape = 1000.;
-    vec3 q = p;
     
-    // times
-    float t = floor(iTime/delay)*78.;
-    float j = t+rng.x*.002;
     
-    vec3 rngt = hash31(t);
-    
-    // parameters
-    vec3 angle = vec3(1,2,3)+j;
-    float range = .5;
-    float size = .2;
-    
-    // random falloffs
-    float var = mix(1.2, 1.5, rngt.x);
-    float vaa = 1.7;
-    float vas = mix(1.3, 1.5, rngt.z);
-    
-    // kaleidoscopic iterated function
-    const float count = 8.;
-    float ar = 1., aa = 1., as = 1.0;
-    for (float index = 0.; index < count; ++index)
-    {
-        
-        // rotate
-        p.xz *= rot(angle.y/aa);
-        p.yz *= rot(angle.x/aa);
-        p.xy *= rot(angle.z/aa);
-        // fold
-        p.x = abs(p.x)-range*ar;
-        
-        // combine
-        scene = min(scene, length(p)-size*as);
-        
-        // falloff
-        ar /= var;
-        aa /= vaa;
-        as /= vas;
-    }
-    
-    vec3 qq = abs(fract(q*10.)-.5)*2.;
-    float s = length(qq)+fbm(q*8.);
-    scene += abs(fract(abs(s)*2.)-.5)*.01;
-    
-    // lines
-    p += fbm(q*4.)*.05;
-    shape = min(length(p.xy), length(p.xz));
-    shape = min(shape, length(p.zy));
-    shape -= .002;
-    scene = min(shape, scene);
-    return scene;
-}
-
-vec3 color (vec3 pos, vec3 ray, vec3 normal)
-{    
-    // lighting
-    vec3 rf = reflect(ray, normal);
-    vec3 backlight = vec3(0.1) * sqrt(dot(rf, vec3(0,0,1))*0.5+0.5);
-    vec3 specular = vec3(1) * pow(dot(rf, normalize(vec3(0,1,0)))*0.5+0.5,10.);
-    vec3 color = backlight + specular*.5;
-
-    // brighten up reflections
-    color *= 2.+bounces*1.;
-
-    return color;
-}
-
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-    // pixel coordinates
-    vec2 uv = (fragCoord.xy - iResolution.xy * 0.5) / iResolution.y;
-    
-    // reset color
-    fragColor = vec4(0,0,0,1);
-    
-    // white noise
-    vec3 seed = vec3(gl_FragCoord.xy, iTime);
-    
-    // blue noise scroll https://www.shadertoy.com/view/tlySzR
-    ivec2 pp = ivec2(fragCoord);
-    pp = (pp+(int(iFrame)+196)*ivec2(113,127)) & 1023;
-    rng = texelFetch(bluenoise,pp,0).xyz;
-    
-    // blur edges
-    vec3 rng3 = rng;//hash33(seed+78.);
-    vec2 dof = vec2(cos(rng3.x*6.28),sin(rng3.x*6.28))*rng3.y;
-    uv += dof*pow(length(uv), 8.0)*rng3.z*.2;
-    
-    // camera coordinates
-    vec3 eye = vec3(.5,1,-3.);
-    vec3 at = vec3(0);
-    vec3 z = normalize(at-eye);
-    vec3 x = normalize(cross(z, vec3(0,1,0)));
-    vec3 y = cross(x, z);
-    vec3 ray = normalize(z * 1.5 + uv.x * x + uv.y * y);
-    vec3 pos = eye + ray * (rng3.z*2.);
-    
-    // normalized random direction by Blackle (https://suricrasia.online/demoscene/functions/)
-    rng3 = normalize(tan(rng3*2.-1.));
-    
-    // raymarching
-    const float count = 30.;
-    float total = 0.;
-    bounces = 0.;
-    for (float index = 0.; index < count; ++index)
-    {
-        // volume estimation
-        float dist = map(pos);
-        if (dist < 0.001)
-        {
-            // compute normal by NuSan (https://www.shadertoy.com/view/3sBGzV)
-            vec2 off=vec2(0.001,0);
-            vec3 normal = normalize(map(pos)-vec3(map(pos-off.xyy), map(pos-off.yxy), map(pos-off.yyx)));
-
-            // coloring
-            float shade = 1.-index/count;
-            fragColor.rgb += color(pos, ray, normal) * shade / (1.+bounces);
-            
-            // reflection
-            if (++bounces > 1.) break;
-            ray = reflect(ray, normal);
-            ray = normalize(ray + rng3);
-            dist = 0.01;
-            total = 0.;
-        }
-        
-        // dithering
-        dist *= 0.9 + .1 * rng.z;
-        
-        // depth of field
-        total += dist;
-        ray += 0.03*smoothstep(2.,6.,total) * rng3;
-        
-        // ray march
-        pos += ray * dist;
-    }
-    
-    // temporal fade
-    vec4 frame = texture(framebuffer, gl_FragCoord.xy/iResolution.xy);
-    fragColor.rgb = max(fragColor.rgb, frame.rgb);
-    
-    // animation fade
-    fragColor.rgb *= smoothstep(1., .95, fract(iTime/delay));
-}
-
-
-
-
-
-
-        </canvas>
-      </shader-view>
+    <a class="gif" onClick="show_player(3)">
+        <img src="/media/webm/3.png"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/inercia-royaliptic/">
-      <img class="view borders shadow loading" src="/shader/2022/inercia-royaliptic.jpg"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Inercia Royaliptic"
-        src="/shader/2022/inercia-royaliptic.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-uniform sampler2D framebuffer, bluenoise;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    mainImage(fragColor, gl_FragCoord.xy);
-}
-
-
-// Some bouncing made for Inercia Shader Royale 2022
-// https://2022.inercia.pt/
-// music by Diffty https://soundcloud.com/diffty
-
-// globals
-float fft, material, rnd;
-
-// toolbox
-#define time iTime
-#define ss(a,b,t) smoothstep(a,b,t)
-mat2 rot(float a) { float c=cos(a),s=sin(a); return mat2(c,s,-s,c); }
-float gyroid (vec3 p) { return dot(sin(p), cos(p.yzx)); }
-float random (vec2 p) { return fract(sin(dot(p,vec2(10.1324,5.654)))*46501.654); } 
-float fbm (vec3 p) {
-  float result = 0., a = .5;
-  for (float i = 0.; i < 3.; ++i) {
-    result += abs(gyroid(p/a)*a);
-    a /= 2.;
-  }
-  return result;
-}
-float box (vec3 p, vec3 s) {
-  vec3 b = abs(p)-s;
-  return max(b.x,max(b.y,b.z));
-}
-
-float map(vec3 p)
-{
-  float dist = 100.;
-  
-  // rotation angle
-  float t = time*1.+p.z*.5;
-  t = pow(fract(t), 10.) + floor(t);
-  t += rnd;
-  
-  // translate offset
-  float tt = time + p.z;
-  tt = pow(fract(tt), 10.) + floor(tt);
-  float r = .0*fft+.2+.1*sin(length(p)*3.-tt+p.z*5.);
-  
-  // kaleido
-  float a = 1.;
-  const float count = 12.;
-  for (float i = 0.; i < count; ++i) {
-    p.xz *= rot(t/a);
-    p.yz *= rot(sin(t)/a);
-    p.x = abs(p.x)-r*a;
-    float shape = length(p)-.1*a;
-    //if (mod(i, 2.) < .5) shape = box(p,vec3(1,1,.01)*.15*a);
-    material = shape < dist ? i : material;
-    dist = min(dist, shape);
-    a /= 1.2;
-  }
-  
-  // extra details surface
-  float noise = fbm(p*60.);
-  dist -= noise*.002;
-  
-  return dist*.3;
-}
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-    // coordinates
-    vec2 uv = (2.*fragCoord.xy-iResolution.xy)/iResolution.y;
-    vec3 pos = vec3(0,0,2);
-    vec3 ray = normalize(vec3(uv, -3));
     
-    // noise
-    float rng = random(uv);
-    vec2 jitter = vec2(random(uv+.196),random(uv+4.1));
     
-    // audio
-    float aa = abs(atan(uv.y, uv.x))/10.+fft*3.;
-    float lod = 100.;
-    aa = floor(aa*lod)/lod;
-    
-    // timeline random (used in map to add extra rotation)
-    float t = time*2.;
-    float index = floor(t);
-    float anim = fract(t);
-    rnd = mix(random(vec2(index)), random(vec2(index+1.)), anim);
-    
-    // blur edge
-    float luv = length(uv);
-    ray.xy += jitter * smoothstep(.5, 2., luv)*.1;
-    
-    // glitch blur
-    vec2 llod = 10.*vec2(random(vec2(floor(time*4.+.5))), random(vec2(floor(time*2.))));
-    float blur = random(floor(uv*llod)+floor(time*4.));
-    ray.xy += jitter*step(.95, blur)*.1;
-    
-    // raymarch
-    const float count = 100.;
-    float shade = 0.;
-    float total = 0.;
-    for (float index = count; index > 0.; --index) {
-        float dist = map(pos);
-        if (dist < .0001 * total || total > 10.) {
-            shade = index/count;
-            break;
-        }
-        // blur in distance
-        ray.xy += jitter*total*.0005;
-        dist *= .9+.1*rng;
-        total += dist;
-        pos += ray * dist;
-    }
-    
-    // background
-    vec3 color = vec3(0);
-    color += ss(4.,.5, luv)*.5;
-    
-    // shading
-    if (total < 10. && shade > .0) {
-        color = vec3(0.2);
-        vec2 unit = vec2(.001,0);
-        vec3 normal = normalize(vec3(map(pos+unit.xyy)-map(pos-unit.xyy), map(pos+unit.yxy)-map(pos-unit.yxy), map(pos+unit.yyx)-map(pos-unit.yyx)));
-        vec3 rf = reflect(ray, normal);
-        color += .5+.5*cos(vec3(1,2,3)*5.+pos.z+blur);
-        color *= mod(material, 2.);
-        color += pow(dot(ray, normal)*.5+.5, 1.) * 2.;
-        color += pow(dot(rf, vec3(0,1,0))*.5+.5, 10.);
-        color *= shade;
-    }
-    
-    fragColor = vec4(color, 1);
-}
-        </canvas>
-      </shader-view>
+    <a class="gif" onClick="show_player(4)">
+        <img src="/media/webm/4.png"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/liquid-toy/">
-      <img class="view borders shadow loading" src="/shader/2022/liquid-toy.jpg"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Liquid Toy"
-        src="/shader/2022/liquid-toy.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform bool final_pass;
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-uniform vec4 iMouse;
-uniform sampler2D framebuffer, bluenoise;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-void post_process(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    if (final_pass)
-    {
-        post_process(fragColor, gl_FragCoord.xy);
-    }
-    else
-    {
-        mainImage(fragColor, gl_FragCoord.xy);
-    }
-}
-
-// Liquid toy by Leon Denise 2022-05-18
-// Playing with shading with a fake fluid heightmap
-
-// shortcut to sample texture
-#define TEX(uv) texture(framebuffer, uv).r
-
-// shorcut for smoothstep uses
-#define trace(edge, thin) smoothstep(thin,.0,edge)
-#define ss(a,b,t) smoothstep(a,b,t)
-
-const float speed = .1;
-const float scale = 2.;
-const float falloff = 2.;
-const float fade = .3;
-const float strength = 1.;
-const float range = 5.;
-
-// fractal brownian motion (layers of multi scale noise)
-float gyroid (vec3 p) { return dot(sin(p),cos(p.yzx)); }
-float fbm(vec3 p)
-{
-    float result = 0., amplitude = 0.5;
-    for (float index = 0.; index < 5.; ++index)
-    {
-        // result += texture(framebuffer, p/amplitude).xyz * amplitude;
-        result += gyroid(p/amplitude) * amplitude;
-        amplitude /= falloff;
-    }
-    return result;
-}
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-
-    // coordinates
-    vec2 uv = (fragCoord.xy - iResolution.xy / 2.)/iResolution.y;
-    vec2 aspect = vec2(iResolution.x/iResolution.y, 1);
     
-    // draw circle at mouse or in motion
-    float t = iTime*2.;
-    vec2 mouse = (iMouse.xy - iResolution.xy / 2.)/iResolution.y;
-    if (iMouse.z > .5) uv -= mouse;
-    else uv -= vec2(cos(t),sin(t))*.3;
-    // uv -= vec2(cos(t),sin(t))*.3;
-    float paint = trace(length(uv),.1);
     
-    // expansion
-    vec2 offset = vec2(0);
-    uv = fragCoord.xy / iResolution.xy;
-    vec4 data = texture(framebuffer, uv);
-    vec3 unit = vec3(range/472./aspect,0);
-    vec3 normal = normalize(vec3(
-        TEX(uv - unit.xz)-TEX(uv + unit.xz),
-        TEX(uv - unit.zy)-TEX(uv + unit.zy),
-        data.x*data.x)+.001);
-    offset -= normal.xy;
-    
-    // turbulence
-    // spice *= 6.28;
-    // spice += iTime;
-    // offset += vec2(cos(spice),sin(spice));
-    
-    // noise
-    vec3 e = vec3(vec2(.001), 0.);
-    #define F(u) fbm(vec3(uv*scale+u,iTime*speed))
-    #define P(u) vec3(uv+u, F(u))
-    vec3 spice = cross(normalize(P(e.xz)-P(-e.xz)), normalize(P(e.zy)-P(-e.zy)));
-    offset -= vec2(spice.y, -spice.x) / 2.;
-    // spice.z *= 2.1;
-    // spice = normalize(spice);
-    // offset -= spice.xy;
-    
-    uv += strength * offset / aspect / 472.;
-    
-    // sample buffer
-    vec4 frame = texture(framebuffer, uv);
-    
-    // temporal fading buffer
-    paint = max(paint, frame.x - iTimeDelta * fade);
-    
-    // print result
-    fragColor = vec4(clamp(paint, 0., 1.));
-}
-
-
-
-// Liquid toy by Leon Denise 2022-05-18
-// Playing with shading with a fake fluid heightmap
-
-// 2023-01-20 update:
-// fix scalars to be resolution independant
-// (samed speed and look at different frame size)
-
-void post_process( out vec4 fragColor, in vec2 fragCoord )
-{
-    
-    // coordinates
-    vec2 uv = fragCoord.xy / iResolution.xy;
-    vec3 dither = texture(bluenoise, fragCoord.xy / 1024.).rgb;
-    
-    // value from buffer A
-    vec4 data =  texture(framebuffer, uv);
-    float gray = data.x;
-    
-    // gradient normal from gray value
-    float range = 3.;
-    vec2 aspect = vec2(iResolution.x/iResolution.y, 1);
-    vec3 unit = vec3(range/472./aspect,0);
-    vec3 normal = normalize(vec3(
-        TEX(uv + unit.xz)-TEX(uv - unit.xz),
-        TEX(uv - unit.zy)-TEX(uv + unit.zy),
-        gray*gray*gray));
-        
-    // backlight
-    vec3 color = vec3(.3)*(1.-abs(dot(normal, vec3(0,0,1))));
-    
-    // specular light
-    vec3 dir = normalize(vec3(0,1,2));
-    float specular = pow(dot(normal, dir)*.5+.5,20.);
-    color += vec3(.5)*ss(.2,1.,specular);
-    
-    // rainbow
-    vec3 tint = .5+.5*cos(vec3(1,2,3)*1.+dot(normal, dir)*4.-uv.y*3.-3.);
-    color += tint * smoothstep(.15,.0,gray);
-
-    // dither
-    color -= dither.x*.1;
-    
-    // background blend
-    vec3 background = vec3(1);
-    background *= smoothstep(1.5,-.5,length(uv-.5));
-    color = mix(background, clamp(color, 0., 1.), ss(.01,.1,gray));
-    
-    // display layers when clic
-    // if (iMouse.z > 0.5 && iMouse.x/iResolution.x < .1)
-    // {
-    //     if (uv.x < .33) color = vec3(gray);
-    //     else if (uv.x < .66) color = normal*.5+.5;
-    //     else color = vec3(tint);
-    // }
-
-    fragColor = vec4(color, 1);
-}
-        </canvas>
-      </shader-view>
+    <a class="gif" onClick="show_player(5)">
+        <img src="/media/webm/5.png"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/bim-boom-bam/">
-      <img class="view borders shadow loading" src="/shader/2024/bim-boom-bam.png"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Bim Boom Bam"
-        src="/shader/2024/bim-boom-bam.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-uniform sampler2D bluenoise;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    mainImage(fragColor, gl_FragCoord.xy);
-}
-// Bim Boom Bam
-// adapted from Hell Diving
-// https://www.shadertoy.com/view/lcGGzK
-
-
-float gyroid (vec3 p) { return dot(cos(p),sin(p.yzx)); }
-
-float fbm(vec3 p)
-{
-    float result = 0.;
-    float a = .5;
-    for (float i = 0.; i < 8.; ++i)
-    {
-        p.z += (result)*.1;
-        result += abs(gyroid(p/a)*a);
-        a /= 1.7;
-    }
-    return result;
-}
-
-// Dave Hoskins
-// https://www.shadertoy.com/view/4djSRW
-float hash12(vec2 p)
-{
-	vec3 p3  = fract(vec3(p.xyx) * .1031);
-    p3 += dot(p3, p3.yzx + 33.33);
-    return fract((p3.x + p3.y) * p3.z);
-}
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-    vec2 uv = (2.*fragCoord-iResolution.xy)/iResolution.y;
-    vec3 blu = texture(bluenoise, fragCoord/1024.).rgb;
     
-    vec3 back = vec3(smoothstep(3., -2., length(uv)-blu.y*.02));
     
-    uv -= .5;
-
-    // per cell id
-    float id = hash12(floor(uv));
-    
-    // repeat
-    uv = fract(uv)-.5;
-    uv *= .9;
-    
-    // animations
-    float timeline = iTime/3.+id;
-    vec2 anim = vec2(fract(timeline), floor(timeline));
-    float growth = pow(anim.x, .2);
-    float fade = 1.-pow(anim.x, 9.);
-    float scale = anim.x;
-    float burn = 1.-pow(anim.x, .4);
-    float speed = pow(anim.x, .4);
-    
-    // coordinates
-    vec3 ray = normalize(vec3(uv,.01+scale));
-    ray.z += speed + anim.y + id*196.128;
-    
-    // the spice
-    float noise = fbm(ray);
-    
-    // surface orientation
-    #define T(u) fbm(ray+u)
-    vec3 e = vec3(.1*blu.x*vec2(iResolution.x/iResolution.y), 0.);
-    vec3 normal = normalize(noise-vec3(T(e.xzz),T(e.zyz),1.));
-    
-    // color palette
-    vec3 color = 0.2 + 1. * cos(vec3(1,2,3)*5.5 + normal.y);
-    
-    // gradient blending and masking
-    float smoke = noise-2.*burn;
-    float shade = (normal.y*.5+.5);
-    color = mix(color, vec3(smoke*shade), smoothstep(.0,.1,smoke));
-    
-    // shape
-    float radius = .3*noise*growth;
-    float shape = smoothstep(.05*blu.x,.0,length(uv)-radius);
-    
-    color = mix(back, color, shape * fade);
-
-    fragColor = vec4(color,1.0);
-}
-        </canvas>
-      </shader-view>
+    <a class="gif" onClick="show_player(6)">
+        <img src="/media/webm/6.png"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/ink-1/">
-      <img class="view borders shadow loading" src="/shader/2024/07-03/ink-1.jpg"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Ink 1"
-        src="/shader/2024/07-03/2.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform bool final_pass;
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-uniform sampler2D framebuffer;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-void post_process(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    if (final_pass)
-    {
-        post_process(fragColor, gl_FragCoord.xy);
-    }
-    else
-    {
-        mainImage(fragColor, gl_FragCoord.xy);
-    }
-}
-
-
-// Fork of "noisenoisenoise" by leon. https://shadertoy.com/view/l3GXzh
-// 2024-07-01 22:54:53
-
-// Fork of "2qwfe" by leon. https://shadertoy.com/view/M3cSDl
-// 2024-07-01 22:29:58
-
-
-#define R iResolution.xy
-#define N(v) normalize(v)
-#define T(u) noise(vec3(q+u,.0))
-#define P(u) vec3(uv+u, T(u))
-float gyroid (vec3 p) { return dot(sin(p),cos(p.yzx)); }
-float noise (vec3 p)
-{
-    float result = 0., a = .5;
-    for (float i = 0.; i < 4.; ++i, a/=2.)
-    {
-        //p.z += result*.1;
-        result += ((gyroid(p/a)))*a;
-    }
-    return result;
-    //return abs(result-.7);
-}
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-
-    vec2 uv = fragCoord/iResolution.xy;
-    vec2 p = (2.*fragCoord-R.xy)/R.y;
-    float dist = length(p);
-    vec2 q = vec2(log(dist), atan(p.y,p.x));
-    vec2 aspect = vec2(R.x/R.y, 1.);
     
-    q.x += -iTime*.1;
     
-    vec2 range = 0.1*aspect;
-    vec3 e = vec3(range,0);
-    //p.x += iTime;
-    
-    float a = 1.;
-    vec3 color = vec3(1.);
-    
-    for (float i = 0.; i < 5.; ++i)
-    {
-        vec3 z = P(0.);
-        vec3 normal = normalize(cross(N(z-P(e.xz)), N(z-P(e.zy))));
-
-        q += vec2(normal.y, -normal.x) * .1 * a;// * pow(dist, .2);
-        a /= .65;
-        //p += normal.xy * .2;
-        //color -= normal/3.;
-        
-        //color = 1.-normal;
-    }
-    
-    float shape = abs(length(q)-.5)-.1;
-    shape = abs(cos(q.x));
-    //shape = max(shape, abs(fract(q.x * .3)-.5)-.2);
-    //shape = abs(fract(p.y+iTime)-.5)-.2;
-    float shade = smoothstep(1.,0.,shape);
-    //float shade = (1./abs(p.y));// * abs(fract(p.x*20.)-.5) * 2.;
-    //color = normal;
-    color *= shade;
-    //color *= abs(p.y)*2.;
-    //color *= smoothstep(.1,.0,fract(p.x/5.+iTime/10.)-.5);
-    //color = vec3(fract(abs(p)), 0.);
-    fragColor = vec4(color, 1);
-}
-
-#define R iResolution.xy
-#define N(v) normalize(v)
-#define TT(u) texture(framebuffer, uv+u).r
-#define PP(u) vec3(uv+u, TT(u))
-
-void post_process( out vec4 fragColor, in vec2 fragCoord )
-{
-    vec2 uv = fragCoord/R;
-
-    vec3 e = vec3(1./R,0);
-    vec3 z = PP(0.);
-    vec3 x = PP(e.xz);
-    vec3 y = PP(e.zy);
-    vec3 normal = N(cross(N(z-x), N(z-y)));
-    
-    float light = dot(normal, N(vec3(0,1,1)))*.5+.5;
-    vec3 color = vec3(1);
-    //color = 0.5 + 0.5 * cos(vec3(1,2,3) * 44. + normal.z * 3.);
-    color *= pow((light), .4);
-    color *= smoothstep(.5,.0,normal.z);
-    //color *= z.z;
-    
-    fragColor = vec4(color, 1.);
-    //fragColor = texture(iChannel1, normal);
-}
-        </canvas>
-      </shader-view>
+    <a class="gif" onClick="show_player(7)">
+        <img src="/media/webm/7.png"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/curling-smoke/">
-      <img class="view borders shadow loading" src="/shader/2023/curling-smoke.jpg"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Curling Smoke"
-        src="/shader/2023/curling-smoke.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform bool final_pass;
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-uniform sampler2D framebuffer, bluenoise;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-void post_process(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    if (final_pass)
-    {
-        post_process(fragColor, gl_FragCoord.xy);
-    }
-    else
-    {
-        mainImage(fragColor, gl_FragCoord.xy);
-    }
-}
-
-// Curling Smoke
-
-// finally learnt how to curl noise
-
-// from Pete Werner article:
-// http://petewerner.blogspot.com/2015/02/intro-to-curl-noise.html
-
-#define R iResolution.xy
-float gyroid (vec3 p) { return dot(sin(p),cos(p.yzx)); }
-float noise (vec3 p)
-{
-    float result = 0., a = .5;
-    float count = R.y < 500. ? 6. : 8.;
-    for (float i = 0.; i < count; ++i, a/=2.)
-    {
-        p.z += iTime*.1;//+result*.5;
-        result += abs(gyroid(p/a))*a;
-    }
-    return result;
-}
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-    vec3 color = vec3(0);
     
-    // coordinates
-    vec2 uv = fragCoord/R.xy;
-    vec2 p = (2.*fragCoord-R.xy)/R.y;
-    vec2 offset = vec2(0);
     
-    // curl
-    vec2 e = vec2(.01,0);
-    vec3 pos = vec3(p, length(p)*.5);
-    float x = (noise(pos+e.yxy)-noise(pos-e.yxy))/(2.*e.x);
-    float y = (noise(pos+e.xyy)-noise(pos-e.xyy))/(2.*e.x);
-    vec2 curl = vec2(x,-y);
-
-    // force fields
-    offset += curl;
-    offset -= normalize(p) * sin(iTime*2.-length(p)*6.);
-
-    // displace buffer sampler coordinates
-    uv += offset*.002*vec2(R.y/R.x, 1);
-    vec3 frame = texture(framebuffer, uv).rgb;
-    
-    // spawn from edge
-    bool spawn = fragCoord.x < 1. || fragCoord.x > R.x - 1.
-        || fragCoord.y < 1. || fragCoord.y > R.y - 1.;
-    
-    // spawn at first frame
-    spawn = spawn || iFrame < 1.;
-    
-    // color palette
-    // https://iquilezles.org/articles/palettes
-    if (spawn) color = .5+.5*cos(vec3(1,2,3)*5.5+iTime+(uv.x+uv.y)*6.);
-    
-    // buffer
-    else color = max(color, frame);
-    
-    fragColor = vec4(color,1.0);
-}
-
-
-
-
-// Curling Smoke by Leon Denise 2023-01-19
-
-// finally learnt how to curl noise
-
-// from Pete Werner article:
-// http://petewerner.blogspot.com/2015/02/intro-to-curl-noise.html
-
-
-void post_process( out vec4 fragColor, in vec2 fragCoord )
-{
-    // coordinates
-    vec2 uv = fragCoord/iResolution.xy;
-    
-    // noise
-    vec3 blu = texture(bluenoise, fragCoord/1024.).rgb;
-    
-    // frame
-    vec3 color = texture(framebuffer, uv).rgb;
-    
-    // normal
-    vec2 e = vec2(pow(blu.x, 3.)*0.084,0);
-    #define T(u) texture(framebuffer, uv+u).r
-    vec3 normal = vec3(
-        T(e.xy)-T(-e.xy), 
-        T(-e.yx)-T(e.yx),
-        color.r*.1);
-    if (abs(normal.x) + abs(normal.y) + abs(normal.z) > .001)
-        normal = normalize(normal);
-             
-    // shade
-    color *= dot(normal, normalize(vec3(0,1,1)))*.5+.5;
-    
-    fragColor = vec4(color,1.0);
-}
-
-
-
-        </canvas>
-      </shader-view>
+    <a class="gif" onClick="show_player(8)">
+        <img src="/media/webm/8.png"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/cloudy-blue-sky/">
-      <img class="view borders shadow loading" src="/shader/2023/cloudy-blue-sky.jpg"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Cloudy Blue Sky"
-        src="/shader/2023/cloudy-blue-sky.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-uniform sampler2D framebuffer, bluenoise;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    mainImage(fragColor, gl_FragCoord.xy);
-}
-
-// Cloudy Blue Sky
-// by Leon Denise
-// 05/08/2023
-
-// Guess who is in vacation in the country side.
-// Another layers of noise that look like something.
-// Trying to push noise patterns farer to create complex shapes with simple code.
-
-// Could be very golfed and textureless,
-// but the blue noise scrolling is really adding to the picture,
-// and would be hard to golf.
-
-
-// Gyroid pattern
-// Explained by Martijn Steinrucken at:
-// https://www.youtube.com/watch?v=b0AayhCO7s8
-float gyroid (vec3 p) { return dot(sin(p),cos(p.yzx)); }
-
-// FBM type of noise with gyroid pattern
-float noise (vec3 p, float t, float w, float aa)
-{
-    float result = 0., a = .5;
-    for (float i = 0.; i < 4.; ++i, a/=aa)
-    {
-        p.z += t+result*w; // distortion
-        result += abs(gyroid(p/a))*a; // noise pattern
-    }
-    return result;
-}
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-    vec3 color = vec3(0);
     
-    // coordinates
-    vec2 uv = fragCoord/iResolution.xy;
-    vec2 p = 2.*(fragCoord-iResolution.xy/2.)/iResolution.y;
     
-    // blue noise scroll
-    // by Inigo Quilez from:
-    // https://www.shadertoy.com/view/tlySzR
-    ivec2 pp = ivec2(fragCoord);
-    pp = (pp+int(iFrame*196.)*ivec2(113,127)) & 1023;
-    vec3 blu = texelFetch(bluenoise,pp,0).xyz;
-    
-    // shape from noise
-    vec3 q = vec3(p, 0.);
-    float t = iTime*.05-.2/(uv.y); // animation and perspective
-    q.y += noise(q*10., -t*4., 0., 1.9)*.1; // small details
-    color += noise(q, t, .3, 1.7)*.5-.5; // overall shape
-    color += blu.x*0.4; // extra shape reveal with blue noise
-    color *= smoothstep(.05,.4,uv.y); // fade out horizon
-    
-    // color
-    vec3 sky = mix(vec3(1), vec3(.4,.8,1), smoothstep(-.4, .4, uv.y));
-    color = mix(sky, vec3(1), smoothstep(.0,.2,color.r));
-    
-    fragColor = vec4(color,1.0);
-}
-        </canvas>
-      </shader-view>
+    <a class="gif" onClick="show_player(9)">
+        <img src="/media/webm/9.png"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/taste-of-noise-7/">
-      <img class="view borders shadow loading" src="/shader/2021/taste-of-noise/7.jpg"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Taste of Noise 7"
-        src="/shader/2021/taste-of-noise/7.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform bool final_pass;
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-uniform vec4 iMouse;
-uniform sampler2D framebuffer;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-void post_process(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    if (final_pass)
-    {
-        post_process(fragColor, gl_FragCoord.xy);
-    }
-    else
-    {
-        mainImage(fragColor, gl_FragCoord.xy);
-    }
-}
-
-// Dave Hoskins
-// https://www.shadertoy.com/view/4djSRW
-float hash13(vec3 p3)
-{
-	p3  = fract(p3 * .1031);
-    p3 += dot(p3, p3.zyx + 31.32);
-    return fract((p3.x + p3.y) * p3.z);
-}
-
-// Inigo Quilez
-// https://iquilezles.org/articles/distfunctions
-float smin( float d1, float d2, float k ) {
-    float h = clamp( 0.5 + 0.5*(d2-d1)/k, 0.0, 1.0 );
-    return mix( d2, d1, h ) - k*h*(1.0-h); }
-float smoothing(float d1, float d2, float k) { return clamp( 0.5 + 0.5*(d2-d1)/k, 0.0, 1.0 ); }
-
-// rotation matrix
-mat2 rot(float a) { return mat2(cos(a),-sin(a),sin(a),cos(a)); }
-
-#define repeat(p,r) (mod(p,r)-r/2.)
-
-// taste of noise 7 by leon denise 2021/10/14
-// result of experimentation with organic patterns
-// using code from Inigo Quilez, David Hoskins and NuSan
-// thanks to Fabrice Neyret for code reviews
-// licensed under hippie love conspiracy
-
-// global variable
-float material;
-float rng;
-
-// sdf
-float map (vec3 p)
-{
-    // time stretched with noise
-    float t = iTime*1. + rng*0.9;
     
-    // domain repetition
-    float grid = 5.;
-    vec3 cell = floor(p/grid);
-    p = repeat(p,grid);
     
-    // distance from origin
-    float dp = length(p);
-    
-    // rotation parameter
-    vec3 angle = vec3(.1,-.5,.1) + dp*.5 + p*.1 + cell;
-    
-    // shrink sphere size
-    float size = sin(rng*3.14);
-    
-    // stretch sphere
-    float wave = sin(-dp*1.+t+hash13(cell)*6.28)*.5;
-    
-    // kaleidoscopic iterated function
-    const int count = 4;
-    float a = 1.0;
-    float scene = 1000.;
-    float shape = 1000.;
-    for (int index = 0; index < count; ++index)
-    {
-        // fold and translate
-        p.xz = abs(p.xz)-(.5+wave)*a;
-        
-        // rotate
-        p.xz *= rot(angle.y/a);
-        p.yz *= rot(angle.x/a);
-        p.yx *= rot(angle.z/a);
-        
-        // sphere
-        shape = length(p)-0.2*a*size;
-        
-        // material blending
-        material = mix(material, float(index), smoothing(shape, scene, 0.3*a));
-        
-        // add with a blend
-        scene = smin(scene, shape, 1.*a);
-        
-        // falloff transformations
-        a /= 1.9;
-    }
-        
-    return scene;
-}
-
-// return color from pixel coordinate
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-    // reset color
-    fragColor = vec4(0,0,0,1);
-    material = 0.0;
-    
-    // camera coordinates
-    vec2 uv = (fragCoord.xy - iResolution.xy * 0.5) / iResolution.y;
-    vec3 eye = vec3(1,1,1.);
-    vec3 at = vec3(0,0,0);
-    vec3 z = normalize(at-eye);
-    
-    // camera control
-    // if (iMouse.z > .5)
-    {
-        vec2 M = 6.28*(iMouse.xy/iResolution.xy);
-        z.yz *= rot(M.y);
-        z.xz *= rot(M.x);
-    }
-
-    vec3 x = normalize(cross(z, vec3(0,1,0)));
-    vec3 y = normalize(cross(x, z));
-    vec3 ray = normalize(vec3(z + uv.x * x + uv.y * y));
-    vec3 pos = eye;
-    
-    // white noise
-    vec3 seed = vec3(fragCoord.xy, iTime);
-    rng = hash13(seed);
-    
-    // raymarch
-    const float steps = 30.0;
-    float index;
-    for (index = steps; index > 0.0; --index)
-    {
-        // volume estimation
-        float dist = map(pos);
-        if (dist < 0.01)
-        {
-            break;
-        }
-        
-        // dithering
-        dist *= 0.9 + .1 * rng;
-        
-        // raymarch
-        pos += ray * dist;
-    }
-    
-    // ambient occlusion from steps count
-    float shade = index/steps;
-
-    // compute normal by NuSan (https://www.shadertoy.com/view/3sBGzV)
-    vec2 off=vec2(.001,0);
-    vec3 normal = normalize(map(pos)-vec3(map(pos-off.xyy), map(pos-off.yxy), map(pos-off.yyx)));
-
-    // Inigo Quilez color palette (https://iquilezles.org/articles/palettes)
-    vec3 tint = .5+.5*cos(vec3(3,2,1)+material*.5+length(pos)*.5);
-
-    // lighting
-    float ld = dot(reflect(ray, normal), vec3(0,1,0))*0.5+0.5;
-    vec3 light = vec3(1.000,0.502,0.502) * sqrt(ld);
-    ld = dot(reflect(ray, normal), vec3(0,0,-1))*0.5+0.5;
-    light += vec3(0.400,0.714,0.145) * sqrt(ld)*.5;
-
-    // pixel color
-    fragColor.rgb = (tint + light) * shade;
-
-    float fade = 0.01;
-
-    if (iMouse.z > .5) fade = 1.;
-
-    // temporal buffer
-    fragColor = max(fragColor, texture(framebuffer, fragCoord/iResolution.xy) - fade);
-}
-
-
-
-// taste of noise 7 by leon denise 2021/10/14
-// result of experimentation with organic patterns
-// using code from Inigo Quilez, David Hoskins and NuSan
-// thanks to Fabrice Neyret for code reviews
-// licensed under hippie love conspiracy
-
-// return color from pixel coordinate
-void post_process( out vec4 fragColor, in vec2 fragCoord )
-{
-    fragColor = texture(framebuffer, fragCoord.xy/iResolution.xy);
-}
-
-
-        </canvas>
-      </shader-view>
+    <a class="gif" onClick="show_player(10)">
+        <img src="/media/webm/10.png"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/crypt-roots/">
-      <img class="view borders shadow loading" src="/shader/2019/crypt-roots.jpg"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Crypt Roots"
-        src="/shader/2019/crypt-roots.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    mainImage(fragColor, gl_FragCoord.xy);
-}
-
-// Crypt Roots
-// Ray marching improvised geometry with curvy shapes and rock textures
-// Exploring level of details, materials and lights
-// Licensed under hippie love conspiracy
-// Leon Denise (ponk) 2019.02.24
-
-// Using code from
-
-// Inigo Quilez
-// https://www.shadertoy.com/view/Xds3zN
-
-// Morgan McGuire
-// https://www.shadertoy.com/view/4dS3Wd
-
-#define repeat(p,r) (mod(p,r)-r/2.)
-const float PI = 3.14159;
-mat2 rot (float a) { float c=cos(a), s=sin(a); return mat2(c,s,-s,c); }
-float smoothmin (float a, float b, float r) { float h = clamp(.5+.5*(b-a)/r, 0., 1.); return mix(b, a, h)-r*h*(1.-h); }
-float random (in vec2 st) { return fract(sin(dot(st.xy,vec2(12.9898,78.233)))*43758.5453123); }
-float hash(float n) { return fract(sin(n) * 1e4); }
-float noise(vec3 x) {
-    const vec3 step = vec3(110, 241, 171);
-    vec3 i = floor(x);
-    vec3 f = fract(x);
-    float n = dot(i, step);
-    vec3 u = f * f * (3.0 - 2.0 * f);
-    return mix(mix(mix( hash(n + dot(step, vec3(0, 0, 0))), hash(n + dot(step, vec3(1, 0, 0))), u.x),
-                   mix( hash(n + dot(step, vec3(0, 1, 0))), hash(n + dot(step, vec3(1, 1, 0))), u.x), u.y),
-               mix(mix( hash(n + dot(step, vec3(0, 0, 1))), hash(n + dot(step, vec3(1, 0, 1))), u.x),
-                   mix( hash(n + dot(step, vec3(0, 1, 1))), hash(n + dot(step, vec3(1, 1, 1))), u.x), u.y), u.z);
-}
-float fbm (vec3 p) {
-  float amplitude = 0.5;
-  float result = 0.0;
-  for (float index = 0.0; index <= 3.0; ++index) {
-    result += noise(p / amplitude) * amplitude;
-    amplitude /= 2.;
-  }
-  return result;
-}
-vec3 look (vec3 eye, vec3 target, vec2 anchor) {
-    vec3 forward = normalize(target-eye);
-    vec3 right = normalize(cross(forward, vec3(0,1,0)));
-    vec3 up = normalize(cross(right, forward));
-    return normalize(forward + right * anchor.x + up * anchor.y);
-}
-void moda(inout vec2 p, float repetitions) {
-	float angle = 2.*PI/repetitions;
-	float a = atan(p.y, p.x) + angle/2.;
-	a = mod(a,angle) - angle/2.;
-	p = vec2(cos(a), sin(a))*length(p);
-}
-
-float map (vec3 pos) {
-  float chilly = noise(pos * 2.);
-  float salty = fbm(pos*20.);
-  
-  pos.z -= salty*.04;
-  salty = smoothstep(.3, 1., salty);
-  pos.z += salty*.04;
-  pos.xy -= (chilly*2.-1.) * .2;
     
-  vec3 p = pos;
-  vec2 cell = vec2(1., .5);
-  vec2 id = floor(p.xz/cell);
-  p.xy *= rot(id.y * .5);
-  p.y += sin(p.x + .5);
-  p.xz = repeat(p.xz, cell);
     
-  vec3 pp = p;
-  moda(p.yz, 5.0);
-  p.y -= .1;
-  float scene = length(p.yz)-.02;
-    
-  vec3 ppp = pos;
-  pp.xz *= rot(pp.y * 5.);
-  ppp = repeat(ppp, .1);
-  moda(pp.xz, 3.0);
-  pp.x -= .04 + .02*sin(pp.y*5.);
-  scene = smoothmin(length(pp.xz)-.01, scene, .2);
-
-  p = pos;
-  p.xy *= rot(-p.z);
-  moda(p.xy, 8.0);
-  p.x -= .7;
-  p.xy *= rot(p.z*8.);
-  p.xy = abs(p.xy)-.02;
-  scene = smoothmin(scene, length(p.xy)-.005, .2);
-
-  return scene;
-}
-
-vec3 getNormal (vec3 pos) {
-  vec2 e = vec2(1.0,-1.0)*0.5773*0.0005;
-  return normalize( e.xyy*map( pos + e.xyy ) + e.yyx*map( pos + e.yyx ) + e.yxy*map( pos + e.yxy ) + e.xxx*map( pos + e.xxx ) );
-}
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
-  vec2 uv = (fragCoord.xy-0.5*iResolution.xy)/iResolution.y;
-  vec3 eye = vec3(.1,.1,-iTime*.1-4.);
-  vec3 at = vec3(0,0,eye.z-2.0);
-  vec3 ray = look(eye, at, uv);
-  vec3 pos = eye;
-  float dither = random(uv+fract(iTime));
-  float total = dither * .2;
-  float shade = 0.0;
-  const float count = 60.0;
-  for (float index = count; index > 0.0; --index) {
-    pos = eye + ray * total;
-    float dist = map(pos);
-    if (dist < 0.001 + total * .003) {
-      shade = index / count;
-      break;
-    }
-    dist *= 0.5 + 0.1 * dither;
-    total += dist;
-  }
-  vec3 normal = getNormal(pos);
-  vec3 color = vec3(0);
-  color += smoothstep(.3, .6, fbm(pos*100.)) * .2;
-  color += vec3(0.839, 1, 1) * pow(clamp(dot(normal, normalize(vec3(0,2,1))), 0.0, 1.0), 4.);
-  color += vec3(1, 0.725, 0.580) * pow(clamp(dot(normal, -normalize(pos-at)), 0.0, 1.0), 4.);
-  color += vec3(0.972, 1, 0.839) * pow(clamp(dot(normal, normalize(vec3(4,0,1))), 0.0, 1.0), 4.);
-  color += vec3(0.972, 1, 0.839) * pow(clamp(dot(normal, normalize(vec3(-5,0,1)))*.5+.5, 0.0, 1.0), 4.);
-  color = mix(vec3(0), color, clamp(dot(normal, -ray), 0.0, 1.0));
-  color *= pow(shade, 1.0/1.2);
-  fragColor = vec4(color, 1);
-}
-        </canvas>
-      </shader-view>
+    <a class="gif" onClick="show_player(11)">
+        <img src="/media/webm/11.png"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/tribute-to-marc-antoine-mathieu/">
-      <img class="view borders shadow loading" src="/shader/2017/tribute-marc.jpg"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Tribute to Marc-Antoine Mathieu"
-        src="/shader/2017/tribute-marc.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    mainImage(fragColor, gl_FragCoord.xy);
-}
-
-// Raymarching sketch inspired by the work of Marc-Antoine Mathieu
-// Leon 2017-11-21
-// using code from IQ, Mercury, LJ, Duke, Koltes
-
-// tweak it
-#define donut 30.
-#define cell 4.
-#define height 2.
-#define thin .04
-#define radius 15.
-#define speed 1.
-
-#define STEPS 100.
-#define VOLUME 0.001
-#define PI 3.14159
-#define TAU (2.*PI)
-#define time iTime
-
-// raymarching toolbox
-float rng (vec2 seed) { return fract(sin(dot(seed*.1684,vec2(54.649,321.547)))*450315.); }
-mat2 rot (float a) { float c=cos(a),s=sin(a); return mat2(c,-s,s,c); }
-float sdSphere (vec3 p, float r) { return length(p)-r; }
-float sdCylinder (vec2 p, float r) { return length(p)-r; }
-float sdDisk (vec3 p, vec3 s) { return max(max(length(p.xz)-s.x, s.y), abs(p.y)-s.z); }
-float sdIso(vec3 p, float r) { return max(0.,dot(p,normalize(sign(p))))-r; }
-float sdBox( vec3 p, vec3 b ) { vec3 d = abs(p) - b; return min(max(d.x,max(d.y,d.z)),0.0) + length(max(d,0.0)); }
-float sdTorus( vec3 p, vec2 t ) { vec2 q = vec2(length(p.xz)-t.x,p.y); return length(q)-t.y; }
-float amod (inout vec2 p, float count) { float an = TAU/count; float a = atan(p.y,p.x)+an/2.; float c = floor(a/an); c = mix(c,abs(c),step(count*.5,abs(c))); a = mod(a,an)-an/2.; p.xy = vec2(cos(a),sin(a))*length(p); return c; }
-float amodIndex (vec2 p, float count) { float an = TAU/count; float a = atan(p.y,p.x)+an/2.; float c = floor(a/an); c = mix(c,abs(c),step(count*.5,abs(c))); return c; }
-float repeat (float v, float c) { return mod(v,c)-c/2.; }
-vec2 repeat (vec2 v, vec2 c) { return mod(v,c)-c/2.; }
-vec3 repeat (vec3 v, float c) { return mod(v,c)-c/2.; }
-float smoo (float a, float b, float r) { return clamp(.5+.5*(b-a)/r, 0., 1.); }
-float smin (float a, float b, float r) { float h = smoo(a,b,r); return mix(b,a,h)-r*h*(1.-h); }
-float smax (float a, float b, float r) { float h = smoo(a,b,r); return mix(a,b,h)+r*h*(1.-h); }
-vec2 displaceLoop (vec2 p, float r) { return vec2(length(p.xy)-r, atan(p.y,p.x)); }
-float map (vec3);
-float getShadow (vec3 pos, vec3 at, float k) {
-    vec3 dir = normalize(at - pos);
-    float maxt = length(at - pos);
-    float f = 01.;
-    float t = VOLUME*50.;
-    for (float i = 0.; i <= 1.; i += 1./15.) {
-        float dist = map(pos + dir * t);
-        if (dist < VOLUME) return 0.;
-        f = min(f, k * dist / t);
-        t += dist;
-        if (t >= maxt) break;
-    }
-    return f;
-}
-vec3 getNormal (vec3 p) { vec2 e = vec2(.01,0); return normalize(vec3(map(p+e.xyy)-map(p-e.xyy),map(p+e.yxy)-map(p-e.yxy),map(p+e.yyx)-map(p-e.yyx))); }
-
-void camera (inout vec3 p) {
-    p.xz *= rot(PI/8.);
-    p.yz *= rot(PI/6.);
-}
-
-float windowCross (vec3 pos, vec4 size, float salt) {
-    vec3 p = pos;
-    float sx = size.x * (.6+salt*.4);
-    float sy = size.y * (.3+salt*.7);
-    vec2 sxy = vec2(sx,sy);
-    p.xy = repeat(p.xy+sxy/2., sxy);
-    float scene = sdBox(p, size.zyw*2.);
-    scene = min(scene, sdBox(p, size.xzw*2.));
-    scene = max(scene, sdBox(pos, size.xyw));
-    return scene;
-}
-
-float window (vec3 pos, vec2 dimension, float salt) {
-    float thinn = .008;
-    float depth = .04;
-    float depthCadre = .06;
-    float padding = .08;
-    float scene = windowCross(pos, vec4(dimension,thinn,depth), salt);
-    float cadre = sdBox(pos, vec3(dimension, depthCadre));
-    cadre = max(cadre, -sdBox(pos, vec3(dimension - padding, depthCadre*2.)));
-    scene = min(scene, cadre);
-    return scene;
-}
-
-float boxes (vec3 pos, float salt) {
-    vec3 p = pos;
-    float ry = cell * .43*(.3+salt);
-    float rz = cell * .2*(.5+salt);
-    float salty = rng(vec2(floor(pos.y/ry), floor(pos.z/rz)));
-    pos.y = repeat(pos.y, ry);
-    pos.z = repeat(pos.z, rz);
-    float scene = sdBox(pos, vec3(.1+.8*salt+salty,.1+.2*salt,.1+.2*salty));
-    scene = max(scene, sdBox(p, vec3(cell*.2)));
-    return scene;
-}
-
-float map (vec3 pos) {
-    vec3 camOffset = vec3(-4,0,0.);
-
-    float scene = 1000.;
-    vec3 p = pos + camOffset;
-    float segments = PI*radius;
-    float indexX, indexY, salt;
-    vec2 seed;
-
-    // donut distortion
-    vec3 pDonut = p;
-    pDonut.x += donut;
-    pDonut.y += radius;
-    pDonut.xz = displaceLoop(pDonut.xz, donut);
-    pDonut.z *= donut;
-    pDonut.xzy = pDonut.xyz;
-    pDonut.xz *= rot(time*.05*speed);
-
-    // ground
-    p = pDonut;
-    scene = min(scene, sdCylinder(p.xz, radius-height));
-
-    // walls
-    p = pDonut;
-    float py = p.y + time * speed;
-    indexY = floor(py / (cell+thin));
-    p.y = repeat(py, cell+thin);
-    scene = min(scene, max(abs(p.y)-thin, sdCylinder(p.xz, radius)));
-    amod(p.xz, segments);
-    p.x -= radius;
-    scene = min(scene, max(abs(p.z)-thin, p.x));
-
-    // horizontal windot
-    p = pDonut;
-    p.xz *= rot(PI/segments);
-    py = p.y + time * speed;
-    indexY = floor(py / (cell+thin));
-    p.y = repeat(py, cell+thin);
-    indexX = amodIndex(p.xz, segments);
-    amod(p.xz, segments);
-    seed = vec2(indexX, indexY);
-    salt = rng(seed);
-    p.x -= radius;
-    vec2 dimension = vec2(.75,.5);
-    p.x +=  dimension.x * 1.5;
-    scene = max(scene, -sdBox(p, vec3(dimension.x, .1, dimension.y)));
-    scene = min(scene, window(p.xzy, dimension, salt));
-
-    // vertical window
-    p = pDonut;
-    py = p.y + cell/2. + time * speed;
-    indexY = floor(py / (cell+thin));
-    p.y = repeat(py, cell+thin);
-    indexX = amodIndex(p.xz, segments);
-    amod(p.xz, segments);
-    seed = vec2(indexX, indexY);
-    salt = rng(seed);
-    p.x -= radius;
-    dimension.y = 1.5;
-    p.x +=  dimension.x * 1.25;
-    scene = max(scene, -sdBox(p, vec3(dimension, .1)));
-    scene = min(scene, window(p, dimension, salt));
-
-    // elements
-    p = pDonut;
-    p.xz *= rot(PI/segments);
-    py = p.y + cell/2. + time * speed;
-    indexY = floor(py / (cell+thin));
-    p.y = repeat(py, cell+thin);
-    indexX = amodIndex(p.xz, segments);
-    amod(p.xz, segments);
-    seed = vec2(indexX, indexY);
-    salt = rng(seed);
-    p.x -= radius - height;
-    scene = min(scene, boxes(p, salt));
-
-    return scene;
-}
-
-void mainImage( out vec4 color, in vec2 coord ) {
-    vec2 uv = (coord.xy-.5*iResolution.xy)/iResolution.y;
-    vec3 eye = vec3(0,0,-20);
-    vec3 ray = normalize(vec3(uv, 1.3));
-    camera(eye);
-    camera(ray);
-    float dither = rng(uv+fract(time));
-    vec3 pos = eye;
-    float shade = 0.;
-    for (float i = 0.; i <= 1.; i += 1./STEPS) {
-        float dist = map(pos);
-        if (dist < VOLUME) {
-            shade = 1.-i;
-            break;
-        }
-        dist *= .5 + .1 * dither;
-        pos += ray * dist;
-    }
-    vec3 light = vec3(40.,100.,-10.);
-    float shadow = getShadow(pos, light, 4.);
-    color = vec4(1);
-    color.rgb *= shade;
-    color.rgb *= shadow;
-    color.rgb = smoothstep(.0, .5, color.rgb);
-    color.rgb = sqrt(color.rgb);
-}
-
-        </canvas>
-      </shader-view>
+    
+    
+    <a class="gif" onClick="show_player(12)">
+        <img src="/media/webm/12.png"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/taste-of-noise-14c/">
-      <img class="view borders shadow loading" src="/shader/2021/taste-of-noise/14c.jpg"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Taste of Noise 14c"
-        src="/shader/2021/taste-of-noise/14c.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform bool final_pass;
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-uniform vec4 iMouse;
-uniform sampler2D framebuffer;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-void post_process(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    if (final_pass)
-    {
-        post_process(fragColor, gl_FragCoord.xy);
-    }
-    else
-    {
-        mainImage(fragColor, gl_FragCoord.xy);
-    }
-}
-
-// Dave Hoskins
-// https://www.shadertoy.com/view/4djSRW
-vec3 hash33(vec3 p3)
-{
-	p3 = fract(p3 * vec3(.1031, .1030, .0973));
-    p3 += dot(p3, p3.yxz+33.33);
-    return fract((p3.xxy + p3.yxx)*p3.zyx);
-}
-
-// rotation matrix
-mat2 rot(float a) { return mat2(cos(a),-sin(a),sin(a),cos(a)); }
-
-#define repeat(p,r) (mod(p,r)-r/2.)
-// taste of noise 14c by leon denise 2021/10/29
-// thanks to Inigo Quilez, David Hoskins, NuSan, Fabrice Neyret, Blackle and many others
-// licensed under hippie love conspiracy
-
-// global variable
-float material;
-vec3 rng;
-vec2 mouse;
-
-// geometry
-float map (vec3 p)
-{
-    // hold space coordinates
-    vec3 pp = p;
     
-    // distances
-    float scene = 1000.;
-    float shape = 1000.;
     
-    // parameters
-    vec3 angle = vec3(1.+mouse.x,2.+mouse.y,3);
-    float range = .2;
-    
-    // shiny material
-    material = -1.;
-    
-    // amplitude of kifs
-    float a = 1.;
-    float falloff = 1.55+.05*mouse.y;
-    
-    // kifs (kaleidoscopic iterated function)
-    const float count = 12.;
-    for (float index = 0.; index < count; ++index)
-    {
-        // rotate more and more
-        p.xz *= rot(angle.y/a);
-        
-        // fold and translate
-        p = abs(p)-range*a;
-        
-        // combine to scene
-        scene = min(scene, max(p.x, max(p.y, p.z)));
-        
-        // falloff
-        a /= falloff;
-    }
-    
-    // invert volume
-    scene = -scene;
-    
-    // lines
-    p = pp;
-    p.xz *= rot(mouse.x);
-    p.yz *= rot(mouse.y);
-    p = repeat(p, .1);
-    shape = min(scene, length(p.xz)-.001*rng.x);
-    
-    // lines material and combine to scene
-    material = shape < scene ? 1. : material;
-    scene = min(shape, scene);
-    
-    return scene;
-}
-
-vec3 color (vec3 pos, vec3 ray, vec3 normal)
-{    
-    vec3 color = vec3(0.);
-    
-    // lines
-    if (material > 0.)
-    {
-        // color palette by Inigo Quilez (https://iquilezles.org/articles/palettes)
-        color = .5+.5*cos(vec3(0, .3, .6)*6.+length(pos)*20.+mouse.x);
-    }
-
-    return color;
-}
-
-// sdf estimator
-float raymarch (inout vec3 pos, vec3 ray, float dither, float count)
-{
-    // shoot rays
-    for (float index = count; index > 0.; --index)
-    {
-        // volume estimation
-        float dist = map(pos);
-        
-        // hit volume
-        if (dist < 0.001)
-        {
-            // return steps ratio
-            return index / count;
-        }
-        
-        // dithering
-        dist *= 0.9 + .1 * dither;
-        
-        // ray march
-        pos += ray * dist;
-    }
-    
-    // no volume
-    return 0.;
-}
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-    // pixel coordinates
-    vec2 uv = (fragCoord.xy - iResolution.xy * 0.5) / iResolution.y;
-    
-    // reset color
-    fragColor = vec4(0,0,0,1);
-    
-    // white noise
-    vec3 seed = vec3(gl_FragCoord.xy, iTime);
-    rng = hash33(seed);
-    
-    // mouse interaction
-    mouse = 8.*iMouse.xy/iResolution.xy;
-    
-    vec3 rng3 = hash33(seed+78.);
-    
-    // camera coordinates
-    vec3 eye = vec3(0,-0.1,0.1);
-    vec3 at = vec3(0,0,.3);
-    vec3 z = normalize(at-eye);
-    vec3 x = normalize(cross(z, vec3(0,1,0)));
-    vec3 y = cross(x, z);
-    vec3 ray = normalize(z + uv.x * x + uv.y * y);
-    vec3 pos = eye + ray * .1;
-    
-    // raymarching
-    float shade = raymarch(pos, ray, rng.z, 30.);
-
-    // hit volume
-    if (shade > 0.)
-    {
-        // compute normal by NuSan (https://www.shadertoy.com/view/3sBGzV)
-        vec2 off=vec2(0.001,0);
-        vec3 normal = normalize(map(pos)-vec3(map(pos-off.xyy), map(pos-off.yxy), map(pos-off.yyx)));
-
-        // coloring
-        fragColor.rgb += color(pos, ray, normal) * shade; 
-        
-        // reflection bounce
-        ray = reflect(ray, normal);
-        
-        // Blackle (https://suricrasia.online/demoscene/functions/)
-        rng3 = normalize(tan(rng3*2.-1.));
-        
-        // jitter blur
-        ray = normalize(ray + rng3);
-        
-        // avoid self collision
-        pos += ray * .01;
-        
-        // shot rays
-        shade = raymarch(pos, ray, rng.z, 20.);
-        
-        // hit neon grid
-        if (material > 0. && shade > 0.)
-        {
-            // coloring
-            normal = normalize(map(pos)-vec3(map(pos-off.xyy), map(pos-off.yxy), map(pos-off.yyx)));
-            fragColor.rgb += color(pos, ray, normal) * shade;
-        }
-    }
-    
-    // temporal buffer
-    float fade = 0.001;
-    fade += step(0.5, iMouse.z);
-    vec4 frame = texture(framebuffer, gl_FragCoord.xy/iResolution.xy);
-    fragColor.rgb = max(fragColor.rgb, frame.rgb - fade);
-}
-
-
-
-
-// taste of noise 14c by leon denise 2021/10/29
-// thanks to Inigo Quilez, David Hoskins, NuSan, Fabrice Neyret, Blackle and many others
-// licensed under hippie love conspiracy
-
-void post_process( out vec4 fragColor, in vec2 fragCoord )
-{
-    // result of Buffer A
-    fragColor = texture(framebuffer, fragCoord.xy / iResolution.xy);
-}
-
-        </canvas>
-      </shader-view>
+    <a class="gif" onClick="show_player(13)">
+        <img src="/media/webm/13.png"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/sci-fi-pattern/">
-      <img class="view borders shadow loading" src="/shader/2024/patterns/sci-fi.png"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Sci Fi Pattern"
-        src="/shader/2024/patterns/sci-fi.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform bool final_pass;
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-uniform vec4 iDate;
-uniform sampler2D framebuffer, bluenoise, iChannel2, iChannel3;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-void post_process(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    if (final_pass)
-    {
-        post_process(fragColor, gl_FragCoord.xy);
-    }
-    else
-    {
-        mainImage(fragColor, gl_FragCoord.xy);
-    }
-}
-
-mat2 rot (float a) { float c=cos(a),s=sin(a);return mat2(c,-s,s,c); }
-
-// Dave Hoskins https://www.shadertoy.com/view/4djSRW
-vec4 hash41(float p)
-{
-	vec4 p4 = fract(vec4(p) * vec4(.1031, .1030, .0973, .1099));
-    p4 += dot(p4, p4.wzxy+33.33);
-    return fract((p4.xxyz+p4.yzzw)*p4.zywx);
-}
-vec4 hash44(vec4 p4)
-{
-	p4 = fract(p4  * vec4(.1031, .1030, .0973, .1099));
-    p4 += dot(p4, p4.wzxy+33.33);
-    return fract((p4.xxyz+p4.yzzw)*p4.zywx);
-}
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-    vec2 uv = fragCoord/iResolution.xy;
-    vec2 aspect = vec2(iResolution.x/iResolution.y,1);
-    vec4 frame = texture(framebuffer, uv);
     
-    // timeline
-    float tick = mod(float(iFrame), 200.);
     
-    // init
-    if (tick < 1.)
-    {
-        vec2 p = (2.*fragCoord-iResolution.xy)/iResolution.y;
-        frame = vec4(p, max(abs(p.x),abs(p.y)), 0);
-    }
-    // iterate
-    else if (tick < 20.)
-    {
-        // previous coordinates
-        vec2 p = frame.xy;
-        
-        // seed
-        vec4 rng = hash44(vec4(tick, iDate.z, iDate.y, iDate.x+iDate.w));
-        
-        // rotate
-        p.xy *= rot(3.1415/2.);
-        
-        // translate
-        p.xy += (rng.xy-.5)*50./tick*max(0.1,rng.w);
-        
-        // keep result if closer
-        float dist = max(abs(p.x),abs(p.y));
-        if (dist < frame.z)
-        {
-            frame.xy = p.xy;
-            frame.z = dist;
-            frame.w = tick;
-        }
-    }
-    
-    fragColor = frame;
-}
-
-// Sci Fi Pattern
-// 2024/07/13 Leon Denise
-
-void post_process( out vec4 fragColor, in vec2 fragCoord )
-{
-    vec2 uv = fragCoord/iResolution.xy;
-    vec4 frame = texture(framebuffer, uv);
-    
-    // coordinates distance
-    #define T(u) texture(framebuffer, uv+u/iResolution.xy).x
-    float z = T(0.);
-    
-    float edge = 0.;
-    float ao = 0.;
-    
-    const float count = 9.;
-    for (float a = 0.; a < count; ++a)
-    {
-        // blue noise scroll https://www.shadertoy.com/view/tlySzR
-        ivec2 pp = ivec2(fragCoord);
-        pp = (pp+(int(a))*ivec2(113,127)) & 1023;
-        vec3 blu = texelFetch(bluenoise,pp,0).xyz;
-        
-        // edge detection
-        float f = a/count;
-        float aa = 6.283*f;
-        vec2 xy = vec2(cos(aa),sin(aa));
-        edge += abs(T(xy)-T(-xy));
-        
-        // sort of ambient occlusion
-        float r = (.5+blu.z) * 10.;
-        xy = normalize(vec2(blu.xy-.5))*r;
-        ao += abs(z-T(xy))/r;
-    }
-    
-    vec3 color = vec3(edge+ao);
-    
-    // dots
-    //float screen = iResolution.x/1200.;
-    //color += smoothstep(.05,-.05,abs(length(frame.xy*20.*screen)-.2)-.05);
-    
-    fragColor = vec4(1.-color, 1.);
-}
-        </canvas>
-      </shader-view>
+    <a class="gif" onClick="show_player(14)">
+        <img src="/media/webm/14.png"></img>
     </a>
-  </div>
-  
-  <div class="cell ">
-    <a class="cell-link" href="/shadertoy/spaceship-generator/">
-      <img class="view borders shadow loading" src="/shader/2024/spaceship-generator.png"></img>
-      <shader-view
-        class="unselectable"
-        preview=""
-        id="Spaceship Generator"
-        src="/shader/2024/spaceship-generator.frag">
-        <canvas class="borders">
-          #version 300 es
-
-precision mediump float;
-
-out vec4 fragColor;
-
-uniform bool final_pass;
-uniform float iTime, iTimeDelta, iFrame;
-uniform vec2 iResolution;
-uniform vec4 iMouse;
-uniform sampler2D framebuffer, bluenoise;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord);
-
-void main()
-{
-    mainImage(fragColor, gl_FragCoord.xy);
-}
-
-mat2 rot (float a) { float c=cos(a),s=sin(a);return mat2(c,-s,s,c); }
-
-mat3 look(vec3 z)
-{
-    vec3 x = normalize(cross(z, vec3(0,1,0)));
-    vec3 y = normalize(cross(x, z));
-    return mat3(x,y,z);
-}
-
-float gyroid (vec3 p) { return dot(cos(p),sin(p.yzx)); }
-
-// Dave Hoskins https://www.shadertoy.com/view/4djSRW
-vec4 hash41(float p)
-{
-	vec4 p4 = fract(vec4(p) * vec4(.1031, .1030, .0973, .1099));
-    p4 += dot(p4, p4.wzxy+33.33);
-    return fract((p4.xxyz+p4.yzzw)*p4.zywx);
-}
-vec3 hash33(vec3 p3)
-{
-	p3 = fract(p3 * vec3(.1031, .1030, .0973));
-    p3 += dot(p3, p3.yxz+33.33);
-    return fract((p3.xxy + p3.yxx)*p3.zyx);
-}
-
-// Inigo Quilez https://iquilezles.org/articles/distfunctions/
-float sdBox( vec3 p, vec3 b )
-{
-    vec3 q = abs(p) - b;
-    return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
-}
-
-
-// Spaceship Generator
-// 2024-07-15 Leon Denise
-
-// space ship seed
-const float seed = 196.;
-#define animate
-
-// globals
-vec3 coord, dither;
-float disp, glitch;
-float mat;
-
-// noise
-float fbm(vec3 p) {
-    float result = 0., a = .5;
-    for (float i = 0.; i < 5.; ++i) {
-        p += result*.1;
-        result += abs(atan(gyroid(p/a))*a);
-        a /= 2.;
-    }
-    return result;
-}
-
-// sky
-vec3 get_sky(vec3 p) {
-
-    // cosmic dust
-    vec2 e = vec2(0.5,0)+.1*dither.y;
-    #define T(u) fbm(p+u)
-    vec3 normal = normalize(T(0.)-vec3(T(e.xyy),T(e.xyx),T(e.xxy)));
-    vec3 color = .5 + .5 * cos(vec3(1,2,3)*5.5+normal.x*.7+4.);
-    color *= smoothstep(-2.0,2.0,-abs(normal.z)+.5+dither.x);
-    normal.yz *= rot(.5);
-    color += (normal.y)*.2;
-    
-    // stars
-    for (float i = 1.; i < 8.; ++i) {
-        vec3 q = p*10.*i;
-        vec3 rng = hash33(floor(q)+196.);
-        float dist = length(fract(q)-.5)*2.;
-        float threshold = step(.95,rng.x);
-        float light = (1.-sqrt(dist))*.1/dist;
-        color += vec3(threshold*clamp(light,0.,1.)/2.);
-    }
-    
-    return color;
-}
-
-// spaceship sdf
-float map (vec3 p)
-{
-    float dist = 100.;
-    vec3 pos = p;
-    
-    // animate seed
-    float t = seed;
-    #ifdef animate
-    t += floor(iTime/5.+glitch*.1)*32.;
-    #endif
-    
-    // pattern details
-    vec3 q = p;
-    q.xy *= rot(.9);
-    q.xz *= rot(.5);
-    q = (abs(fract(q*2.)-.5))*2.;
-    float s = max(q.x,max(q.y,q.z));
-    
-    // kaleidoscopic space folding
-    float a = 1.;
-    vec3 e = vec3(.5,.1,.1);
-    for (float i = 0.; i < 4.; ++i)
-    {
-        p = p-clamp(p,-e*a,e*a);
-        p.xz = abs(p.xz)-.5*a;
-        p.xz *= rot(t*a);
-        p.yz *= rot(t*a);
-        a /= 1.8;
-    }
-    
-    // spaceship
-    dist = sdBox(p,vec3(.065));
-    
-    // details displace
-    dist += abs(fract(abs(s)*10.)-.5)*.01;
-    
-    // joints
-    dist = min(dist, length(p.xz)-.005);
-    dist = min(dist, length(p.yz)-.005);
-    dist = min(dist, length(p.yx)-.005);
-    
-    coord = p;
-    disp = s;
-    
-    return dist;
-}
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-    vec3 color = vec3(0.25);
-    
-    // coordinages
-    vec2 uv = fragCoord/iResolution.xy;
-    vec2 p = (2.*fragCoord-iResolution.xy)/iResolution.y;
-    vec3 cam = vec3(0,1,-3.);
-    vec3 ray = normalize(vec3(p,1.));
-    
-    // blue noise scroll https://www.shadertoy.com/view/tlySzR
-    ivec2 pp = ivec2(fragCoord);
-    pp = (pp+(int(iFrame))*ivec2(113,127)) & 1023;
-    dither = texelFetch(bluenoise,pp,0).xyz;
-    
-    // glitch
-    vec4 rng = hash41(floor(iTime*10.));
-    glitch = hash33(vec3(floor(uv*40.*rng.xy*vec2(1.,3.)), 0.)).x;
-    
-    if (iMouse.z > 0.)
-    {
-        // mouse control
-        vec2 mouse = (2.*iMouse.xy-iResolution.xy)/iResolution.y;
-        cam.yz *= rot(-mouse.y);
-        cam.xz *= rot(mouse.x);
-    }
-    else
-    {
-        // turn table animation
-        cam.xz *= rot(iTime/16.);
-        cam.y += sin(iTime/10.)*.5;
-    }
     
     
-    // camera rotation
-    ray = look(normalize(-cam)) * ray;
-    vec3 pos = cam + ray * dither.z * .1;
-    
-    // raymarch
-    float ratio = 1.;
-    float total = 0.;
-    for (ratio = 1.; ratio > 0.; ratio -= 1./200.)
-    {
-        float dist = map(pos);
-        if (dist < 0.001 * total || total > 10.) break;
-        dist *= 0.9 + 0.1 * dither.z;
-        pos += ray * dist;
-        total += dist;
-    }
-    
-    if (total < 10.)
-    {
-        vec3 c = coord;
-        float d = disp;
-        float m = mat;
-        
-        // lighting 
-        vec2 e = vec2(.001,0);
-        vec3 normal = normalize(map(pos)-vec3(map(pos+e.xyy),map(pos+e.yxy),map(pos+e.yyx)));
-        vec3 rf = reflect(ray, normal);
-        float light = clamp(dot(rf, normalize(vec3(0,.1,-1)))*.5+.5,0.,1.);
-        
-        // patterns
-        vec3 q = (abs(fract(c*20.)-.5))*2.;
-        float s = max(q.x,max(q.y,q.z));
-        vec3 tint = .5+.5*cos(vec3(1,2,3)*5.+floor(s*8.)/3.+5.);
-        float pattern = smoothstep(.01,.0,abs(fract(abs(d)*2.)-.5)-.2);
-
-        // coloring
-        color = tint*pattern;
-        color += pow(light, 4.);
-        color += get_sky(rf)*(1.-pattern);
-        color *= ratio;
-    }
-    else
-    {
-        // background
-        color = get_sky(ray);
-    }
-    
-    if (fragCoord.y < 1.)
-    {
-        if (fragCoord.x < 1.) color = cam;
-    }
-    else if (fragCoord.y < 2.)
-    {
-        if (fragCoord.x < 1.) color = texelFetch(framebuffer, ivec2(0,0), 0).xyz;
-    }
-    
-    fragColor = vec4(color, total);
-}
-        </canvas>
-      </shader-view>
+    <a class="gif" onClick="show_player(15)">
+        <img src="/media/webm/15.png"></img>
     </a>
-  </div>
-  
+    
+    
+    <a class="gif" onClick="show_player(16)">
+        <img src="/media/webm/16.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(17)">
+        <img src="/media/webm/17.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(18)">
+        <img src="/media/webm/18.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(19)">
+        <img src="/media/webm/19.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(20)">
+        <img src="/media/webm/20.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(21)">
+        <img src="/media/webm/21.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(22)">
+        <img src="/media/webm/22.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(23)">
+        <img src="/media/webm/23.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(24)">
+        <img src="/media/webm/24.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(25)">
+        <img src="/media/webm/25.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(26)">
+        <img src="/media/webm/26.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(27)">
+        <img src="/media/webm/27.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(28)">
+        <img src="/media/webm/28.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(29)">
+        <img src="/media/webm/29.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(30)">
+        <img src="/media/webm/30.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(31)">
+        <img src="/media/webm/31.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(32)">
+        <img src="/media/webm/32.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(33)">
+        <img src="/media/webm/33.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(34)">
+        <img src="/media/webm/34.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(35)">
+        <img src="/media/webm/35.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(36)">
+        <img src="/media/webm/36.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(37)">
+        <img src="/media/webm/37.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(38)">
+        <img src="/media/webm/38.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(39)">
+        <img src="/media/webm/39.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(40)">
+        <img src="/media/webm/40.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(41)">
+        <img src="/media/webm/41.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(42)">
+        <img src="/media/webm/42.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(43)">
+        <img src="/media/webm/43.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(44)">
+        <img src="/media/webm/44.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(45)">
+        <img src="/media/webm/45.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(46)">
+        <img src="/media/webm/46.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(47)">
+        <img src="/media/webm/47.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(48)">
+        <img src="/media/webm/48.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(49)">
+        <img src="/media/webm/49.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(50)">
+        <img src="/media/webm/50.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(51)">
+        <img src="/media/webm/51.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(52)">
+        <img src="/media/webm/52.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(53)">
+        <img src="/media/webm/53.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(54)">
+        <img src="/media/webm/54.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(55)">
+        <img src="/media/webm/55.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(56)">
+        <img src="/media/webm/56.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(57)">
+        <img src="/media/webm/57.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(58)">
+        <img src="/media/webm/58.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(59)">
+        <img src="/media/webm/59.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(60)">
+        <img src="/media/webm/60.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(61)">
+        <img src="/media/webm/61.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(62)">
+        <img src="/media/webm/62.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(63)">
+        <img src="/media/webm/63.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(64)">
+        <img src="/media/webm/64.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(65)">
+        <img src="/media/webm/65.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(66)">
+        <img src="/media/webm/66.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(67)">
+        <img src="/media/webm/67.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(68)">
+        <img src="/media/webm/68.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(69)">
+        <img src="/media/webm/69.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(70)">
+        <img src="/media/webm/70.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(71)">
+        <img src="/media/webm/71.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(72)">
+        <img src="/media/webm/72.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(73)">
+        <img src="/media/webm/73.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(74)">
+        <img src="/media/webm/74.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(75)">
+        <img src="/media/webm/75.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(76)">
+        <img src="/media/webm/76.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(77)">
+        <img src="/media/webm/77.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(78)">
+        <img src="/media/webm/78.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(79)">
+        <img src="/media/webm/79.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(80)">
+        <img src="/media/webm/80.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(81)">
+        <img src="/media/webm/81.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(82)">
+        <img src="/media/webm/82.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(83)">
+        <img src="/media/webm/83.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(84)">
+        <img src="/media/webm/84.png"></img>
+    </a>
+    
+    
+    <a class="gif" onClick="show_player(85)">
+        <img src="/media/webm/85.png"></img>
+    </a>
+    
 </div>
+<div class="gif-player-container" onClick="hide_player()">
+<div class="gif-player">
+    <video id="video-player" class="scale" autoplay muted loop>
+        <source id="video-source" src="/media/webm/1.webm" type="video/webm"/>
+    </video>
+</div>
+</div>
+
+<script>
+    function hide_player ()
+    {
+        const player = document.querySelector('.gif-player-container');
+        const video = document.querySelector('#video-player');
+        player.classList.remove("blur-background");
+        video.classList.add("scale");
+    }
+    function show_player (i)
+    {
+        const player = document.querySelector('.gif-player-container');
+        const video = document.querySelector('#video-player');
+        const video_player = document.querySelector('#video-source');
+        video_player.src="/media/webm/"+i+".webm";
+        video.load();
+        video.classList.remove("scale");
+        player.classList.add("blur-background");
+    }
+</script>
 
 <style>
 
-  .cell shader-view
-  {
-    transition: opacity 1s;
-    opacity: 0;
-  }
+    .album
+    {
+    }
+    
+    .container
+    {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(30vmin, 1fr));
+        grid-auto-flow: row;
+        gap: 0px;
+    }
 
-  .cell shader-view:hover
-  {
-    opacity: 1;
-    cursor: zoom-in;
-  }
-  
-  .text-center
-  {
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  
-  .cell:hover .text-center
-  {
-    opacity: 1;
-  }
+    .container a,
+    .container img,
+    .container canvas
+    {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        aspect-ratio: 1;
+    }
 
-  .loading
-  {
-    filter: blur(4px) saturate(0%);
-  }
-  
+    .container canvas { z-index: 1; }
+
+    h1 { font-size: 2em; }
+    h2 { font-size: 1.5em; }
+    h3 { font-size: 1em; }
+
+    .category
+    {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .label
+    {
+        color: white;
+        filter: drop-shadow(1px 1px 4px black);
+
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .center
+    {
+        text-align: center;
+        position: absolute;
+        width: 90%;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+    }
+    
+    .date
+    {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+    }
+
+    .gif
+    {
+        cursor: zoom-in;
+    }
+
+    .gif-player
+    {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        filter: drop-shadow(0 0 10px black);
+    }
+
+    .gif-player-container
+    {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        pointer-events: none;
+        cursor: zoom-out;
+        transition: backdrop-filter 1s;
+    }
+    .blur-background
+    {
+        pointer-events: auto;
+        backdrop-filter: blur(10px);
+    }
+
+
+    #video-player
+    {
+        transition: transform 0.3s;
+        width: 80vmin;
+    }
+
+    .scale
+    {
+        transform: scale(0);
+    }
+
+    .container
+    {
+    }
+
+    /* label hover */
+    .container a:hover .label { z-index: 2; }
+
+    /* zoom hover */
+    .container a { overflow: hidden; }
+    .container img { transition: transform 1s, filter 1s; }
+    .container img:hover
+    {
+        transform: scale(1.2);
+        filter: blur(4px);
+    }
+    
 </style>
 
   </body>

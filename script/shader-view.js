@@ -1,20 +1,17 @@
 
-class ShaderView extends HTMLElement
+class ShaderView extends HTMLCanvasElement
 {    
     constructor()
     {
         super();
 
-        // dom canvas
-        this.canvas = this.querySelector("canvas");
-
         // webgl components
-        const gl = this.canvas.getContext("webgl2");
+        const gl = this.getContext("webgl2");
         this.quad = { position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0] };
         this.mesh = twgl.createBufferInfoFromArrays(gl, this.quad);
-        this.material_feedback = null;
         this.elapsed = 0;
         this.tick = 0;
+        this.loading = 0;
         this.gl = gl;
 
         // fancy webgl (mobile compatible)
@@ -30,7 +27,6 @@ class ShaderView extends HTMLElement
         this.vertex = "";
         this.pixel = "";
         this.filter = "";
-        this.filter_feedback = "";
         
         // shader settings
         const date = new Date();
@@ -40,18 +36,14 @@ class ShaderView extends HTMLElement
             iFrame: 0,
             iResolution: [0, 0],
             iMouse: [0, 0, 0, 0],
-            iDate: [
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate(),
-                0],
-            alphabet: twgl.createTexture(gl, { 
-                src: "/shader/common/font-octavio-good.png",
+            iDate: [date.getFullYear(), date.getMonth(), date.getDate(), 0],
+            alphabet: twgl.createTexture(gl, {
+                src: "/content/shader/common/font-octavio-good.png",
                 flipY: true,
                 minMag: gl.LINEAR
             }),
             bluenoise: twgl.createTexture(gl, {
-                src: "/shader/common/bluenoise-shadertoy.png",
+                src: "/content/shader/common/bluenoise-shadertoy.png",
                 flipY: true
             }),
             final_pass: false,
@@ -71,18 +63,19 @@ class ShaderView extends HTMLElement
         this.vertex = `#version 300 es
         precision mediump float;
         in vec4 position;
-        void main() { gl_Position = position; }`
-        
-        this.filter = this.querySelector("canvas").textContent;
-        
-        // shader set up
-        this.material = twgl.createProgramInfo(this.gl, [this.vertex, this.filter]);
+        void main() { gl_Position = position; }`;
     }
 
-    connectedCallback()
+    async connectedCallback()
     {
         // mouse event
         this.events();
+
+        // load filter
+        await fetch(this.textContent).then(e => e.text()).then(e => this.filter = e);
+        
+        // shader set up
+        this.material = twgl.createProgramInfo(this.gl, [this.vertex, this.filter]);
 
         // main loop
         requestAnimationFrame((time) => this.loop(time));
@@ -111,7 +104,7 @@ class ShaderView extends HTMLElement
         const frames = this.frames;
         const attachments = this.attachments;
         const tick = this.tick;
-        const resized = twgl.resizeCanvasToDisplaySize(gl.canvas);
+        const resized = twgl.resizeCanvasToDisplaySize(this);
 
         if (resized)
         {
@@ -122,11 +115,11 @@ class ShaderView extends HTMLElement
         // shader settings
         uniforms.iTimeDelta = deltaTime;
         uniforms.iTime += deltaTime;
-        uniforms.iFrame = this.tick;
-        uniforms.iResolution = [gl.canvas.width, gl.canvas.height];
+        uniforms.iFrame = tick;
+        uniforms.iResolution = [this.width, this.height];
 
         const date = new Date();
-        this.uniforms.iDate[3] = date.getHours()*3600 + date.getMinutes()*60 + date.getSeconds();
+        uniforms.iDate[3] = date.getHours()*3600 + date.getMinutes()*60 + date.getSeconds();
 
         // framebuffer swap
         const read = tick % 2;
@@ -135,7 +128,7 @@ class ShaderView extends HTMLElement
         // framebuffer
         uniforms.final_pass = false;
         uniforms.framebuffer = frames[read].attachments[0];
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        gl.viewport(0, 0, this.width, this.height);
         gl.bindFramebuffer(gl.FRAMEBUFFER, frames[write].framebuffer);
         gl.useProgram(material.program);
         twgl.setBuffersAndAttributes(gl, material, mesh);
@@ -145,7 +138,7 @@ class ShaderView extends HTMLElement
         // render final pass
         uniforms.final_pass = true;
         uniforms.framebuffer = frames[write].attachments[0];
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        gl.viewport(0, 0, this.width, this.height);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
         gl.useProgram(material.program);
         twgl.setBuffersAndAttributes(gl, material, mesh);
@@ -166,25 +159,25 @@ class ShaderView extends HTMLElement
             this.addEventListener("mouseout", e => { this.update = false });
             
             // loading
-            this.parentNode.querySelector(".loading").style.filter = "none";
+            // this.parentNode.querySelector(".loading").style.filter = "none";
         }
         else
         {
             this.update = true;
 
-            if (this.filter.includes("iMouse") || this.filter_feedback.includes("iMouse"))
+            if (this.filter.includes("iMouse"))
             {
                 // mouse interaction
                 this.addEventListener("mousemove", e => {
                     const down = this.uniforms.iMouse[2] > 0.5;
                     if (down) {
                         this.uniforms.iMouse[0] = e.offsetX;
-                        this.uniforms.iMouse[1] = this.canvas.height - e.offsetY;
+                        this.uniforms.iMouse[1] = this.height - e.offsetY;
                     }
                 });
                 this.addEventListener("mousedown", e => {
                     this.uniforms.iMouse[0] = e.offsetX;
-                    this.uniforms.iMouse[1] = this.canvas.height - e.offsetY;
+                    this.uniforms.iMouse[1] = this.height - e.offsetY;
                     this.uniforms.iMouse[2] = 1;
                 });
                 this.addEventListener("mouseup", e => {
@@ -198,4 +191,4 @@ class ShaderView extends HTMLElement
     }
 }
 
-customElements.define("shader-view", ShaderView);
+customElements.define("shader-view", ShaderView, { extends: "canvas" });

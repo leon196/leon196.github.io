@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+
+    <title>Leon Denise</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="/style/style.css" />
+    <link rel="stylesheet" href="/style/grid.css" />
+
+    <script src="/script/lib/twgl-full.min.js"></script>
+    <script src="/script/lib/virtual-webgl2.js"></script>
+    <script type="module" src="/script/shader-view.js"></script>
+    <!-- <script type="module" src="/script/shadertoy-view.js" defer></script> -->
+
+</head>
+
+  <body>
+    
+    
+<img class="back" src="/content/project/mapping-inverse/cover.png">
+<div class="container">
+    <h1>Mapping Inversé</h1>
+    
+    <video controls poster="/content/project/mapping-inverse/video.mp4-poster.png">
+        <source src="/content/project/mapping-inverse/video.mp4" type="video/mp4" />
+    </video>
+    
+    
+    <p>Mapping Inversé is part of the series of works “Image Processor” which proposes to deconstruct technological materiality and plays in particular on the scale of each component.</p>
+    
+    <p>The sculpture is composed of a screen placed behind the transparent resin print of a Quadro 4000 graphics card. The liquid crystals are then hidden behind the technological artifact until the backlight of the screen turns on and reveals each pixel. Floating on the right of the screen, a computer calculates generative animations in real time. In the manner of architectural mapping, the visuals play with the shapes of the graphics card and create the illusion of a collision.</p>
+    
+
+    
+    <ul>
+        
+        <li>Dorian Rigal (visual/sculpture)</li>
+        
+        <li>Leon Denise (visual/code)</li>
+        
+    </ul>
+    
+
+    
+
+    
+    <div class="gallery">
+        
+        
+        <img src="/content/project/mapping-inverse/cover.png">
+        
+        <img src="/content/project/mapping-inverse/image-2.jpg">
+        
+        <img src="/content/project/mapping-inverse/image-1.jpg">
+        
+        
+    </div>
+    
+
+    
+</div>
+
+<style>
+    .container {
+        padding: 40px 0;
+    }
+
+    .back {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: blur(10px) brightness(50%);
+        pointer-events: none;
+    }
+
+    .container {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .gallery {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-auto-flow: row;
+        gap: 0px;
+        margin: 20px 0;
+    }
+
+    .gallery img  {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        aspect-ratio: 1;
+    }
+
+    h1,
+    h2,
+    p,
+    ul
+    {
+        margin: 10px 0;
+    }
+
+    video,
+    table,
+    img
+    {
+        width: 100%;
+    }
+
+    .when { text-align: right; }
+
+</style>
+
+  </body>
+  
+</html>

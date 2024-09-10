@@ -2,7 +2,9 @@
 .grid
 {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: 20vw;
   grid-gap: 10px;
   margin: 10px;
 }
@@ -11,7 +13,6 @@
 {
   display: grid;
   position: relative;
-  min-height: 300px;
 }
 
 .cell-2x1
@@ -35,14 +36,7 @@
   position: absolute;
   height: 100%;
   width: 100%;
-}
-
-.cell .view
-{
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
+  border-radius: var(--border-radius);
 }
 
 .cell video
@@ -51,14 +45,14 @@
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
+  border-radius: var(--border-radius);
 }
 
-.cell-link
+.preview
 {
-  display: grid;
-}
-
-.grid p
-{
-  padding-bottom: 10px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: var(--border-radius);
 }

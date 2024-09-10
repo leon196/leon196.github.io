@@ -55,12 +55,7 @@ body {
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%);
-  filter: drop-shadow(0 0 1vmin black);
-  padding: 8px;
-  margin: 8px;
-  font-weight: 400;
-  font-size: 6vmin;
-  line-height: 6vmin;
+  filter: drop-shadow(2px 2px 0 black);
   z-index: 1;
 }
 
@@ -73,7 +68,6 @@ a:hover,
 a:active
 {
   color: #fff;
-  text-decoration: none;
 }
 
 .unselectable
