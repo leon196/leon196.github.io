@@ -39,7 +39,7 @@ void main()
   q = grid*inch_to_mm*rot(-r_angle)/aspect/r_lineature/format.y+.5;
 
   // image sample
-	float gray = texture(image, q).r;
+	float gray = 1.-texture(image, q).r;
   
   // grid
   vec2 cell = fract(p)-.5;
@@ -56,5 +56,5 @@ void main()
 
   trame *= crop;
 
-	fragColor = vec4(step(0.5, trame));
+	fragColor = vec4(step(trame, 0.5));
 }

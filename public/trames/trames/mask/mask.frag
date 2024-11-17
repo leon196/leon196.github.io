@@ -29,41 +29,33 @@ vec2 hash22(vec2 p)
 void main()
 {
   float trame = 0.;
+  
+  // transformed coordinates
+  vec2 aspect = vec2(format.x/format.y,1);
+  vec2 p = (uv-.5)*aspect*rot(r_angle)*r_lineature*format.y/inch_to_mm;
+  if (hexagonal > 0.5) p.x += floor(mod(p.y,2.))/2.;
 
-  if (fullscreen < 0.5)
+  // image coordinates
+  vec2 q = p;
+  vec2 grid = ceil(q);
+  if (per_pixel < 0.5)
   {
-    // transformed coordinates
-    vec2 aspect = vec2(format.x/format.y,1);
-    vec2 p = (uv-.5)*aspect*rot(r_angle)*r_lineature*format.y/inch_to_mm;
-    if (hexagonal > 0.5) p.x += floor(mod(p.y,2.))/2.;
-
-    // image coordinates
-    vec2 q = p;
-    vec2 grid = ceil(q);
-    if (per_pixel < 0.5)
-    {
-      q = grid;
-    }
-    q = q*inch_to_mm*rot(-r_angle)/aspect/r_lineature/format.y+.5;
-
-    // image sample
-    float gray = texture(image, q).r;
-    
-    // grid
-    vec2 cell = fract(p)-.5;
-    // cell += (hash22(grid)-.5)*variation_position;
-    cell *= rot(hash22(grid+196.).x*variation_rotation);
-    float crop = step(max(abs(cell.x),abs(cell.y))-.5, 0.);
-    
-    trame = texture(mask, cell+.5).r;
-    trame = step(trame, gray)*crop;
+    q = grid;
   }
-  else
-  {
-    float gray = texture(image, uv).r;
-    trame = texture(mask, uv).r;
-    trame = step(trame, gray);
-  }
+  q = q*inch_to_mm*rot(-r_angle)/aspect/r_lineature/format.y+.5;
+
+  // image sample
+  float gray = texture(image, q).r;
+  
+  // grid
+  vec2 cell = fract(p)-.5;
+  // cell += (hash22(grid)-.5)*variation_position;
+  cell *= rot(hash22(grid+196.).x*variation_rotation);
+  float crop = step(max(abs(cell.x),abs(cell.y))-.5, 0.);
+  
+  trame = texture(mask, cell+.5).r;
+  trame = step(trame, gray)*crop;
+  
 
   // trame *= crop;
 

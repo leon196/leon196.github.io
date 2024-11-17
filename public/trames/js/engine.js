@@ -70,7 +70,8 @@ export default class Engine
         }
 
         this.limit = {
-            viewport: gl.getParameter(gl.MAX_VIEWPORT_DIMS),
+            // texture_size: gl.getParameter(gl.MAX_TEXTURE_SIZE),
+            texture_size: 8192,
         }
 
         this.tick = 0;
@@ -112,7 +113,7 @@ export default class Engine
         gl.bindFramebuffer(gl.FRAMEBUFFER, buffer);
         gl.viewport(rect[0], rect[1], rect[2], rect[3]);
         gl.useProgram(material.program);
-        gl.clearColor(0,0,0,0)
+        gl.clearColor(1,1,1,1);
         gl.disable(gl.BLEND);
         gl.enable(gl.DEPTH_TEST);
         gl.clear(gl.COLOR_BUFFER_BIT);
@@ -236,10 +237,33 @@ export default class Engine
     
     get_result()
     {
-        if (this.state.trame.post)
+        // return this.frame.post.attachments[0];
+        if (this.state.post)
             return this.frame.post.attachments[0];
         else
             return this.frame.trame.attachments[0];
+    }
+
+    get_result_as_array()
+    {
+        const gl = this.gl;
+        const width = this.width;
+        const height = this.height;
+        const read = new Uint8Array(width*height*4);
+        // const array = new Uint8Array(width*height);
+        const buffer = twgl.createFramebufferInfo(gl, [{ format: gl.RGBA }], width, height);
+
+        // draw image in buffer
+        this.settings.image = this.frame.post.attachments[0];
+        this.draw(this.material.blit, this.mesh.quad, buffer.framebuffer, [0, 0, width, height]);
+
+        // read buffer to array
+        gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, read);
+
+        // prepare data
+        // for (let i = 0; i < width*height; ++i) array[i] = read[i*4];
+
+        return read;
     }
 
     set_lut(array)
@@ -259,6 +283,10 @@ export default class Engine
 
     set_size(width, height, format_width, format_height)
     {
+        width = Math.min(width, this.limit.texture_size);
+        height = Math.min(height, this.limit.texture_size);
+        console.log(width)
+
         if (width != this.width || height != this.height)
         {
             this.width = width;
@@ -273,15 +301,24 @@ export default class Engine
             twgl.resizeFramebufferInfo(gl, frame.trame, this.attachments, width, height);
             twgl.resizeFramebufferInfo(gl, frame.post, this.attachments, width, height);
 
+            if (this.trame.set_size != undefined)
+            {
+                this.trame.set_size(this, width, height, format_width, format_height)
+            }
+
             this.settings.format = [format_width, format_height];
 
             // trame has custom resize
-            if (this.trame.set_size != undefined) this.trame.set_size(this);
+            // if (this.trame.set_size != undefined) this.trame.set_size(this);
     
             this.state.blur = false;
             this.state.lut = false;
             this.state.trame = false;
             this.tick = 0;
+        }
+        else
+        {
+            emitter.emit('loading_stop');
         }
     }
 
@@ -334,6 +371,8 @@ export default class Engine
         }
 
         this.settings[key] = value;
+
+        return update;
     }
 
     // pre blur
@@ -355,6 +394,55 @@ export default class Engine
         this.settings.blur_threshold = threshold;
         this.apply_post();
         emitter.emit('loading_stop');
+    }
+
+    make_particles(width, height, hexagonal)
+    {
+        const triangles = [0, 3, 1, 3, 0, 2];
+        const coordinates = [-1,-1, 1,-1, -1,1, 1,1];
+
+        // Generated attributes
+        const pos = [];
+        const uvs = [];
+        const ids = [];
+        const indices = [];
+        const count = width * height;
+        const w = width;
+        const h = height;
+        hexagonal = hexagonal || false;
+
+        for (let quad = 0; quad < count; ++quad)
+        {
+            let x = (quad % w);
+            const y = Math.floor(quad/w);
+            if (hexagonal) x += 0.5 * (y % 2);
+            const position = [x/(w-1), y/(h-1), 0];
+            const q = [quad / (count - 1), quad];
+            
+            for (let v = 0; v < 4; ++v)
+            {
+                pos.push(position[0]);
+                pos.push(position[1]);
+                pos.push(position[2]);
+                uvs.push(coordinates[v*2+0]);
+                uvs.push(coordinates[v*2+1]);
+                ids.push(q[0]);
+                ids.push(q[1]);
+            }
+
+            // Triangle indices
+            for (let i = 0; i < triangles.length; ++i)
+            {
+                indices.push(quad * 4 + triangles[i]);
+            }
+        }
+
+        return {
+            position: { numComponents: 3, data: pos },
+            texcoord: { numComponents: 2, data: uvs },
+            quantity: { numComponents: 2, data: ids },
+            indices: { numComponents: 3, data: new Uint32Array(indices)},
+        };
     }
 }
 

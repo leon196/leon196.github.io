@@ -21,12 +21,7 @@
   <body>
     
     <div class="container">
-    <a href="/about/">
-        <div class="label">
-            <h2 class="center">Leon Denise</h2>
-        </div>
-        <img src="/media/images/photo-2.webp"></img>
-    </a>
+    <a href="/about/"><img src="/media/images/photo-2.webp"></img></a>
     
     
 <a class="" href="/project/crashboard">
@@ -623,7 +618,7 @@
     .container
     {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(30vmin, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(20vmin, 1fr));
         grid-auto-flow: row;
         gap: 0px;
     }
@@ -708,12 +703,12 @@
         cursor: zoom-out;
         transition: backdrop-filter 1s;
     }
+
     .blur-background
     {
         pointer-events: auto;
         backdrop-filter: blur(10px);
     }
-
 
     #video-player
     {
@@ -739,7 +734,6 @@
     .container img:hover
     {
         transform: scale(1.2);
-        filter: blur(4px);
     }
     
 </style>

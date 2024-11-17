@@ -61,14 +61,16 @@ export default {
 				let x_pos = event.target.getBoundingClientRect().left - legend_width;
 				let max_x = sidebar_left_width - legend_width - event.target.getBoundingClientRect().width;
 				let final_value = Math.round(normalize(x_pos, 0, max_x, min, max));
+
 				if (step != 1) {
 					final_value = Math.round(final_value / step) * step;
 				}
 				current.slider_value = final_value;
-				current.$emit('change_value', final_value);
+				current.$emit('change_value', current.slider_value);
 			},
 			stop: function(event) {
 				event.target.classList.remove("green_shadow");
+				current.$emit('change_value', current.slider_value);
 			}
 		});
 

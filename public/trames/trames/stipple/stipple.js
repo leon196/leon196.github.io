@@ -6,225 +6,201 @@
 		author: "",
 		url_info: "",
 
-		particles_count: 100000,
-		feedback_frames: 120,
+		count: 0,
 
 		settings: [
 			{
-				label_fr: "Atomic Size",
-				label_en: "Atomic Size",
-				slug: "atomic_size",
+				label_fr: "Linéature",
+				label_en: "Linéature",
+				slug: "lineature",
 				type: "slider",
 				min: 1,
-				max: 30,
-				value: 20,
+				max: 300,
+				value: 90,
 				step: 1,
-				uniform: "atomic_size",
-				process_to_uniform: x => x/1000,
-				gradient_view: { bypass: false }
+				unit: "lpi",
+				uniform: "lineature",
+				process_to_uniform: x => x,
+				gradient_view: {
+					bypass: true,
+					default: 10
+				}
 			},
 			{
-				label_fr: "Particle Size",
-				label_en: "Particle Size",
-				slug: "particle_size",
+				label_fr: "Steps",
+				label_en: "Steps",
+				slug: "steps",
+				type: "slider",
+				min: 10,
+				max: 3000,
+				value: 1000,
+				step: 1,
+				uniform: "steps",
+				process_to_uniform: x => x,
+				gradient_view: {
+					bypass: false
+				}
+			},
+			{
+				label_fr: "Size",
+				label_en: "Size",
+				slug: "size",
 				type: "slider",
 				min: 1,
 				max: 20,
-				value: 20,
+				value: 14,
 				step: 1,
-				uniform: "particle_size",
-				process_to_uniform: x => x/100,
-				gradient_view: { bypass: false }
+				uniform: "size",
+				process_to_uniform: x => x / 10,
+				gradient_view: {
+					bypass: false
+				}
 			},
 			{
-				label_fr: "Fixed Size",
-				label_en: "Fixed Size",
-				slug: "fixed_size",
-				type: "checkbox",
-				value: false,
-				uniform: "fixed_size",
-				process_to_uniform: x => x ? 1 : 0,
-				gradient_view: { bypass: false }
-			},
-			{
-				label_fr: "Seuil",
-				label_en: "Threshold",
-				slug: "threshold",
+				label_fr: "Speed",
+				label_en: "Speed",
+				slug: "speed",
 				type: "slider",
 				min: 1,
-				max: 100,
-				value: 70,
+				max: 10,
+				value: 3,
 				step: 1,
-				uniform: "threshold",
-				process_to_uniform: x => x/100,
-				gradient_view: { bypass: false }
+				uniform: "speed",
+				process_to_uniform: x => x,
+				gradient_view: {
+					bypass: false
+				}
+			},
+			{
+				label_fr: "Crop",
+				label_en: "crop",
+				slug: "crop",
+				type: "checkbox",
+				value: false,
+				uniform: "crop",
+				process_to_uniform: x => x ? 1 : 0,
+				gradient_view: {
+					bypass: false
+				}
 			},
 		],
 
 		start(engine)
 		{
 			const gl = engine.gl;
-			const width = engine.width;
-			const height = engine.height;
-			const attachments = engine.attachments;
+			const particles = this.make_particles(engine);
 
-			const particles = this.get_particles(engine, engine.trame.particles_count);
-
+			const count = engine.trame.settings[0].value;
 			engine.mesh.particles = twgl.createBufferInfoFromArrays(gl, particles);
-			engine.frame.particles = twgl.createFramebufferInfo(gl, attachments, width, height);
-			engine.frame.particles_render = twgl.createFramebufferInfo(gl, attachments, width, height);
+			engine.trame.count = count;
 
-			const dim = Math.sqrt(engine.trame.particles_count);
-			engine.frame.read = twgl.createFramebufferInfo(gl, attachments, dim, dim);
-			engine.frame.write = twgl.createFramebufferInfo(gl, attachments, dim, dim);
+			const attachments = [{
+				internalFormat: gl.RGBA32F, format: gl.RGBA, type: gl.FLOAT,
+				minMag: gl.NEAREST,
+				wrap: gl.CLAMP_TO_EDGE
+			}];
+            twgl.resizeFramebufferInfo(gl, engine.frame.read, attachments, engine.width, engine.height);
+            twgl.resizeFramebufferInfo(gl, engine.frame.write, attachments, engine.width, engine.height);
 
+			const path = "trames/stipple/";
 			engine.load_shaders({
-				feedback: ["shaders/rect.vert", "trames/stipple/stipple.simulation.frag"],
-				particles: ["trames/stipple/stipple.particles.vert", "trames/stipple/stipple.particles.frag"],
-				particles_render: ["trames/stipple/stipple.particles.vert", "trames/stipple/stipple.particles.render.frag"],
-				trame: ["shaders/rect.vert", "trames/stipple/stipple.render.frag"],
+				stipple: [path+"stipple.vert", path+"stipple.frag"],
+				position: ["shaders/rect.vert", path+"position.frag"],
+				croped_sdf: ["shaders/rect.vert", path+"croped_sdf.frag"],
+				croped_draw: ["shaders/rect.vert", path+"croped_draw.frag"],
 			}, () => {
 				engine.state.trame = false;
 				engine.tick = 0;
 			});
-			
-            // twgl.resizeFramebufferInfo(gl, engine.frame.read, attachments, dim, dim);
-            // twgl.resizeFramebufferInfo(gl, engine.frame.write, attachments, dim, dim);
+		},
+
+		make_particles(engine)
+		{
+			const gl = engine.gl;
+			const count = engine.trame.settings[0].value;
+			const format = engine.settings.format;
+			const width = Math.floor(format[0] * count / 1000);
+			const height = Math.floor(format[1] * count / 1000);
+			const attachments = [{
+				internalFormat: gl.RGBA32F, format: gl.RGBA, type: gl.FLOAT,
+				minMag: gl.NEAREST,
+				wrap: gl.CLAMP_TO_EDGE
+			}];
+
+			engine.frame.read_particles = twgl.createFramebufferInfo(gl, attachments, width, height);
+			engine.frame.write_particles = twgl.createFramebufferInfo(gl, attachments, width, height);
+
+			return engine.make_particles(width, height);
 		},
 
 		update(engine, oncomplete)
 		{
-			if (engine.material.particles == undefined
-			||  engine.material.particles_render == undefined) return;
+			const steps = engine.trame.settings[1].value;
+			const croped = engine.trame.settings[4].value;
 
-			const frames = [engine.frame.read, engine.frame.write];
-			const read = frames[(engine.tick)%2];
-			const write = frames[(engine.tick+1)%2];
-			const dim = Math.sqrt(this.particles_count);
-	
-			if (engine.tick < engine.trame.feedback_frames)
+			if (engine.tick < steps)
 			{
-				// feedback buffer
-				engine.settings.image = engine.frame.lut.attachments[0];
-				engine.settings.particles = engine.frame.particles.attachments[0];
-				engine.settings.tick = engine.tick;
-				engine.settings.resolution = [engine.width, engine.height];
-				engine.settings.feedback = read.attachments[0];
-				engine.draw(engine.material.feedback, engine.mesh.quad, write.framebuffer, [0, 0, dim, dim]);
-	
-				engine.tick += 1;
-				
-				// particles draw with areas for simulation
-				engine.settings.image = frames[engine.tick%2].attachments[0];
-				this.drawAdditive(engine, engine.material.particles, engine.mesh.particles, engine.frame.particles.framebuffer, [0, 0, engine.width, engine.height]);
+				const count = engine.trame.settings[0].value;
+				if (!croped && count != engine.trame.count)
+				{
+					const gl = engine.gl;
+					const particles = this.make_particles(engine);
+					engine.mesh.particles = twgl.createBufferInfoFromArrays(gl, particles);
+					engine.trame.count = count;
+				}
 
-				// particles draw for rendering
-				engine.draw(engine.material.particles_render, engine.mesh.particles, engine.frame.particles_render.framebuffer, [0, 0, engine.width, engine.height]);
+				const image = engine.frame.lut.attachments[0];
+				const settings = engine.settings;
+				const quad = engine.mesh.quad;
+				const result = engine.frame.trame.framebuffer;
+				const viewport = [0, 0, engine.width, engine.height];
+
+				let filter = engine.material.position;
+				let material = engine.material.stipple;
+				let mesh = engine.mesh.particles;
+				let frames = [engine.frame.read_particles, engine.frame.write_particles];
+				let format = engine.settings.format;
+				let width = Math.floor(format[0] * count / 1000);
+				let height = Math.floor(format[1] * count / 1000);
+
+				if (croped) 
+				{
+					filter = engine.material.croped_sdf;
+					material = engine.material.croped_draw;
+					frames = [engine.frame.read, engine.frame.write];
+					width = engine.width;
+					height = engine.height;
+					mesh = quad;
+				}
+
+				settings.grid_dimension = [ width, height ]
+				settings.resolution = [ engine.width, engine.height ];
+				settings.tick = engine.tick;
+				settings.last_tick = engine.trame.feedback_frames-1;
+
+				const read = frames[(engine.tick)%2];
+				const write = frames[(engine.tick+1)%2];
+
+				settings.image = image;
+				settings.position = read.attachments[0];
 				
-				// final print
-				engine.settings.image = engine.frame.particles_render.attachments[0]; 
-				engine.draw(engine.material.trame, engine.mesh.quad, engine.frame.trame.framebuffer, [0, 0, engine.width, engine.height]);
+				engine.draw(filter, quad, write.framebuffer, [0, 0, width, height]);
+				
+				settings.image = write.attachments[0];
+				engine.draw(material, mesh, result, viewport);
 	
 				emitter.emit('force_update', engine);
 				engine.should_update = true;
+				engine.tick += 1;
 			}
 			else
 			{
-				// // particles draw
-				// engine.settings.image = frames[engine.tick%2].attachments[0]; 
-				// engine.draw(engine.material.particles, engine.mesh.particles, frames[(engine.tick+1)%2].framebuffer, [0, 0, engine.width, engine.height]);
-				
-				// // final print
-				// engine.settings.image = frames[(engine.tick+1)%2].attachments[0]; 
-				// engine.draw(engine.material.trame, engine.mesh.quad, engine.frame.trame.framebuffer, [0, 0, engine.width, engine.height]);
-	
-				// end feedback
+				// done
 				engine.state.trame = true;
 				engine.should_update = false;
 				emitter.emit('loading_stop');
 				if (oncomplete != undefined) oncomplete();
 			}
-		},
-
-		stop(engine)
-		{
-		},
-
-		drawAdditive(engine, material, mesh, buffer, rect)
-		{
-			const gl = engine.gl;
-			gl.bindFramebuffer(gl.FRAMEBUFFER, buffer);
-			gl.viewport(rect[0], rect[1], rect[2], rect[3]);
-			gl.useProgram(material.program);
-			gl.clearColor(0,0,0,0)
-			gl.enable(gl.BLEND);
-			gl.disable(gl.DEPTH_TEST);
-			gl.blendFunc(gl.ONE, gl.ONE);
-			// gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-			gl.clear(gl.COLOR_BUFFER_BIT);
-			twgl.setBuffersAndAttributes(gl, material, mesh);
-			twgl.setUniforms(material, engine.settings);
-			twgl.drawBufferInfo(gl, mesh);
-		},
-
-		set_size(engine)
-		{
-			const gl = engine.gl;
-			const attachments = engine.attachments;
-			const dim = Math.sqrt(this.particles_count);
-			const w = engine.width;
-			const h = engine.height;
-
-            twgl.resizeFramebufferInfo(gl, engine.frame.particles, attachments, w, h);
-            twgl.resizeFramebufferInfo(gl, engine.frame.particles_render, attachments, w, h);
-            twgl.resizeFramebufferInfo(gl, engine.frame.read, attachments, dim, dim);
-            twgl.resizeFramebufferInfo(gl, engine.frame.write, attachments, dim, dim);
-		},
-
-		get_particles(engine)
-		{
-			const triangles = [0, 3, 1, 3, 0, 2];
-			const coordinates = [-1,-1, 1,-1, -1,1, 1,1];
-	
-			// Generated attributes
-			const pos = [];
-			const uvs = [];
-			const ids = [];
-			const indices = [];
-			// const dim = Math.sqrt(count);
-			const ratio = this.particles_count / (engine.width * engine.height);
-			const w = engine.width * ratio;
-			const h = engine.height * ratio;
-	
-			for (let quad = 0; quad < this.particles_count; ++quad)
-			{
-				const position = [(quad % w)/(w-1), Math.floor(quad/w)/(h-1), 0];
-				const q = [quad / (this.particles_count - 1), quad];
-				
-				for (let v = 0; v < 4; ++v)
-				{
-					pos.push(position[0]);
-					pos.push(position[1]);
-					pos.push(position[2]);
-					uvs.push(coordinates[v*2+0]);
-					uvs.push(coordinates[v*2+1]);
-					ids.push(q[0]);
-					ids.push(q[1]);
-				}
-	
-				// Triangle indices
-				for (let i = 0; i < triangles.length; ++i)
-				{
-					indices.push(quad * 4 + triangles[i]);
-				}
-			}
-	
-			return {
-				position: { numComponents: 3, data: pos },
-				texcoord: { numComponents: 2, data: uvs },
-				quantity: { numComponents: 2, data: ids },
-				indices: { numComponents: 3, data: new Uint32Array(indices)},
-			};
 		},
 
 	}

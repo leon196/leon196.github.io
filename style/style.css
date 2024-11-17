@@ -1,15 +1,4 @@
 
-/* variables */
-
-:root
-{
-  --navigation-size: 80px;
-  --border-radius: 5px;
-  --post-color: #797979;
-}
-
-/* global */
-
 * {
   margin: 0;
   padding: 0;
@@ -35,32 +24,6 @@ body {
   z-index: -1;
 }
 
-/* fonts */
-
-@font-face {
-  font-family: Font;
-  src: url(font/Oswald-VariableFont_wght.woff2);
-}
-
-@font-face {
-  font-family: Icons;
-  src: url(font/bootstrap-icons.woff2);
-}
-
-/* text */
-
-.text-center
-{
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%,-50%);
-  filter: drop-shadow(2px 2px 0 black);
-  z-index: 1;
-}
-
-/* interaction */
-
 a,
 a:link,
 a:visited,
@@ -68,33 +31,4 @@ a:hover,
 a:active
 {
   color: #fff;
-}
-
-.unselectable
-{
-  user-select: none;
-}
-
-/* effects */
-
-.shadow
-{
-  box-shadow: 0px 0px 5px #111;
-}
-
-.shadow-inset
-{
-  box-shadow: 0px 0px 5px #111 inset;
-}
-
-.text-gradient
-{
-  color: transparent;
-  background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
-  background-clip: text;
-}
-
-.borders
-{
-  border-radius: var(--border-radius);
 }

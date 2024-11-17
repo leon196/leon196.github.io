@@ -1,7 +1,7 @@
 <template>
 
 	<!-- LEFT SIDEBAR -->
-	<div class="sidebar_left green_shadow oblique_stripes">
+	<div id="toolbar" class="sidebar_left green_shadow oblique_stripes">
 		<div class="sidebar_left_settings">
 
 			<!-- //////////////// -->

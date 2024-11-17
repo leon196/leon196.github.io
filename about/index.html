@@ -54,16 +54,18 @@
     <p>I'm also working with <a href="https://playful-machines.com/">Emilie Breslavetz</a> on playful installations.
         Together we build alternative controllers and experimental games.</p>
 
+    <p>You can contact me at <a href="mailto:contact@neondelice.xyz">contact@neondelice.xyz</a></p>
     <p><a href="/">return to gallery</a></p>
 
-</div>
+    <div class="grid">
 
-<div class="grid">
+        <img class="cell" src="/media/images/photo-2.webp">
+        <img class="cell" src="/media/images/photo-3.webp">
+        <img class="cell" src="/media/images/photo-4.webp">
+        <img class="cell" src="/media/images/photo-neon-minuit.jpg">
+        <img class="cell" src="/media/images/photo-trio.jpg">
 
-    <img class="cell" src="/media/images/photo-3.webp">
-    <img class="cell" src="/media/images/photo-4.webp">
-    <img class="cell" src="/media/images/photo-neon-minuit.jpg">
-    <img class="cell" src="/media/images/photo-trio.jpg">
+    </div>
 
 </div>
 
@@ -72,9 +74,10 @@
     .grid
     {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(40vmin, 1fr));
-        grid-template-rows: repeat(auto-fit, minmax(40vmin, 1fr));
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-auto-flow: row;
         gap: 0px;
+        
     }
 
     .grid img
@@ -84,6 +87,12 @@
         height: 100%;
         object-fit: cover;
         aspect-ratio: 16/9;
+    }
+
+    .about
+    {
+        max-width: 800px;
+        margin: 40px auto;
     }
 
     .about a,

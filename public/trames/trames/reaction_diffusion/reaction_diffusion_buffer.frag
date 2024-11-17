@@ -9,7 +9,7 @@ uniform vec2 resolution, format;
 in vec2 uv;
 out vec4 fragColor;
 
-uniform float tick, parameter_f, parameter_k, dynamic_k;
+uniform float tick, size, parameter_f, parameter_k, dynamic_k, min_k, max_k, min_f, max_f;
 const float lod = 0.;
 
 // Dave Hoskins
@@ -29,7 +29,7 @@ vec2 hash22(vec2 p)
 // #define Da 1.0
 // #define Db 0.5
 
-void getVal(vec2 p, out vec2 val, out vec2 laplacian) {
+void getVal2(vec2 p, out vec2 val, out vec2 laplacian) {
     vec2 r = resolution;
     vec2 uv = p / r;
     vec2 n = p + vec2(0.0, 1.0);
@@ -53,10 +53,64 @@ void getVal(vec2 p, out vec2 val, out vec2 laplacian) {
     laplacian += -1.0 * val;   
 }
 
+
+
+// mrharicot
+// https://www.shadertoy.com/view/XdfGDH
+
+float normpdf(in float x, in float sigma)
+{
+	return 0.39894*exp(-0.5*x*x/(sigma*sigma))/sigma;
+}
+
+vec3 blur(sampler2D map)
+{
+	// blur
+        
+    //declare stuff
+    // const int mSize = 1;
+    int count = int(size)*2+1;
+    int kSize = count/2;
+    float kernel[11];
+    vec3 final_colour = vec3(0.0);
+    
+    //create the 1-D kernel
+    float sigma = 7.0;
+    float Z = 0.0;
+    for (int j = 0; j <= kSize; ++j)
+    {
+        kernel[kSize+j] = kernel[kSize-j] = normpdf(float(j), sigma);
+    }
+    
+    //get the normalization factor (as the gaussian has been clamped)
+    for (int j = 0; j < count; ++j)
+    {
+        Z += kernel[j];
+    }
+    
+    //read out the texels
+    for (int i=-kSize; i <= kSize; ++i)
+    {
+        for (int j=-kSize; j <= kSize; ++j)
+        {
+            final_colour += kernel[kSize+j]*kernel[kSize+i]*texture(map, uv+vec2(float(i),float(j)) / resolution).rgb;
+        }
+    }
+    
+    return final_colour/(Z*Z);
+}
+
+void getVal(vec2 uv, out vec2 val, out vec2 laplacian) {
+    val = texture(feedback, uv).xy;
+    laplacian = blur(feedback).xy - val;
+}
+
 void main()
 {
     
     float gray = texture(image, uv).r;
+
+    // gray = floor(gray*5.)/5.;
 
     vec3 color = vec3(0.0);
     if (tick < 1.) {
@@ -64,7 +118,7 @@ void main()
         // {
         //     color = vec3(1.);
         // }
-        float a = 1.;
+        float a = 1.;//-gray;
         float rng = hash22(floor(gl_FragCoord.xy)).r;
         float b = step(.9, rng);
         // if (dynamic_k < 0.5) {
@@ -75,14 +129,20 @@ void main()
         // color = vec3();
     } else {
      	vec2 val, laplacian;
-        getVal(gl_FragCoord.xy, val, laplacian);
+        // getVal(gl_FragCoord.xy, val, laplacian);
+        getVal(uv, val, laplacian);
+
+        // val *= 1.-.001*step(0.5,gray);
         
         vec2 delta;
         // float F = .0367;//.055;//mix(0.04, 0.06, gray);
         // float K = .0649;//.062;//mix(.05, 0.07, gray);
-        float F = mix(.045, .07, parameter_f);
-        float K = mix(.05, .1, gray);//mix(parameter_k, gray, dynamic_k));
-        float Da = 1.;// - .1 * gray;
+        float F = mix(min_f, max_f, 1.-gray);
+        float K = mix(min_k, max_k, gray);//mix(parameter_k, gray, dynamic_k));
+        // F = .06264;
+        // K = .061;
+        // float K = .06;
+        float Da = 1.;// - 0.5 * gray;
         float Db = 0.2;// - 0.1 * gray;
         // val.x = min(val.x, 1.);
         // val.y = max(val.y, 0.);

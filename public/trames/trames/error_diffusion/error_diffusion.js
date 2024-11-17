@@ -63,6 +63,19 @@
 				should_reset_buffer: true,
 				gradient_view: { bypass: false }
 			},
+			{
+				label_fr: "Level of details",
+				label_en: "Level of details",
+				slug: "lod",
+				type: "slider",
+				min: 1,
+				max: 20,
+				value: 10,
+				step: 1,
+				uniform: "lod",
+				process_to_uniform: x => x,
+				gradient_view: { bypass: false }
+			},
 		],
 
 		start(engine)
@@ -73,14 +86,16 @@
 		update(engine, oncomplete)
 		{
 			const gl = engine.gl;
-			const width = engine.width;
-			const height = engine.height;
+			const lod = engine.trame.settings[2].value;
+			const format = engine.settings.format;
+			const width = Math.floor(format[0] / lod);
+			const height = Math.floor(format[1] / lod);
 	
 			if (engine.worker != undefined)
 			{
 				engine.worker.terminate();
 			}
-			
+
 			engine.worker = new Worker(engine.trame.worker);
 			engine.worker.onmessage = (e) => 
 			{

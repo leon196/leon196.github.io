@@ -13,9 +13,9 @@
 				label_en: "Linéature",
 				slug: "lineature",
 				type: "slider",
-				min: 5,
+				min: 1,
 				max: 300,
-				value: 20,
+				value: 1,
 				step: 1,
 				unit: "lpi",
 				uniform: "r_lineature",
@@ -114,6 +114,11 @@
 						mode: 1,
 						label_fr: "Carré",
 						label_en: "Square"
+					},
+					{
+						mode: 2,
+						label_fr: "Personnalisé",
+						label_en: "Custom"
 					}
 				],
 				uniform: "r_pattern",

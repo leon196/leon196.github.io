@@ -2,9 +2,13 @@
 precision mediump float;
 
 in vec2 uv;
-out uint fragColor;
+in vec2 id;
+out vec4 fragColor;
 
 void main()
 {
-	fragColor = uint(255);
+    float dist = length(uv-.5);
+    float shape = -dist+.5;
+    if (shape < .01) discard;
+	fragColor = vec4(0,0,0,1.);
 }

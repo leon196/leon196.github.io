@@ -290,6 +290,125 @@ export default {
 					this.loading_dom.style.display = "none";
 				}
 			});
+
+			// drag and drop
+			const viewport = document.querySelector("#viewport");
+			const panzoom_image = document.querySelector("#panzoom_image");
+			viewport.addEventListener("drop", (e) => {
+  				e.preventDefault();
+				let reader = new FileReader()
+  				reader.readAsDataURL(e.dataTransfer.files[0])
+				reader.onloadend = () => {
+				
+					panzoom_image.src = reader.result;
+					
+					engine.load_images({
+						image: panzoom_image.src,
+					});
+
+					panzoom_image.onload = () => {
+
+						global.format_x = panzoom_image.width;
+						global.format_y = panzoom_image.height;
+						emitter.emit("update_view", ["format_x"]);
+
+						
+						// to replace with toolbar.update_view()
+						if (global.media_mode == "print") {
+							global.definition_x = Math.round(global.format_x * global.resolution / inch_to_mm);
+							global.definition_y = Math.round(global.format_y * global.resolution / inch_to_mm);
+						} else {
+							global.format_x = Math.round(global.definition_x / global.resolution * inch_to_mm);
+							global.format_y = Math.round(global.definition_y / global.resolution * inch_to_mm);
+						}
+						global.size = humanFileSize(Math.ceil((global.definition_x * global.definition_y)/8), 1, "fr");
+						
+						console.log(global.definition_x, global.definition_y)
+						engine.set_size(global.definition_x, global.definition_y, global.format_x, global.format_y);
+						this.update_panzoom();
+					}
+				}
+			})
+
+			viewport.addEventListener("dragover", (e) => { e.preventDefault(); })
+
+			// export image
+			emitter.on('save_image', () => {
+
+				const data = engine.get_result_as_array();
+				const width = engine.width;
+				const height = engine.height;
+
+				// CREATE BIT MAP ARRAY FROM IMAGE PIXELS
+				let pixels_bits = [];
+				for (var y = 0; y < height; y++) {
+					let pixels_bits_x = [];
+					for (var x = 0; x < width; x++) {
+						let pos = (width * (height-y-1) + x) * 4;
+						const red = data[pos];
+						if (red > 127) {
+							pixels_bits_x[x] = '0';
+						} else {
+							pixels_bits_x[x] = '1';
+						}
+					}
+					pixels_bits[y] = pixels_bits_x;
+				}
+
+				// CREATE BIT STRINGS AND PARSE TO BYTES
+				let bytes_lines = [];
+				for (var y = 0; y < pixels_bits.length; y++) {
+					let ligne = pixels_bits[y];
+					let bytes_line = new Uint8Array(Math.ceil(ligne.length/8));
+					for (var i = 0; i < ligne.length; i += 8) {
+
+						if (ligne[i+1] === undefined) {
+							ligne[i+1] = '0';
+						}
+						if (ligne[i+2] === undefined) {
+							ligne[i+2] = '0';
+						}
+						if (ligne[i+3] === undefined) {
+							ligne[i+3] = '0';
+						}
+						if (ligne[i+4] === undefined) {
+							ligne[i+4] = '0';
+						}
+						if (ligne[i+5] === undefined) {
+							ligne[i+5] = '0';
+						}
+						if (ligne[i+6] === undefined) {
+							ligne[i+6] = '0';
+						}
+						if (ligne[i+7] === undefined) {
+							ligne[i+7] = '0';
+						}
+						let bit_string = ligne[i] + ligne[i + 1] + ligne[i + 2] + ligne[i + 3] + ligne[i + 4] + ligne[i + 5] + ligne[i + 6] + ligne[i + 7];
+						let byte = parseInt(bit_string, 2);
+						bytes_line[i/8] = byte;
+
+
+					}
+					bytes_lines[y] = bytes_line;
+				}
+
+				saveTIFF(width, height, bytes_lines, "image.tiff");
+			});
+
+			// drag and drop custom pattern
+			const toolbar = document.querySelector("#toolbar");
+			toolbar.addEventListener("drop", (e) => {
+  				e.preventDefault();
+				let reader = new FileReader()
+  				reader.readAsDataURL(e.dataTransfer.files[0])
+				reader.onloadend = () => {
+					engine.load_images({
+						custom_pattern: reader.result,
+					});
+				}
+			})
+			
+			toolbar.addEventListener("dragover", (e) => { e.preventDefault(); })
 		},
 
 		update_trame: function()
@@ -348,12 +467,13 @@ export default {
 			const engine = this.engine;
 			const steps = this.engine_gradient_steps;
 			const continuous = this.engine_gradient_continuous;
+			let will_update = false;
 
 			for (const [key, setting] of Object.entries(settings.screen.settings))
 			{
 				// process value for trame
 				let value = setting.process_to_uniform(setting.value);
-				engine.set_setting(setting.uniform, value);
+				will_update |= engine.set_setting(setting.uniform, value);
 
 				// gradients
 				if (setting.gradient_view.bypass) {
@@ -361,6 +481,11 @@ export default {
 				}
 				steps.set_setting(setting.uniform, value);
 				continuous.set_setting(setting.uniform, value);
+			}
+
+			if (!will_update)
+			{
+				emitter.emit('loading_stop');
 			}
 		},
 
@@ -378,18 +503,13 @@ export default {
 			let start_x = viewport.width() / 2 - image.width() / 2;
 			let start_y = (viewport.height() - ruler.height()) / 2 - image.height() / 2;
 
-			// max scale from webgl viewport size limit
-			const size = Math.max(image_element.width, image_element.height);
-			const limit = this.engine.limit.viewport[0];
-			const maxScale = Math.floor(limit/size) - 1;
-
 			// INIT PANZOOM WITH RAW IMAGE 
 			let panzoom = Panzoom(image_element, {
 				canvas: true,
 				startScale: 1,
 				startX: start_x,
 				startY: start_y,
-				maxScale: maxScale,
+				maxScale: 100,
 				minScale: 1,
 			});
 			
@@ -401,8 +521,8 @@ export default {
 		update_panzoom: function()
 		{
 			// image dimensions
-			let width = this.image.image_object.width;
-			let height = this.image.image_object.height;
+			let width = this.panzoom_image.width;
+			let height = this.panzoom_image.height;
 
 			// panzoom transform
 			const style = window.getComputedStyle(this.panzoom_image)

@@ -28,13 +28,30 @@
 				}
 			},
 			{
+				label_fr: "Matrice",
+				label_en: "Matrix",
+				slug: "matrice",
+				type: "slider",
+				min: 0,
+				max: 5,
+				value: 3,
+				step: 1,
+				uniform: "matrice",
+				process_to_uniform: function(input) {
+					return input
+				},
+				gradient_view: {
+					bypass: false
+				}
+			},
+			{
 				label_fr: "Steps",
 				label_en: "Steps",
 				slug: "steps",
 				type: "slider",
-				min: 1,
-				max: 5,
-				value: 4,
+				min: 3,
+				max: 100,
+				value: 100,
 				step: 1,
 				uniform: "steps",
 				process_to_uniform: function(input) {

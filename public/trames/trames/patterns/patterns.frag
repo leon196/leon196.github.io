@@ -1,7 +1,7 @@
 #version 300 es
 precision mediump float;
 
-uniform sampler2D image;
+uniform sampler2D image, custom_pattern;
 uniform vec2 resolution, format;
 #define R resolution
 #define inch_to_mm 25.4
@@ -42,7 +42,7 @@ void main()
   q = q*inch_to_mm*rot(-r_angle)/aspect/r_lineature/format.y+.5;
 
   // image sample
-	float gray = texture(image, q).r/2.;
+	float gray = (1.-texture(image, q).r)/2.;
   
   // grid
   vec2 cell = fract(p)-.5;
@@ -55,7 +55,12 @@ void main()
   // shapes
   if (r_pattern == 0.) trame = length(cell)-gray; // circle
   else if (r_pattern == 1.) trame = max(abs(cell.x), abs(cell.y))-gray; // square
-  // else if (r_pattern == 2.) trame = abs(cell.x)-gray; // line
+  else if (r_pattern == 2.)
+  {
+    cell /= .5-.5*gray;
+    cell = cell * .5 + .5;
+    trame = step(texture(custom_pattern, cell).r, 0.5);
+  }
 
-  fragColor = vec4(step(trame, 0.));
+  fragColor = vec4(step(0., trame));
 }

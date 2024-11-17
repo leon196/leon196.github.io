@@ -11,6 +11,8 @@ out vec4 fragColor;
 
 uniform float r_lineature;
 
+uniform float iterations, threshold_fixed, threshold_progressive;
+
 // ciphered
 // https://www.shadertoy.com/view/wslcWf
 
@@ -77,7 +79,6 @@ void main()
 
   vec2 dim = aspect*r_lineature*format.y/inch_to_mm;
 
-  float threshold = 0.001;
 
   // number of space divisions
   float divs = MIN_DIVISIONS;
@@ -89,11 +90,12 @@ void main()
   // we store average and variance here
   vec4 quadInfos = vec4(0);
   
-  for (int i = 0; i < MAX_ITERATIONS; i++) {
+  for (float i = .0; i < iterations; i++) {
+  float threshold = threshold_fixed - threshold_progressive*(i/iterations);
     quadInfos = quadColorVariation(quadCenter, quadSize);
       
     // if the variance is lower than the threshold, current quad is outputted
-      if (quadInfos.w < threshold) break;
+      if (quadInfos.x > threshold) break;
       
       // otherwise, we divide the space again
       divs*= 2.0;

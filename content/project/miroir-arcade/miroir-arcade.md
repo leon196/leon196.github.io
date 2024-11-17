@@ -19,11 +19,13 @@ video:
     - /content/project/miroir-arcade/miroir-arcade.mp4
 
 text:
-    - L'Attrape Rêve is a performance and a participatory digital installation.
-    - A video and audio work in which the audience is invited to explore the world of dreams. The work is performed by 3 performers. The first is a shaman who invites members of the audience to lie down on a dream table, which allows the body to be scanned and the dream images to be extracted. The second is an illusionist who is responsible for operating the dream channels captured by the scanner. He manages the frequencies emitted by the lying body and transcribes them on the screen, the dome. The third is a musician who creates the narration and accompanies the audience with a sound ambiance and spoken texts that guide people on their journey.
+    - Arcade Mirror is an interactive multiplayer projection controlled by a cluster of handcrafted gamepads.
+    - The visitor sees their body projected into the digital space through a Kinect camera. Mysterious hanging boxes in space can generate spectacular effects. By sharing the controls, the participants manipulate buttons, potentiometers and switches to discover all the distorting filters.
+
 
 with:
+    - Emilie Breslavetz (device/hardware)
     - Leon Denise (code/visual)
-    - Dorian Rigal (visual)
+    - Dorian Rigal (device/visual)
     
 ---

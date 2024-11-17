@@ -26,9 +26,7 @@
 				step: 1,
 				unit: "lpi",
 				uniform: "r_lineature",
-				process_to_uniform: function(input) {
-					return input
-				},
+				process_to_uniform: x => x / 20,
 				gradient_view: {
 					bypass: true,
 					default: 2
@@ -46,19 +44,6 @@
 				unit: "°",
 				uniform: "r_angle",
 				process_to_uniform: x => x * Math.PI / 180,
-				gradient_view: { bypass: false }
-			},
-			{
-				label_fr: "Stretch",
-				label_en: "Stretch",
-				slug: "stretch",
-				type: "slider",
-				min: -99,
-				max: 99,
-				value: 0,
-				step: 1,
-				uniform: "stretch",
-				process_to_uniform: x => x / 100,
 				gradient_view: { bypass: false }
 			},
 			{
@@ -92,16 +77,6 @@
 				type: "checkbox",
 				value: true,
 				uniform: "per_pixel",
-				process_to_uniform: x => x ? 1 : 0,
-				gradient_view: { bypass: false }
-			},
-			{
-				label_fr: "Fullscreen",
-				label_en: "Fullscreen",
-				slug: "fullscreen",
-				type: "checkbox",
-				value: false,
-				uniform: "fullscreen",
 				process_to_uniform: x => x ? 1 : 0,
 				gradient_view: { bypass: false }
 			},

@@ -21,5 +21,6 @@ text:
 with:
     - Leon Denise (code/visual)
     - Dorian Rigal (visual)
+    - Flore (music)
     
 ---

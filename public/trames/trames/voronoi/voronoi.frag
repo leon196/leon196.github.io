@@ -70,7 +70,7 @@ vec3 voronoi( in vec2 x )
 
 void main()
 {
-	float gray = texture(image, uv).r;
+	float gray = 1.-texture(image, uv).r;
 	vec2 p = uv*format/inch_to_mm;
     vec3 vor = voronoi(p*r_lineature);
     // float value = smoothstep(.01,.0,length(vor.yz)-(gray)*size + .01);
@@ -78,6 +78,6 @@ void main()
     // {
     //     value = smoothstep(0.0,.01,vor.x-(1.-gray)*.7 + .01);
     // }
-    float value = smoothstep(0.0,.01,vor.x-(1.-gray)*.55 + .01);
+    float value = smoothstep(0.01,.0,vor.x-(1.-gray)*.55 + .01);
 	fragColor = vec4(value);
 }
