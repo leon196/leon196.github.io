@@ -1,9 +1,0 @@
-
-
-@media screen and (max-width: 500px)
-{
-  .grid
-  {
-    grid-template-columns: 1fr;
-  }
-}

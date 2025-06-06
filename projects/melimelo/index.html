@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Melimelo</title>
+    <meta charset="utf-8">
+	<meta name="author" content="Leon Denise">
+	<meta name="description" content="surfing cyberspace game">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/style.css" />
+    <link rel="icon" type="image/x-icon" href="/about/leon.png">
+  </head>
+  <body>
+    <nav>
+        <a href="/">home</a>
+        <a href="/projects/shaders/">shaders</a>
+        <a href="/projects/gifs/">gifs</a>
+        <a href="/about/">about</a>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="column">
+    <iframe src="game/index.html" frameborder="0" height="100%" width="100%"></iframe>
+</div>
+<div class="column text">
+    <div>
+        <h1>Melimelo</h1>
+        <p>Melimelo is a game about untangling cables. It was made for Global Game Jam 2018.</p>
+        <p>Coded with Clara Rigaud.</p>
+    </div>
+</div>
+<style>
+    iframe {
+        overflow:hidden;
+        width:100%;
+        height:100%;
+    }
+    @media screen and (max-width: 800px) {  
+        .container {
+            height: calc(100vh - 50px);
+        }
+        .text {
+            flex: 0;
+        }
+    }
+</style>
+        </div>
+    </div>
+  </body>
+</html>

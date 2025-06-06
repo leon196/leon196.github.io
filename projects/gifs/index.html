@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Gif Archives</title>
+    <meta charset="utf-8">
+	<meta name="author" content="Leon Denise">
+	<meta name="description" content="surfing cyberspace game">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/style.css" />
+    <link rel="icon" type="image/x-icon" href="/about/leon.png">
+  </head>
+  <body>
+    <nav>
+        <a href="/">home</a>
+        <a href="/projects/shaders/">shaders</a>
+        <a href="/projects/gifs/">gifs</a>
+        <a href="/about/">about</a>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <style>
+    body {
+        overflow: hidden;
+    }
+    .row {
+        flex-direction: row-reverse;
+    }
+    .grid {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: center;
+    }
+    .grid > * {
+        width: 100px;
+        height: 100px;
+    }
+    #overlay {
+        width: auto;
+        position: absolute;
+        z-index: 100;
+        pointer-events: none;
+    }
+
+    @media screen and (max-width: 800px) {  
+        .row {
+            flex-direction: column;
+        }
+    }
+</style>
+<script>
+    window.addEventListener("load", function(){
+        // var result = "";
+        // for (var i = 1; i <= 309; ++i) {
+        //     result += "<img src=\"image/"+i+".jpg\">"
+        // }
+        // console.log(result)
+        var overlay = document.getElementById("overlay")
+        document.addEventListener("mousemove", function(e){
+            var offsetX = Math.max(0, e.pageX+overlay.width-window.innerWidth)
+            var offsetY = Math.max(0, e.pageY+overlay.height-window.innerHeight-window.scrollY)
+            overlay.style.left = (e.pageX-offsetX)+"px"
+            overlay.style.top = (e.pageY-offsetY)+"px"
+        })
+        var images = document.getElementsByTagName("img")
+        for (var i = 0; i < images.length; ++i) {
+            if (images[i].src.includes("image")) {
+                images[i].addEventListener("mouseover", function(e){
+                    overlay.src = "gif/"+this.src.split("image/")[1].split(".")[0]+".gif";
+                })
+                images[i].addEventListener("mouseleave", function(e){
+                    overlay.src = "";
+                })
+            }
+        }
+    })
+</script>
+<img id="overlay" src="">
+<div class="column text">
+    <div>
+        <h1>Gif Archives</h1>
+        <p>Welcome to the gif archives gallery. It showcases animations of my works during the years 2015 and 2019. I've been very active online with gif animations because it was easy and convenient way to share progress of experiments, unexpected surprises and preview of projects.</p>
+        <p>Gif image format has a compression that keeps the splendor of pixels, which prevent pixel soup when details are moving fast like for instance with particles systems and data moshing glitch like effect.</p>
+    </div>
+</div>
+<div class="column">
+    <div class="grid">
+        <img src="image/1.jpg"><img src="image/2.jpg"><img src="image/3.jpg"><img src="image/4.jpg"><img src="image/5.jpg"><img src="image/6.jpg"><img src="image/7.jpg"><img src="image/8.jpg"><img src="image/9.jpg"><img src="image/10.jpg"><img src="image/11.jpg"><img src="image/12.jpg"><img src="image/13.jpg"><img src="image/14.jpg"><img src="image/15.jpg"><img src="image/16.jpg"><img src="image/17.jpg"><img src="image/18.jpg"><img src="image/19.jpg"><img src="image/20.jpg"><img src="image/21.jpg"><img src="image/22.jpg"><img src="image/23.jpg"><img src="image/24.jpg"><img src="image/25.jpg"><img src="image/26.jpg"><img src="image/27.jpg"><img src="image/28.jpg"><img src="image/29.jpg"><img src="image/30.jpg"><img src="image/31.jpg"><img src="image/32.jpg"><img src="image/33.jpg"><img src="image/34.jpg"><img src="image/35.jpg"><img src="image/36.jpg"><img src="image/37.jpg"><img src="image/38.jpg"><img src="image/39.jpg"><img src="image/40.jpg"><img src="image/41.jpg"><img src="image/42.jpg"><img src="image/43.jpg"><img src="image/44.jpg"><img src="image/45.jpg"><img src="image/46.jpg"><img src="image/47.jpg"><img src="image/48.jpg"><img src="image/49.jpg"><img src="image/50.jpg"><img src="image/51.jpg"><img src="image/52.jpg"><img src="image/53.jpg"><img src="image/54.jpg"><img src="image/55.jpg"><img src="image/56.jpg"><img src="image/57.jpg"><img src="image/58.jpg"><img src="image/59.jpg"><img src="image/60.jpg"><img src="image/61.jpg"><img src="image/62.jpg"><img src="image/63.jpg"><img src="image/64.jpg"><img src="image/65.jpg"><img src="image/66.jpg"><img src="image/67.jpg"><img src="image/68.jpg"><img src="image/69.jpg"><img src="image/70.jpg"><img src="image/71.jpg"><img src="image/72.jpg"><img src="image/73.jpg"><img src="image/74.jpg"><img src="image/75.jpg"><img src="image/76.jpg"><img src="image/77.jpg"><img src="image/78.jpg"><img src="image/79.jpg"><img src="image/80.jpg"><img src="image/81.jpg"><img src="image/82.jpg"><img src="image/83.jpg"><img src="image/84.jpg"><img src="image/85.jpg"><img src="image/86.jpg"><img src="image/87.jpg"><img src="image/88.jpg"><img src="image/89.jpg"><img src="image/90.jpg"><img src="image/91.jpg"><img src="image/92.jpg"><img src="image/93.jpg"><img src="image/94.jpg"><img src="image/95.jpg"><img src="image/96.jpg"><img src="image/97.jpg"><img src="image/98.jpg"><img src="image/99.jpg"><img src="image/100.jpg"><img src="image/101.jpg"><img src="image/102.jpg"><img src="image/103.jpg"><img src="image/104.jpg"><img src="image/105.jpg"><img src="image/106.jpg"><img src="image/107.jpg"><img src="image/108.jpg"><img src="image/109.jpg"><img src="image/110.jpg"><img src="image/111.jpg"><img src="image/112.jpg"><img src="image/113.jpg"><img src="image/114.jpg"><img src="image/115.jpg"><img src="image/116.jpg"><img src="image/117.jpg"><img src="image/118.jpg"><img src="image/119.jpg"><img src="image/120.jpg"><img src="image/121.jpg"><img src="image/122.jpg"><img src="image/123.jpg"><img src="image/124.jpg"><img src="image/125.jpg"><img src="image/126.jpg"><img src="image/127.jpg"><img src="image/128.jpg"><img src="image/129.jpg"><img src="image/130.jpg"><img src="image/131.jpg"><img src="image/132.jpg"><img src="image/133.jpg"><img src="image/134.jpg"><img src="image/135.jpg"><img src="image/136.jpg"><img src="image/137.jpg"><img src="image/138.jpg"><img src="image/139.jpg"><img src="image/140.jpg"><img src="image/141.jpg"><img src="image/142.jpg"><img src="image/143.jpg"><img src="image/144.jpg"><img src="image/145.jpg"><img src="image/146.jpg"><img src="image/147.jpg"><img src="image/148.jpg"><img src="image/149.jpg"><img src="image/150.jpg"><img src="image/151.jpg"><img src="image/152.jpg"><img src="image/153.jpg"><img src="image/154.jpg"><img src="image/155.jpg"><img src="image/156.jpg"><img src="image/157.jpg"><img src="image/158.jpg"><img src="image/159.jpg"><img src="image/160.jpg"><img src="image/161.jpg"><img src="image/162.jpg"><img src="image/163.jpg"><img src="image/164.jpg"><img src="image/165.jpg"><img src="image/166.jpg"><img src="image/167.jpg"><img src="image/168.jpg"><img src="image/169.jpg"><img src="image/170.jpg"><img src="image/171.jpg"><img src="image/172.jpg"><img src="image/173.jpg"><img src="image/174.jpg"><img src="image/175.jpg"><img src="image/176.jpg"><img src="image/177.jpg"><img src="image/178.jpg"><img src="image/179.jpg"><img src="image/180.jpg"><img src="image/181.jpg"><img src="image/182.jpg"><img src="image/183.jpg"><img src="image/184.jpg"><img src="image/185.jpg"><img src="image/186.jpg"><img src="image/187.jpg"><img src="image/188.jpg"><img src="image/189.jpg"><img src="image/190.jpg"><img src="image/191.jpg"><img src="image/192.jpg"><img src="image/193.jpg"><img src="image/194.jpg"><img src="image/195.jpg"><img src="image/196.jpg"><img src="image/197.jpg"><img src="image/198.jpg"><img src="image/199.jpg"><img src="image/200.jpg"><img src="image/201.jpg"><img src="image/202.jpg"><img src="image/203.jpg"><img src="image/204.jpg"><img src="image/205.jpg"><img src="image/206.jpg"><img src="image/207.jpg"><img src="image/208.jpg"><img src="image/209.jpg"><img src="image/210.jpg"><img src="image/211.jpg"><img src="image/212.jpg"><img src="image/213.jpg"><img src="image/214.jpg"><img src="image/215.jpg"><img src="image/216.jpg"><img src="image/217.jpg"><img src="image/218.jpg"><img src="image/219.jpg"><img src="image/220.jpg"><img src="image/221.jpg"><img src="image/222.jpg"><img src="image/223.jpg"><img src="image/224.jpg"><img src="image/225.jpg"><img src="image/226.jpg"><img src="image/227.jpg"><img src="image/228.jpg"><img src="image/229.jpg"><img src="image/230.jpg"><img src="image/231.jpg"><img src="image/232.jpg"><img src="image/233.jpg"><img src="image/234.jpg"><img src="image/235.jpg"><img src="image/236.jpg"><img src="image/237.jpg"><img src="image/238.jpg"><img src="image/239.jpg"><img src="image/240.jpg"><img src="image/241.jpg"><img src="image/242.jpg"><img src="image/243.jpg"><img src="image/244.jpg"><img src="image/245.jpg"><img src="image/246.jpg"><img src="image/247.jpg"><img src="image/248.jpg"><img src="image/249.jpg"><img src="image/250.jpg"><img src="image/251.jpg"><img src="image/252.jpg"><img src="image/253.jpg"><img src="image/254.jpg"><img src="image/255.jpg"><img src="image/256.jpg"><img src="image/257.jpg"><img src="image/258.jpg"><img src="image/259.jpg"><img src="image/260.jpg"><img src="image/261.jpg"><img src="image/262.jpg"><img src="image/263.jpg"><img src="image/264.jpg"><img src="image/265.jpg"><img src="image/266.jpg"><img src="image/267.jpg"><img src="image/268.jpg"><img src="image/269.jpg"><img src="image/270.jpg"><img src="image/271.jpg"><img src="image/272.jpg"><img src="image/273.jpg"><img src="image/274.jpg"><img src="image/275.jpg"><img src="image/276.jpg"><img src="image/277.jpg"><img src="image/278.jpg"><img src="image/279.jpg"><img src="image/280.jpg"><img src="image/281.jpg"><img src="image/282.jpg"><img src="image/283.jpg"><img src="image/284.jpg"><img src="image/285.jpg"><img src="image/286.jpg"><img src="image/287.jpg"><img src="image/288.jpg"><img src="image/289.jpg"><img src="image/290.jpg"><img src="image/291.jpg"><img src="image/292.jpg"><img src="image/293.jpg"><img src="image/294.jpg"><img src="image/295.jpg"><img src="image/296.jpg"><img src="image/297.jpg"><img src="image/298.jpg"><img src="image/299.jpg"><img src="image/300.jpg"><img src="image/301.jpg"><img src="image/302.jpg"><img src="image/303.jpg"><img src="image/304.jpg"><img src="image/305.jpg"><img src="image/306.jpg"><img src="image/307.jpg"><img src="image/308.jpg"><img src="image/309.jpg">
+    </div>
+</div>
+        </div>
+    </div>
+  </body>
+</html>

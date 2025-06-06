@@ -1,743 +1,104 @@
-<!DOCTYPE html>
-<html>
-
+<!doctype html>
+<html lang="en">
   <head>
-
     <title>Leon Denise</title>
-
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    <meta charset="utf-8">
+	<meta name="author" content="Leon Denise">
+	<meta name="description" content="surfing cyberspace game">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style/style.css" />
-    <link rel="stylesheet" href="/style/grid.css" />
-
-    <script src="/script/lib/twgl-full.min.js"></script>
-    <script src="/script/lib/virtual-webgl2.js"></script>
-    <script type="module" src="/script/shader-view.js"></script>
-    <!-- <script type="module" src="/script/shadertoy-view.js" defer></script> -->
-
-</head>
-
+    <link rel="icon" type="image/x-icon" href="/about/leon.png">
+  </head>
   <body>
-    
+    <nav>
+        <a href="/">home</a>
+        <a href="/projects/shaders/">shaders</a>
+        <a href="/projects/gifs/">gifs</a>
+        <a href="/about/">about</a>
+    </nav>
     <div class="container">
-    <a href="/about/"><img src="/media/images/photo-2.webp"></img></a>
-    
-    
-<a class="" href="/project/crashboard">
-    <img src="/content/game/crashboard/cover.jpg"></img>
-</a>
-    
-    
-<a class="" href="/project/mapping-inverse">
-    <img src="/content/project/mapping-inverse/cover.png"></img>
-</a>
-    
-    
-<a class="" href="/project/miroir-arcade">
-    <img src="/content/project/miroir-arcade/cover.jpg"></img>
-</a>
-    
-    
-<a class="" href="/project/les-confines">
-    <img src="/content/project/les-confines/les_confines.mp4-poster.png"></img>
-</a>
-    
-    
-<a class="" href="/project/heterotopia-miroirs-et-perspectives">
-    <img src="/content/project/heterotopia-mp/cover.jpg"></img>
-</a>
-    
-    
-<a class="" href="/project/heterotopia">
-    <img src="/content/project/heterotopia/cover.png"></img>
-</a>
-    
-    
-<a class="" href="/project/attrape-reve">
-    <img src="/content/project/attrape-reve/cover.png"></img>
-</a>
-    
-    
-<a class="" href="/project/the-salt-please">
-    <img src="/content/game/the-salt-please/cover.png"></img>
-</a>
-    
-    
-    
-<a class="" href="/shader/ink-1">
-    <img src="/content/shader/ink-1.png"></img>
-</a>
-    
-    
-<a class="" href="/shader/vegetal-1">
-    <img src="/content/shader/vegetal-1.png"></img>
-</a>
-    
-    
-<a class="" href="/shader/spaceship-1">
-    <img src="/content/shader/spaceship-1.png"></img>
-</a>
-    
-    
-<a class="" href="/shader/smoke-1">
-    <img src="/content/shader/smoke-1.png"></img>
-</a>
-    
-    
-<a class="" href="/shader/pattern-sci-fi">
-    <img src="/content/shader/pattern-sci-fi.png"></img>
-</a>
-    
-    
-<a class="" href="/shader/mineral-1">
-    <img src="/content/shader/mineral-1.png"></img>
-</a>
-    
-    
-<a class="" href="/shader/liquid-1">
-    <img src="/content/shader/liquid-1.png"></img>
-</a>
-    
-    
-<a class="" href="/shader/kif-inercia">
-    <img src="/content/shader/kif-inercia.png"></img>
-</a>
-    
-    
-<a class="" href="/shader/ink-4">
-    <img src="/content/shader/ink-4.png"></img>
-</a>
-    
-    
-<a class="" href="/shader/dude-1">
-    <img src="/content/shader/dude-1.png"></img>
-</a>
-    
-    
-<a class="head" href="/shader/code-2">
-    <img src="/content/shader/code-2.png"></img>
-</a>
-    
-    
-<a class="portrait" href="/shader/code-1">
-    <img src="/content/shader/code-1.png"></img>
-</a>
-    
-    
-<a class="" href="/shader/cloud-1">
-    <img src="/content/shader/cloud-1.png"></img>
-</a>
-    
-    
-<a class="" href="/shader/city-2">
-    <img src="/content/shader/city-2.png"></img>
-</a>
-    
-    
-<a class="" href="/shader/city-1">
-    <img src="/content/shader/city-1.png"></img>
-</a>
-    
-    
-<a class="" href="/shader/bim-boom-bam">
-    <img src="/content/shader/2024/bim-boom-bam.png"></img>
-</a>
-    
-    
-<a class="" href="/shader/subatomics">
-    <img src="/content/shader/2024/subatomics.png"></img>
-</a>
-    
-    
-    
-    <a class="gif" onClick="show_player(0)">
-        <img src="/media/webm/0.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(1)">
-        <img src="/media/webm/1.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(2)">
-        <img src="/media/webm/2.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(3)">
-        <img src="/media/webm/3.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(4)">
-        <img src="/media/webm/4.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(5)">
-        <img src="/media/webm/5.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(6)">
-        <img src="/media/webm/6.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(7)">
-        <img src="/media/webm/7.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(8)">
-        <img src="/media/webm/8.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(9)">
-        <img src="/media/webm/9.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(10)">
-        <img src="/media/webm/10.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(11)">
-        <img src="/media/webm/11.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(12)">
-        <img src="/media/webm/12.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(13)">
-        <img src="/media/webm/13.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(14)">
-        <img src="/media/webm/14.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(15)">
-        <img src="/media/webm/15.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(16)">
-        <img src="/media/webm/16.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(17)">
-        <img src="/media/webm/17.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(18)">
-        <img src="/media/webm/18.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(19)">
-        <img src="/media/webm/19.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(20)">
-        <img src="/media/webm/20.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(21)">
-        <img src="/media/webm/21.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(22)">
-        <img src="/media/webm/22.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(23)">
-        <img src="/media/webm/23.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(24)">
-        <img src="/media/webm/24.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(25)">
-        <img src="/media/webm/25.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(26)">
-        <img src="/media/webm/26.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(27)">
-        <img src="/media/webm/27.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(28)">
-        <img src="/media/webm/28.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(29)">
-        <img src="/media/webm/29.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(30)">
-        <img src="/media/webm/30.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(31)">
-        <img src="/media/webm/31.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(32)">
-        <img src="/media/webm/32.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(33)">
-        <img src="/media/webm/33.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(34)">
-        <img src="/media/webm/34.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(35)">
-        <img src="/media/webm/35.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(36)">
-        <img src="/media/webm/36.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(37)">
-        <img src="/media/webm/37.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(38)">
-        <img src="/media/webm/38.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(39)">
-        <img src="/media/webm/39.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(40)">
-        <img src="/media/webm/40.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(41)">
-        <img src="/media/webm/41.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(42)">
-        <img src="/media/webm/42.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(43)">
-        <img src="/media/webm/43.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(44)">
-        <img src="/media/webm/44.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(45)">
-        <img src="/media/webm/45.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(46)">
-        <img src="/media/webm/46.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(47)">
-        <img src="/media/webm/47.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(48)">
-        <img src="/media/webm/48.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(49)">
-        <img src="/media/webm/49.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(50)">
-        <img src="/media/webm/50.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(51)">
-        <img src="/media/webm/51.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(52)">
-        <img src="/media/webm/52.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(53)">
-        <img src="/media/webm/53.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(54)">
-        <img src="/media/webm/54.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(55)">
-        <img src="/media/webm/55.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(56)">
-        <img src="/media/webm/56.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(57)">
-        <img src="/media/webm/57.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(58)">
-        <img src="/media/webm/58.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(59)">
-        <img src="/media/webm/59.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(60)">
-        <img src="/media/webm/60.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(61)">
-        <img src="/media/webm/61.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(62)">
-        <img src="/media/webm/62.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(63)">
-        <img src="/media/webm/63.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(64)">
-        <img src="/media/webm/64.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(65)">
-        <img src="/media/webm/65.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(66)">
-        <img src="/media/webm/66.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(67)">
-        <img src="/media/webm/67.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(68)">
-        <img src="/media/webm/68.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(69)">
-        <img src="/media/webm/69.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(70)">
-        <img src="/media/webm/70.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(71)">
-        <img src="/media/webm/71.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(72)">
-        <img src="/media/webm/72.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(73)">
-        <img src="/media/webm/73.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(74)">
-        <img src="/media/webm/74.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(75)">
-        <img src="/media/webm/75.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(76)">
-        <img src="/media/webm/76.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(77)">
-        <img src="/media/webm/77.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(78)">
-        <img src="/media/webm/78.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(79)">
-        <img src="/media/webm/79.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(80)">
-        <img src="/media/webm/80.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(81)">
-        <img src="/media/webm/81.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(82)">
-        <img src="/media/webm/82.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(83)">
-        <img src="/media/webm/83.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(84)">
-        <img src="/media/webm/84.png"></img>
-    </a>
-    
-    
-    <a class="gif" onClick="show_player(85)">
-        <img src="/media/webm/85.png"></img>
-    </a>
-    
+        <div class="row">
+            <div class="column">
+    <div class="row gallery"><a href="/projects/orbital/">
+            <img src="/projects/orbital/media/cover.png">
+        </a><a href="/projects/matiere-numerique/">
+            <img src="/projects/matiere-numerique/media/3.jpg">
+        </a><a href="/projects/shaders/">
+            <img src="/projects/shaders/cover3.png">
+        </a><a href="/projects/tetardise/">
+            <img src="/projects/tetardise/media/tetardise-8.jpg">
+        </a><a href="/projects/crashboard/">
+            <img src="/projects/crashboard/media/video.mp4-poster.png">
+        </a><a href="/projects/crash-party-2023/">
+            <img src="/projects/crash-party-2023/media/3.jpg">
+        </a><a href="/projects/miroir-arcade/">
+            <img src="/projects/miroir-arcade/media/miroir-arcade-4.jpg">
+        </a><a href="/projects/mapping-inverse/">
+            <img src="/projects/mapping-inverse/media/mapping-inverse-4.png">
+        </a><a href="/projects/calculateur-particulier/">
+            <img src="/projects/calculateur-particulier/media/calculateur-particulier-3.jpg">
+        </a><a href="/projects/goliath/">
+            <img src="/projects/goliath/media/4.png">
+        </a><a href="/projects/frequency/">
+            <img src="/projects/frequency/media/4.jpg">
+        </a><a href="/projects/les-confines/">
+            <img src="/projects/les-confines/media/les_confines.mp4-poster.png">
+        </a><a href="/projects/heterotopia_mp/">
+            <img src="/projects/heterotopia_mp/media/cover.jpg">
+        </a><a href="/projects/cookie-party-2020/">
+            <img src="/projects/cookie-party-2020/media/cookie-party-2020.png">
+        </a><a href="/projects/heterotopia/">
+            <img src="/projects/heterotopia/media/cover.png">
+        </a><a href="/projects/cookie-party-2019/">
+            <img src="/projects/cookie-party-2019/media/simon-denise-3.png">
+        </a><a href="/projects/attrape-reve/">
+            <img src="/projects/attrape-reve/media/image-1.png">
+        </a><a href="/projects/hatch/">
+            <img src="/projects/hatch/media/3.png">
+        </a><a href="/projects/melimelo/">
+            <img src="/projects/melimelo/media/melimelo.png">
+        </a><a href="/projects/gifs/">
+            <img src="/projects/gifs/cover2.png">
+        </a><a href="/projects/choupichoup/">
+            <img src="/projects/choupichoup/media/choupichoup.png">
+        </a><a href="/projects/talking-heads/">
+            <img src="/projects/talking-heads/media/cover-2.png">
+        </a><a href="/projects/the-salt-please/">
+            <img src="/projects/the-salt-please/media/cover.png">
+        </a><a href="/projects/ncs/">
+            <img src="/projects/ncs/media/1.png">
+        </a></div>
 </div>
-<div class="gif-player-container" onClick="hide_player()">
-<div class="gif-player">
-    <video id="video-player" class="scale" autoplay muted loop>
-        <source id="video-source" src="/media/webm/1.webm" type="video/webm"/>
-    </video>
-</div>
-</div>
-
-<script>
-    function hide_player ()
-    {
-        const player = document.querySelector('.gif-player-container');
-        const video = document.querySelector('#video-player');
-        player.classList.remove("blur-background");
-        video.classList.add("scale");
-    }
-    function show_player (i)
-    {
-        const player = document.querySelector('.gif-player-container');
-        const video = document.querySelector('#video-player');
-        const video_player = document.querySelector('#video-source');
-        video_player.src="/media/webm/"+i+".webm";
-        video.load();
-        video.classList.remove("scale");
-        player.classList.add("blur-background");
-    }
-</script>
-
 <style>
-
-    .album
-    {
+    .gallery {
+        flex-wrap: wrap;
+        justify-content: start;
     }
-    
-    .container
-    {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(20vmin, 1fr));
-        grid-auto-flow: row;
-        gap: 0px;
-    }
-
-    .container a,
-    .container img,
-    .container canvas
-    {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    .gallery > * {
+        display: flex;
+        width: 20vw;
         aspect-ratio: 1;
+        /* flex-grow: 1; */
+        overflow: hidden;
     }
-
-    .container canvas { z-index: 1; }
-
-    h1 { font-size: 2em; }
-    h2 { font-size: 1.5em; }
-    h3 { font-size: 1em; }
-
-    .category
-    {
-        position: relative;
-        width: 100%;
-        height: 100%;
+    .gallery img {
+        object-fit: cover;
+        transition: transform 0.2s;
     }
-
-    .label
-    {
-        color: white;
-        filter: drop-shadow(1px 1px 4px black);
-
-        position: absolute;
-        width: 100%;
-        height: 100%;
-
-        pointer-events: none;
-        z-index: 0;
+    .gallery img:hover {
+        transform: scale(1.1);
     }
-
-    .center
-    {
-        text-align: center;
-        position: absolute;
-        width: 90%;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%,-50%);
+    @media screen and (max-width: 800px) {  
+        .gallery > * {
+            width: auto;
+            height: 20vh;
+        }
+        .row {
+            flex-direction: column;
+        }
     }
-    
-    .date
-    {
-        position: absolute;
-        right: 10px;
-        bottom: 10px;
-    }
-
-    .gif
-    {
-        cursor: zoom-in;
-    }
-
-    .gif-player
-    {
-        position: fixed;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%,-50%);
-        filter: drop-shadow(0 0 10px black);
-    }
-
-    .gif-player-container
-    {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        pointer-events: none;
-        cursor: zoom-out;
-        transition: backdrop-filter 1s;
-    }
-
-    .blur-background
-    {
-        pointer-events: auto;
-        backdrop-filter: blur(10px);
-    }
-
-    #video-player
-    {
-        transition: transform 0.3s;
-        width: 80vmin;
-    }
-
-    .scale
-    {
-        transform: scale(0);
-    }
-
-    .container
-    {
-    }
-
-    /* label hover */
-    .container a:hover .label { z-index: 2; }
-
-    /* zoom hover */
-    .container a { overflow: hidden; }
-    .container img { transition: transform 1s, filter 1s; }
-    .container img:hover
-    {
-        transform: scale(1.2);
-    }
-    
 </style>
-
+        </div>
+    </div>
   </body>
-  
 </html>

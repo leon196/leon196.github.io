@@ -1,58 +1,18 @@
 
+
 .grid
 {
-  display: grid;
-  /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
-  grid-template-columns: repeat(5, 1fr);
-  grid-auto-rows: 20vw;
-  grid-gap: 10px;
-  margin: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  align-items: stretch;
 }
 
-.cell
+.grid > *
 {
-  display: grid;
+  /* flex-grow: 1; */
   position: relative;
-}
-
-.cell-2x1
-{
-  grid-column: span 2;
-}
-
-.cell-2x2
-{
-  grid-column: span 2;
-  grid-row: span 2;
-}
-
-.cell-1x2
-{
-  grid-row: span 2;
-}
-
-.cell canvas
-{
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  border-radius: var(--border-radius);
-}
-
-.cell video
-{
-  height: 100%;
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-  border-radius: var(--border-radius);
-}
-
-.preview
-{
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  border-radius: var(--border-radius);
+  display: inline-block;
+  text-align: center;
+  overflow: hidden;
 }

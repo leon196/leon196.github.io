@@ -1,0 +1,85 @@
+
+.container
+{
+  max-width: 800px;
+  margin: 80px auto;
+}
+
+.container img,
+.container video
+{
+  width: 100%;
+}
+
+.container p
+{
+  text-shadow: #111 0 0 4px;
+}
+
+.container h4
+{
+  text-align: right;
+}
+
+.banner
+{
+  width: auto !important; 
+}
+
+.double
+{
+  width: 100%;
+  display: flex;
+}
+
+.double div
+{
+  flex: 1;
+}
+
+.double img
+{
+  flex: 1;
+  object-fit: cover;
+}
+
+.text-center
+{
+  text-align: center;
+}
+
+.credited 
+{
+  position: relative;
+}
+
+.credited h4
+{
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  text-align: right;
+  font-size: small;
+  margin: 0;
+}
+
+.index
+{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 70px;
+  height: 70px;
+  background: url("/media/leon.png") no-repeat;
+  background-size: 70px;
+}
+
+.background {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(20px) brightness(50%);
+  pointer-events: none;
+  z-index: -1;
+}
