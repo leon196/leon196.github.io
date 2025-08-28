@@ -1,0 +1,92 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+.slide {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.background
+{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    padding: 0 !important;
+}
+
+.slide h1 {
+    padding: 20px 0 20px 30px;
+    backdrop-filter: blur(20px) brightness(80%);
+}
+
+.slide h2 {
+    display: inline-block;
+    width: fit-content;
+    margin: 10px 10px 0 20px;
+    padding: 10px;
+    backdrop-filter: blur(20px) brightness(80%);
+    border-radius: 4px;
+    font-size: large;
+}
+
+.slide h3 {
+    display: inline;
+    padding: 10px;
+    margin-right: 10px;
+    backdrop-filter: blur(20px) brightness(80%);
+    border-radius: 4px;
+    font-size: large;
+}
+
+.slide p {
+    margin: 10px 20px 0 20px;
+    padding: 10px;
+    backdrop-filter: blur(20px) brightness(80%);
+    border-radius: 4px;
+    width: fit-content;
+    max-width: 600px;
+    text-align: justify;
+}
+
+.slide ul {
+    margin: 20px 20px 0 20px;
+    display: flex;
+}
+
+.slide li {
+    list-style-type: none;
+    padding: 10px;
+    backdrop-filter: blur(20px) brightness(80%);
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.gallery {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    /* margin: 10px 20px 0 20px; */
+    display: flex;
+    flex-direction: row;
+    overflow: scroll;
+    height: 150px;
+    /* padding: 10px; */
+    padding: 10px 0 10px 10px;
+    backdrop-filter: blur(20px) brightness(80%);
+    width: fit-content;
+    border-radius: 4px;
+}
+
+.gallery > * {
+    height: 100%;
+    border-radius: 4px;
+    margin-right: 10px;
+}

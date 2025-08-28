@@ -1,104 +1,262 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <title>Leon Denise</title>
+<!DOCTYPE html>
+
+<head>
     <meta charset="utf-8">
-	<meta name="author" content="Leon Denise">
-	<meta name="description" content="surfing cyberspace game">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style/style.css" />
-    <link rel="icon" type="image/x-icon" href="/about/leon.png">
-  </head>
-  <body>
-    <nav>
-        <a href="/">home</a>
-        <a href="/projects/shaders/">shaders</a>
-        <a href="/projects/gifs/">gifs</a>
-        <a href="/about/">about</a>
-    </nav>
-    <div class="container">
-        <div class="row">
-            <div class="column">
-    <div class="row gallery"><a href="/projects/orbital/">
-            <img src="/projects/orbital/media/cover.png">
-        </a><a href="/projects/matiere-numerique/">
-            <img src="/projects/matiere-numerique/media/3.jpg">
-        </a><a href="/projects/shaders/">
-            <img src="/projects/shaders/cover3.png">
-        </a><a href="/projects/tetardise/">
-            <img src="/projects/tetardise/media/tetardise-8.jpg">
-        </a><a href="/projects/crashboard/">
-            <img src="/projects/crashboard/media/video.mp4-poster.png">
-        </a><a href="/projects/crash-party-2023/">
-            <img src="/projects/crash-party-2023/media/3.jpg">
-        </a><a href="/projects/miroir-arcade/">
-            <img src="/projects/miroir-arcade/media/miroir-arcade-4.jpg">
-        </a><a href="/projects/mapping-inverse/">
-            <img src="/projects/mapping-inverse/media/mapping-inverse-4.png">
-        </a><a href="/projects/calculateur-particulier/">
-            <img src="/projects/calculateur-particulier/media/calculateur-particulier-3.jpg">
-        </a><a href="/projects/goliath/">
-            <img src="/projects/goliath/media/4.png">
-        </a><a href="/projects/frequency/">
-            <img src="/projects/frequency/media/4.jpg">
-        </a><a href="/projects/les-confines/">
-            <img src="/projects/les-confines/media/les_confines.mp4-poster.png">
-        </a><a href="/projects/heterotopia_mp/">
-            <img src="/projects/heterotopia_mp/media/cover.jpg">
-        </a><a href="/projects/cookie-party-2020/">
-            <img src="/projects/cookie-party-2020/media/cookie-party-2020.png">
-        </a><a href="/projects/heterotopia/">
-            <img src="/projects/heterotopia/media/cover.png">
-        </a><a href="/projects/cookie-party-2019/">
-            <img src="/projects/cookie-party-2019/media/simon-denise-3.png">
-        </a><a href="/projects/attrape-reve/">
-            <img src="/projects/attrape-reve/media/image-1.png">
-        </a><a href="/projects/hatch/">
-            <img src="/projects/hatch/media/3.png">
-        </a><a href="/projects/melimelo/">
-            <img src="/projects/melimelo/media/melimelo.png">
-        </a><a href="/projects/gifs/">
-            <img src="/projects/gifs/cover2.png">
-        </a><a href="/projects/choupichoup/">
-            <img src="/projects/choupichoup/media/choupichoup.png">
-        </a><a href="/projects/talking-heads/">
-            <img src="/projects/talking-heads/media/cover-2.png">
-        </a><a href="/projects/the-salt-please/">
-            <img src="/projects/the-salt-please/media/cover.png">
-        </a><a href="/projects/ncs/">
-            <img src="/projects/ncs/media/1.png">
-        </a></div>
-</div>
-<style>
-    .gallery {
-        flex-wrap: wrap;
-        justify-content: start;
-    }
-    .gallery > * {
-        display: flex;
-        width: 20vw;
-        aspect-ratio: 1;
-        /* flex-grow: 1; */
-        overflow: hidden;
-    }
-    .gallery img {
-        object-fit: cover;
-        transition: transform 0.2s;
-    }
-    .gallery img:hover {
-        transform: scale(1.1);
-    }
-    @media screen and (max-width: 800px) {  
-        .gallery > * {
-            width: auto;
-            height: 20vh;
-        }
-        .row {
-            flex-direction: column;
-        }
-    }
-</style>
+    <title>Leon Denise</title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <meta property="og:title" content="Leon Denise">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<html>
+    <!-- Crashboard -->
+    <div class="slide">
+        <img class="background" src="p/crashboard/background.jpg" />
+        <h1>Crashboard</h1>
+        <h2>Playful installation</h2>
+        <h3><a href="https://incontrolab.github.io/">Incontrolab</a></h3>
+        <h3>2023</h3>
+        <p>Crashboard takes you through an epic ride among dancing bananas, sparkly butterflies and big yellow construction panels : an immersive surfing experience into the cyberspace.</p>
+        <p>Made with <a href="https://playful-machines.com/">Emilie Breslavetz</a></p>
+        <div class="gallery">
+            <img src="p/crashboard/1.jpeg"/>
+            <img src="p/crashboard/2.jpg"/>
+            <img src="p/crashboard/3.jpg"/>
         </div>
     </div>
-  </body>
+    <!-- Cookie Collective -->
+    <div class="slide">
+        <img class="background" src="p/cookie-collective/background.png" />
+        <h1>Cookie Collective</h1>
+        <h2>Digital artists involved in real-time creation</h2>
+        <h3><a href="https://www.cookie.paris/">Cookie Collective</a></h3>
+        <h3>2018-2025</h3>
+        <p>With the members of the Cookie Collective, we organize digital art events that showcases talks, workshops, performances, playful installations, experimental video games, video mapping and live coding.</p>
+        <div class="gallery">
+            <img src="p/cookie-collective/1.png"/>
+            <img src="p/cookie-collective/2.png"/>
+            <img src="p/cookie-collective/3.png"/>
+        </div>
+    </div>
+    <!-- Crash Party -->
+    <div class="slide">
+        <img class="background" src="p/crash-party/background.jpg" />
+        <h1>Crash Party</h1>
+        <h2>Playful exhibition</h2>
+        <h3><a href="https://www.cookie.paris/">Cookie Collective</a></h3>
+        <h3>2023</h3>
+        <p>The Cookie Collective were invited by AMaze, the playful media art festival in Berlin, to showcase live coding audio visual performances. There was an opportunity to use a gallery space to present installations, so with Emilie Breslavetz we elaborated an exhibition about crash, error and bug. The Crash Party was born.</p>
+        <p>Made with <a href="https://playful-machines.com/">Emilie Breslavetz</a></p>
+        <div class="gallery">
+            <img src="p/crash-party/1.jpg"/>
+            <img src="p/crash-party/2.jpg"/>
+            <img src="p/crash-party/4.jpg"/>
+        </div>
+    </div>
+    <!-- Matière Numérique -->
+    <div class="slide">
+        <img class="background" src="p/matiere-numerique/background.jpg" />
+        <h1>Matière Numérique</h1>
+        <h2>Exhibition</h2>
+        <h3><a href="https://www.neonminuit.xyz/">Neon Minuit</a></h3>
+        <h3>2023</h3>
+        <p>Exhibition of our work with Dorian Rigal, through our collective: Neon Minuit. Showcased during the Format(s) festival in Strasbourg, France</p>
+        <p>Made with <a href="https://www.minuitdigital.com/">Dorian Rigal</a></p>
+        <div class="gallery">
+            <img src="p/matiere-numerique/2.jpg"/>
+            <img src="p/matiere-numerique/1.jpg"/>
+            <img src="p/matiere-numerique/3.jpg"/>
+        </div>
+    </div>
+    <!-- Heterotopia, Miroirs et Perspectives -->
+    <div class="slide">
+        <img class="background" src="p/heterotopia-mp/background.jpg" />
+        <h1>Heterotopia, Miroirs et Perspectives</h1>
+        <h2>Virtual reality experience</h2>
+        <h3><a href="https://www.neonminuit.xyz/">Neon Minuit</a></h3>
+        <h3>2020</h3>
+        <p>A multiplayer, participatory virtual reality experience that immerses your body in a field of point clouds. The user is equipped with a VR headset and explores within a designated physical area where viewers can enter and create interactions within the VR space. A Kinect is placed above the play area and records people, elements and the environment. Finally, a video projector projects the virtual space into the real world on a screen visible to the audience.</p>
+        <p>Made with <a href="https://www.minuitdigital.com/">Dorian Rigal</a>, <a href="https://tamanoir.studio/">Samuel Lecoeur</a> and <a href="https://tamanoir.studio/">Rémi Large</a></p>
+        <div class="gallery">
+            <img src="p/heterotopia-mp/1.jpg"/>
+            <video controls poster="p/heterotopia-mp/poster.png"><source src="p/heterotopia-mp/video.mp4" type="video/mp4"/></video>
+        </div>
+    </div>
+    <!-- Miroir Arcade -->
+    <div class="slide">
+        <img class="background" src="p/miroir-arcade/background.jpg" />
+        <h1>Miroir Arcade</h1>
+        <h2>Playful installation</h2>
+        <h3><a href="https://incontrolab.github.io/">Incontrolab</a></h3>
+        <h3>2022</h3>
+        <p>Arcade Mirror is an interactive multiplayer projection controlled by a cluster of handcrafted gamepads. The visitor sees their body projected into the digital space through a Kinect camera. Mysterious hanging boxes in space can generate spectacular effects. By sharing the controls, the participants manipulate buttons, potentiometers and switches to discover all the distorting filters.</p>
+        <p>Made with <a href="https://www.minuitdigital.com/">Dorian Rigal</a> and <a href="https://playful-machines.com/">Emilie Breslavetz</a></p>
+        <div class="gallery">
+            <img src="p/miroir-arcade/1.jpg"/>
+            <img src="p/miroir-arcade/2.jpg"/>
+            <img src="p/miroir-arcade/3.jpg"/>
+        </div>
+    </div>
+    <!-- Mapping Inversé -->
+    <div class="slide">
+        <img class="background" src="p/mapping-inverse/background.jpg" />
+        <h1>Mapping Inversé</h1>
+        <h2>Digital sculpture</h2>
+        <h3><a href="https://www.neonminuit.xyz/">Neon Minuit</a></h3>
+        <h3>2022</h3>
+        <p>The sculpture is composed of a screen placed behind the transparent resin print of a Quadro 4000 graphics card. The liquid crystals are then hidden behind the technological artifact until the backlight of the screen turns on and reveals each pixel. Floating on the right of the screen, a computer calculates generative animations in real time. In the manner of architectural mapping, the visuals play with the shapes of the graphics card and create the illusion of a collision.</p>
+        <p>Made with <a href="https://www.minuitdigital.com/">Dorian Rigal</a></p>
+        <div class="gallery">
+            <img src="p/mapping-inverse/1.jpg"/>
+            <img src="p/mapping-inverse/2.png"/>
+            <video controls><source src="p/mapping-inverse/video.mp4" type="video/mp4"/></video>
+        </div>
+    </div>
+    <!-- Calculateur Particulier -->
+    <div class="slide">
+        <img class="background" src="p/calculateur-particulier/background.jpg" />
+        <h1>Calculateur Particulier</h1>
+        <h2>Digital sculpture</h2>
+        <h3><a href="https://www.neonminuit.xyz/">Neon Minuit</a></h3>
+        <h3>2022</h3>
+        <p>Reflecting a computer tower, the screen facade opens like a portal, inviting the viewer to approach the heart of the machine. The screen and the central processing unit become one. It forms a digital sculpture on which content calculated in real time is displayed. Generated by graphic code, the screen projects fractal animations.</p>
+        <p>Made with <a href="https://www.minuitdigital.com/">Dorian Rigal</a></p>
+        <div class="gallery">
+            <video controls><source src="p/calculateur-particulier/video.mp4" type="video/mp4"/></video>
+            <img src="p/calculateur-particulier/2.jpg"/>
+            <img src="p/calculateur-particulier/3.jpg"/>
+        </div>
+    </div>
+    <!-- Attrape Rêve -->
+    <div class="slide">
+        <img class="background" src="p/attrape-reve/background.png" />
+        <h1>Attrape Rêve</h1>
+        <h2>L'Attrape Rêve is a performance and a participatory digital installation</h2>
+        <h3><a href="https://www.neonminuit.xyz/">Neon Minuit</a></h3>
+        <h3>2019</h3>
+        <p>A video and audio work in which the audience is invited to explore the world of dreams. The work is performed by 3 artists. The first is a shaman who invites members of the audience to lie down on a dream table, which allows the body to be scanned and the dream images to be extracted. The second is an illusionist who is responsible for operating the dream channels captured by the scanner. He manages the frequencies emitted by the lying body and transcribes them on the screen, the dome. The third is a musician who creates the narration and accompanies the audience with a sound ambiance and spoken texts that guide people on their journey.</p>
+        <p>Made with <a href="https://www.minuitdigital.com/">Dorian Rigal</a></p>
+        <div class="gallery">
+            <video controls><source src="p/attrape-reve/video.mp4" type="video/mp4"/></video>
+            <img src="p/attrape-reve/1.png"/>
+            <img src="p/attrape-reve/2.png"/>
+        </div>
+    </div>
+    <!-- Frequency -->
+    <div class="slide">
+        <img class="background" src="p/frequency/background.jpg" />
+        <h1>Frequency</h1>
+        <h2>Live visual show</h2>
+        <h3><a href="https://www.neonminuit.xyz/">Neon Minuit</a></h3>
+        <h3>2020</h3>
+        <p>Immersive live visuals at Gaîté Lyrique for Frequency dance battle festival.</p>
+        <p>Made with <a href="https://www.minuitdigital.com/">Dorian Rigal</a> and <a href="https://www.instagram.com/vracheva/">Anna Bacheva</a></p>
+        <div class="gallery">
+            <img src="p/frequency/1.jpg"/>
+            <img src="p/frequency/2.jpg"/>
+        </div>
+    </div>
+    <!-- Heterotopia -->
+    <div class="slide">
+        <img class="background" src="p/heterotopia/background.png" />
+        <h1>Heterotopia</h1>
+        <h2>Virtual reality experience</h2>
+        <h3><a href="https://www.neonminuit.xyz/">Neon Minuit</a></h3>
+        <h3>2020</h3>
+        <p>The first prototype of a virtual reality experience with animated volumetric capture recorded and live. It serves as a technical demo for Heterotopia Miroir et Perspective. We explored many experimentals concepts. One the main experience was to see his body made of point cloud, inside a virtual reality headset. We would be able to track body and hands with the Kinect camera, enabling interactions between our real body and the virtual world.</p>
+        <p>Made with <a href="https://www.minuitdigital.com/">Dorian Rigal</a></p>
+        <div class="gallery">
+            <img src="p/heterotopia/1.png"/>
+            <img src="p/heterotopia/2.png"/>
+            <video controls poster="p/heterotopia/poster.png"><source src="p/heterotopia/video.mp4" type="video/mp4"/></video>
+        </div>
+    </div>
+    <!-- Hatch -->
+    <div class="slide">
+        <img class="background" src="p/hatch/background.png" />
+        <h1>Hatch</h1>
+        <h2>Web demo</h2>
+        <h3>2019</h3>
+        <p>WebGL demo for Revision 2019.</p>
+        <div class="gallery">
+            <img src="p/hatch/1.png"/>
+            <img src="p/hatch/2.png"/>
+        </div>
+    </div>
+    <!-- Goliath -->
+    <div class="slide">
+        <img class="background" src="p/goliath/background.png" />
+        <h1>Goliath: Playing With Reality</h1>
+        <h2>Virtual reality experience</h2>
+        <h3><a href="https://goliathvr.io//">GoliathVR.io</a></h3>
+        <h3>2021</h3>
+        <p>I worked as a technical artist and shader artist on the production of Goliath VR, an animated virtual reality experience about schizophrenia, gaming and connection.</p>
+        <p>Made with <a href="https://weareanagram.co.uk/">Anagram</a></p>
+        <div class="gallery">
+            <video controls poster="p/goliath/poster.jpg"><source src="p/goliath/video.mp4" type="video/mp4"/></video>
+        </div>
+    </div>
+    <!-- Les Confines -->
+    <div class="slide">
+        <img class="background" src="p/les-confines/background.png" />
+        <h1>Les Confinés</h1>
+        <h2>Animated movie</h2>
+        <h3>2020</h3>
+        <p>Emmanuel Macron visits his French friends in a 14m² appartment. And tonight, it's Emmanuel who's cooking.</p>
+        <div class="gallery">
+            <video controls poster="p/les-confines/background.png"><source src="p/les-confines/video.mp4" type="video/mp4"/></video>
+        </div>
+    </div>
+    <!-- Gif -->
+    <div class="slide">
+        <img class="background" src="p/gif/background.png" />
+        <h1>Gifs</h1>
+        <h2>Looping pop culture</h2>
+        <h3>2015-2019</h3>
+        <p>Playing with characters from fictionnal universes.</p>
+        <div class="gallery">
+            <img src="p/gif/1.gif"/>
+            <img src="p/gif/2.gif"/>
+            <img src="p/gif/3.gif"/>
+        </div>
+    </div>
+    <!-- Choupichoup -->
+    <div class="slide">
+        <img class="background" src="p/choupichoup/background.png" />
+        <h1>Choupichoup</h1>
+        <h2>Video game</h2><h3>2015</h3>
+        <p>Choupichoup is a video game about learning, sharing and loving. Made for the game jam Ludum Dare #33.</p>
+        <div class="gallery">
+            <img src="p/choupichoup/2.gif"/>
+            <video controls><source src="p/choupichoup/video.mp4" type="video/mp4"/></video>
+        </div>
+    </div>
+    <!-- No Control Story -->
+    <div class="slide">
+        <img class="background" src="p/ncs/background.jpg" />
+        <h1>No Control Story</h1>
+        <h2>Comics</h2>
+        <h3><a href="https://nocontrolstory.blogspot.com/">Blog</a></h3>
+        <h3>2013</h3>
+        <p>Extracts of a comics I used to draw.</p>
+        <div class="gallery">
+            <img src="p/ncs/2.png"/>
+            <img src="p/ncs/2.jpg"/>
+        </div>
+    </div>
+<script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var scrollpos = sessionStorage.getItem('scrollpos');
+            if (scrollpos) {
+                window.scrollTo(0, scrollpos);
+                sessionStorage.removeItem('scrollpos');
+            }
+        });
+
+        window.addEventListener("beforeunload", function (e) {
+            sessionStorage.setItem('scrollpos', window.scrollY);
+        });
+    </script>
+
 </html>
