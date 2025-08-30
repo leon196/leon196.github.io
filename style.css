@@ -1,6 +1,8 @@
 
 :root {
     --slide-height: 100vh;
+    --border-inset-radius: 20px;
+    --border-inset-color: rgba(0,0,0,0.1);
 }
 
 * {
@@ -27,26 +29,27 @@
 }
 
 .slide h1 {
-    font-size: xx-large;
     font-weight: bolder;
 
     padding: 10px;
     border-radius: 4px;
     backdrop-filter: blur(20px) brightness(80%);
+    box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset;
 }
 
 .slide h2 {
-    font-size: large;
     font-weight: normal;
     text-align: center;
 
     padding: 10px;
     border-radius: 4px;
     backdrop-filter: blur(20px) brightness(80%);
+    box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset;
 }
 
 .slide h3 {
     flex-basis: 100%;
+    box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset;
 }
 
 .slide a {
@@ -59,6 +62,7 @@
     padding: 10px;
     border-radius: 4px;
     backdrop-filter: blur(20px) brightness(80%);
+    box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset;
 }
 
 .slide span {
@@ -81,4 +85,8 @@
 
 .no-shadow {
     box-shadow: none !important;
+}
+
+.circle-shadow {
+    border-radius: 50%;
 }
