@@ -3,6 +3,7 @@
     --slide-height: 100vh;
     --border-inset-radius: 20px;
     --border-inset-color: rgba(0,0,0,0.1);
+    --box-shadow-color: rgba(0,0,0,0.5);
 }
 
 * {
@@ -28,13 +29,18 @@
     border-radius: 4px;
 }
 
+.slide a img {
+    border-radius: 4px;
+}
+
+
 .slide h1 {
     font-weight: bolder;
 
     padding: 10px;
     border-radius: 4px;
     backdrop-filter: blur(20px) brightness(80%);
-    box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset;
+    /* box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset; */
 }
 
 .slide h2 {
@@ -44,12 +50,12 @@
     padding: 10px;
     border-radius: 4px;
     backdrop-filter: blur(20px) brightness(80%);
-    box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset;
+    /* box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset; */
 }
 
 .slide h3 {
     flex-basis: 100%;
-    box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset;
+    /* box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset; */
 }
 
 .slide a {
@@ -62,7 +68,7 @@
     padding: 10px;
     border-radius: 4px;
     backdrop-filter: blur(20px) brightness(80%);
-    box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset;
+    /* box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset; */
 }
 
 .slide span {
@@ -74,13 +80,19 @@
     position: relative;
     max-width: 100%;
     max-height: 300px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.8);
+    box-shadow: 0 0 10px var(--box-shadow-color);
 }
 
 .slide video {
     position: relative;
     max-height: 300px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.8);
+    box-shadow: 0 0 10px var(--box-shadow-color);
+}
+
+.slide iframe {
+    position: relative;
+    max-height: 300px;
+    box-shadow: 0 0 10px var(--box-shadow-color);
 }
 
 .no-shadow {
