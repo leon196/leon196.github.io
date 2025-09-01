@@ -40,7 +40,6 @@
     padding: 10px;
     border-radius: 4px;
     backdrop-filter: blur(20px) brightness(80%);
-    /* box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset; */
 }
 
 .slide h2 {
@@ -50,12 +49,10 @@
     padding: 10px;
     border-radius: 4px;
     backdrop-filter: blur(20px) brightness(80%);
-    /* box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset; */
 }
 
 .slide h3 {
     flex-basis: 100%;
-    /* box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset; */
 }
 
 .slide a {
@@ -68,7 +65,6 @@
     padding: 10px;
     border-radius: 4px;
     backdrop-filter: blur(20px) brightness(80%);
-    /* box-shadow: 0 0 var(--border-inset-radius) var(--border-inset-color) inset; */
 }
 
 .slide span {
@@ -93,6 +89,32 @@
     position: relative;
     max-height: 300px;
     box-shadow: 0 0 10px var(--box-shadow-color);
+}
+
+.gallery {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: stretch;
+    height: 300px;
+    width: 100%;
+}
+
+.gallery > * {
+    background: center / cover;
+    flex: 1;
+}
+
+.gallery h1 {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    font-weight: bolder;
+    padding: 10px;
+    border-radius: 4px;
+    backdrop-filter: blur(20px) brightness(80%);
 }
 
 .no-shadow {
