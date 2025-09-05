@@ -1,6 +1,5 @@
 
 :root {
-    --slide-height: 100vh;
     --box-shadow-color: rgba(0,0,0,0.5);
 }
 
@@ -8,7 +7,7 @@
     margin: 0;
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
-    color: white;
+    color: black;
 }
 
 .slide {
@@ -19,7 +18,7 @@
     align-items: center;
     align-content: center;
     background: center / cover;
-    padding: 40px 0;
+    height: 100vh;
 }
 
 .slide > * {
@@ -37,7 +36,8 @@
 
     padding: 10px;
     border-radius: 4px;
-    backdrop-filter: blur(20px) brightness(80%);
+    /* backdrop-filter: blur(20px) brightness(80%); */
+    background-color: white;
 }
 
 .slide h2 {
@@ -46,7 +46,8 @@
 
     padding: 10px;
     border-radius: 4px;
-    backdrop-filter: blur(20px) brightness(80%);
+    /* backdrop-filter: blur(20px) brightness(80%); */
+    background-color: white;
 }
 
 .slide h3 {
@@ -62,7 +63,8 @@
     max-width: 600px;
     padding: 10px;
     border-radius: 4px;
-    backdrop-filter: blur(20px) brightness(80%);
+    /* backdrop-filter: blur(20px) brightness(80%); */
+    background-color: white;
 }
 
 .slide span {
