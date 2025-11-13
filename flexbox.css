@@ -1,0 +1,53 @@
+
+:root {
+    --font-size: 15px;
+}
+
+body
+{
+    background-color: black;
+    display: flex;
+    justify-content: start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+body > *
+{
+    position: relative;
+    width: fit-content;
+    max-height: 400px;
+}
+
+div
+{
+    /* border: 1px solid white; */
+}
+
+img, video
+{
+    /* max-width: 400px; */
+    max-height: 400px;
+}
+
+p
+{
+    font-size: var(--font-size);
+    line-height: var(--font-size);
+}
+
+.break
+{
+    height: 10px;
+    flex-basis: 100%;
+}
+
+.overlay
+{
+    width: fit-content;
+    position: absolute;
+    display: block;
+    padding: 10px;
+    backdrop-filter: blur(10px) brightness(80%);
+}
