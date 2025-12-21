@@ -1,0 +1,94 @@
+
+:root {
+  --row-height: 300px;
+  --section-width: 300px;
+}
+
+@font-face {
+    font-family: 'Nunito';
+    src: url('nunito.ttf');
+}
+
+* {
+  font-family: 'Nunito', Arial, Helvetica, sans-serif;
+}
+
+body
+{
+  margin: 8px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  background: url('background.jpg');
+}
+
+a {
+    color: orange;
+    font-weight: bolder;
+    text-decoration: none;
+}
+
+h1, h2, h3 {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+footer {
+  padding: 20px;
+  margin: auto;
+}
+
+footer p {
+  max-width: 800px;
+  text-align: center;
+}
+
+a:hover, a:active {
+    text-decoration: underline;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.row > * {
+  flex: 1;
+}
+
+.row section {
+  max-width: var(--section-width);
+  display: flex;
+  flex: 2;
+  flex-direction: column;
+  padding: 0 20px;
+}
+
+.preview {
+  display: flex;
+  max-height: var(--row-height);
+}
+
+.preview img,
+.preview video {
+  flex: 1;
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 600px) {
+  .row {
+    flex-direction: column-reverse;
+  }
+  .row section {
+    padding: 20px;
+  }
+  .preview {
+    padding: 0 20px;
+  }
+}

@@ -1,0 +1,127 @@
+about: 
+  title: 'Leon Denise'
+  text: "Hi 👋 I'm an indie game developer and freelancer technical artist, working with creative studios, programmers and artists to make virtual reality experiences, interactive installations, immersive projections and playful devices. Welcome to my website, you will find below the archives of my projects."
+  link:
+    - [ 'mailto:contact@neondelice.xyz', 'contact@neondelice.xyz' ]
+  media: [ 'leon-denise-2.png', 'neon_delice.jpg' ]
+
+crashboard: 
+  title: 'Crashboard'
+  subtitle: 'Playful installation'
+  date: 2023
+  text: 'Crashboard takes you through an epic ride among dancing bananas, sparkly butterflies and big yellow construction panels: an immersive surfing experience into the cyberspace.'
+  with:
+    - [ 'https://playful-machines.com/', 'Emilie Breslavetz' ]
+  media: [ '4.jpg', '3.jpg', '2.jpg', '1.jpg', '5.jpg' ]
+
+orbital: 
+  title: 'Orbital'
+  subtitle: 'Playful installation'
+  date: 2024
+  text: 'Orbital is a spherical bullet hell on rail controlled by a real globe. You play as a cyber criminal who hacked the security of a military satellite. You exploit this planetary device to harvest sensible data and sell it to the dark web.'
+  with:
+    - [ 'https://playful-machines.com/', 'Emilie Breslavetz' ]
+  media: [ '5.png', '1.jpg', '2.jpg' ]
+
+miroir-arcade: 
+  title: 'Miroir Arcade'
+  subtitle: 'Playful installation'
+  date: 2022
+  text: 'Orbital is a spherical bullet hell on rail controlled by a real globe. You play as a cyber criminal who hacked the security of a military satellite. You exploit this planetary device to harvest sensible data and sell it to the dark web.'
+  with:
+    - [ 'https://www.minuitdigital.com/', 'Dorian Rigal' ]
+    - [ 'https://playful-machines.com/', 'Emilie Breslavetz' ]
+  media: [ '2.jpg', '3.jpg', '4.jpg', '1.jpg' ]
+
+heterotopia-mp: 
+  title: 'Heterotopia'
+  subtitle: 'Virtual reality experience'
+  date: 2020
+  text: 'A virtual reality experience that immerses your body with a Kinect camera in a field of point clouds.'
+  with:
+    - [ 'https://www.minuitdigital.com/', 'Dorian Rigal' ]
+    - [ 'https://tamanoir.studio/', 'Tamanoir Studio' ]
+  media: [ '1.jpg', '2.jpg' ]
+
+crash-party: 
+  title: 'Crash Party'
+  subtitle: 'Playful exhibition'
+  date: 2023
+  text: 'In collaboration with AMaze, the playful media art festival in Berlin, the Cookie Collective organized performances and a playful exhibition about crash, error and glitch.'
+  with:
+    - [ 'https://www.cookie.paris/', 'Cookie Collective' ]
+  media: [ '4.jpg', '1.jpg', '5.jpg', '2.jpg' ]
+
+cookie-collective: 
+  title: 'Cookie Collective'
+  subtitle: 'Playful exhibition'
+  text: 'With the members of the Cookie Collective, we organize digital art events that showcases talks, workshops, performances, playful installations, experimental video games, video mapping and live coding.'
+  link:
+    - [ 'https://www.cookie.paris/', 'Website' ]
+  with:
+    - [ 'https://www.cookie.paris/', 'Cookie Collective' ]
+  media: [ '5.jpg', '4.png', '2.png', '1.png' ]
+
+matiere-numerique: 
+  title: 'Matière Numérique'
+  subtitle: 'Exhibition'
+  date: 2024
+  text: 'Exhibition of our work with Dorian Rigal, through our collective: Neon Minuit. Showcased during the Format(s) festival in Strasbourg, France.'
+  with:
+    - [ 'https://www.minuitdigital.com/', 'Dorian Rigal' ]
+  media: [ '2.jpg', '3.jpg', '6.jpg', '1.jpg', '7.jpg' ]
+
+mapping-inverse: 
+  title: 'Mapping Inversé'
+  subtitle: 'Digital sculpture'
+  date: 2022
+  text: 'A digital sculpture with fluid simulation generated in real time.'
+  with:
+    - [ 'https://www.minuitdigital.com/', 'Dorian Rigal' ]
+  media: [ '4.jpg', '2.jpg', '1.jpg', '3.png' ]
+
+calculateur-particulier: 
+  title: 'Calculateur Particulier'
+  subtitle: 'Digital sculpture'
+  date: 2022
+  text: 'A digital sculpture with fractal painting animation generated in real time.'
+  with:
+    - [ 'https://www.minuitdigital.com/', 'Dorian Rigal' ]
+  media: [ '3.jpg', '2.jpg', '5.jpg', '4.jpg', '1.jpg' ]
+
+frequency: 
+  title: 'Frequency'
+  subtitle: 'Immersive live visual show'
+  date: 2020
+  text: 'Immersive live visuals at Gaîté Lyrique for Frequency dance battle festival.'
+  with:
+    - [ 'https://www.minuitdigital.com/', 'Dorian Rigal' ]
+    - [ 'https://www.instagram.com/vracheva/', 'Anna Bacheva' ]
+  media: [ '2.jpg', '3.jpg', '1.jpg' ]
+
+heterotopia: 
+  title: 'Heterotopia'
+  subtitle: 'Virtual reality experience'
+  date: 2020
+  text: 'The first prototype of a virtual reality experience with animated volumetric capture recorded and live.'
+  with:
+    - [ 'https://www.minuitdigital.com/', 'Dorian Rigal' ]
+  media: [ '1.png', '2.png', '3.png' ]
+
+attrape-reve: 
+  title: 'Attrape Rêve'
+  subtitle: 'Digital experience'
+  date: 2019
+  text: 'A live performance that explores the world of dreams.'
+  with:
+    - [ 'https://www.minuitdigital.com/', 'Dorian Rigal' ]
+  media: [ '1.png', '2.png' ]
+
+les-confines: 
+  title: 'Les Confinés'
+  subtitle: 'Animated movie'
+  date: 2020
+  text: "Emmanuel Macron visits his French friends in a 14m² appartment. And tonight, it's Emmanuel who's cooking."
+  with:
+    - [ 'https://www.minuitdigital.com/', 'Dorian Rigal' ]
+  media: [ '1.png' ]
