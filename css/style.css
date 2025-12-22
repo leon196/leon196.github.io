@@ -92,3 +92,54 @@ a:hover, a:active {
     padding: 0 20px;
   }
 }
+
+/* column layout */
+
+.column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.column > * {
+  flex: 1;
+}
+
+.photo {
+  display: flex;
+}
+
+.photo img,
+.photo video {
+  flex: 1;
+  max-height: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* grid layout */
+
+.grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.grid > * {
+  flex: 1;
+}
+
+.cell {
+  display: flex;
+}
+
+.cell img,
+.cell video {
+  flex: 1;
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
