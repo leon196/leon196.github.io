@@ -68,6 +68,19 @@ a:hover, a:active {
   padding: 0 20px;
 }
 
+.row img {
+  /* transition: transform 0.5s; */
+  user-select: none;
+  /* cursor: zoom-in; */
+}
+
+/* @media screen and (min-width: 600px) {
+  .row img:active {
+    transform: scale(2);
+    cursor: default;
+  }
+} */
+
 .preview {
   display: flex;
   max-height: var(--row-height);

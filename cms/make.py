@@ -1,19 +1,7 @@
-import yaml
+import yaml, math, random
+from pathlib import Path
 
-index = open('index.html', 'w')
-index = open('index.html', 'a')
-index.write('<!DOCTYPE html>\n')
-index.write(open('cms/layout/header.html').read())
-index.write('<html>\n<body>\n')
-content = yaml.safe_load(open('cms/post.yml'))
-for slug in content:
-    row = content[slug]
-    path = 'p/'+slug+'/'
-
-    index.write('\t<div class="row">\n')
-    if 'media' in row:
-        for media in row['media']:
-            index.write('\t\t<div class="preview"><img src="'+path+media+'"/></div>\n')
+def write_section(index, row, path):
     index.write('\t\t<section>\n')
     if 'title' in row:
         index.write('\t\t\t<h1><a href="'+path+'">'+row['title']+'</a></h1>\n')
@@ -42,10 +30,14 @@ for slug in content:
             label = link[1]
             index.write('\t\t\t<h2><a href="'+href+'">'+label+'</a></h2>\n')
     index.write('\t\t</section>\n')
-    index.write('\t</div>\n')
 
+def write_media(index, row, path):
+    if 'media' in row:
+        for media in row['media']:
+            thumbnail = path+'/thumbnails/'+Path(media).stem+".webp"
+            index.write('\t\t<div class="preview"><img loading="lazy" draggable="false" src="'+thumbnail+'"/></div>\n')
 
-    # project page
+def write_page(row, path):
     page = open(path+'index.html', 'w')
     page = open(path+'index.html', 'a')
     page.write('<!DOCTYPE html>\n')
@@ -54,9 +46,43 @@ for slug in content:
     page.write('\t<div class="column">\n')
     if 'media' in row:
         for media in row['media']:
-            page.write('\t\t<div class="photo"><img src="'+media+'"/></div>\n')
+            page.write('\t\t<div class="photo"><img loading="lazy" src="'+media+'"/></div>\n')
     page.write('\t</div">\n')
     page.write('</body>\n</html>\n')
+
+def random_section(index, row, path):
+    if 'media' in row:
+        count = len(row['media'])
+        rnd = math.floor(random.random() * count)
+        idx = 0
+        for media in row['media']:
+            if idx == rnd:
+                write_section(index, row, path)
+            index.write('\t\t<div class="preview"><img loading="lazy" src="'+path+media+'"/></div>\n')
+            idx += 1
+    else:
+        write_section(index, row, path)
+
+content = yaml.safe_load(open('cms/post.yml'))
+
+index = open('index.html', 'w')
+index = open('index.html', 'a')
+index.write('<!DOCTYPE html>\n')
+index.write(open('cms/layout/header.html').read())
+index.write('<html>\n<body>\n')
+
+for slug in content:
+    row = content[slug]
+    path = 'p/'+slug+'/'
+
+    index.write('\t<div class="row">\n')
+
+    write_media(index, row, path)
+    write_section(index, row, path)
+
+    index.write('\t</div>\n')
+
+    # write_page(row, path)
 
 index.write(open('cms/layout/footer.html').read())
 index.write('</body>\n</html>\n')
