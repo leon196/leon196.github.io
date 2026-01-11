@@ -1,7 +1,7 @@
 
 :root {
-  --row-height: 300px;
-  --section-width: 300px;
+  --row-height: 100vh;
+  --section-width: 600px;
 }
 
 @font-face {
@@ -15,7 +15,8 @@
 
 body
 {
-  margin: 8px;
+  /* margin: 8px; */
+  margin: 0;
   color: white;
   display: flex;
   flex-direction: column;
@@ -50,10 +51,18 @@ a:hover, a:active {
     text-decoration: underline;
 }
 
+.slide {
+}
+
+.sub-row {
+    display: flex;
+}
+
 .row {
   display: flex;
-  min-height: 300px;
+  flex-direction: column;
   width: 100%;
+  height: 100vh;
   margin-bottom: 8px;
 }
 
@@ -63,16 +72,24 @@ a:hover, a:active {
 
 .row section {
   max-width: var(--section-width);
+  position: absolute;
   display: flex;
-  flex: 2;
   flex-direction: column;
-  padding: 0 20px;
+  padding: 20px;
 }
 
-.row img {
+.slide img {
   /* transition: transform 0.5s; */
   user-select: none;
   /* cursor: zoom-in; */
+}
+
+.slide img,
+.slide video {
+  flex: 1;
+  max-height: 100%;
+  width: auto;
+  object-fit: cover;
 }
 
 /* @media screen and (min-width: 600px) {

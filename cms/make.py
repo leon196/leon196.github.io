@@ -4,7 +4,8 @@ from pathlib import Path
 def write_section(index, row, path):
     index.write('\t\t<section>\n')
     if 'title' in row:
-        index.write('\t\t\t<h1><a href="'+path+'">'+row['title']+'</a></h1>\n')
+        index.write('\t\t\t<h1>'+row['title']+'</h1>\n')
+        # index.write('\t\t\t<h1><a href="'+path+'">'+row['title']+'</a></h1>\n')
     if 'subtitle' in row:
         index.write('\t\t\t<h3>'+row['subtitle'])
         if 'date' in row:
@@ -84,5 +85,5 @@ for slug in content:
 
     # write_page(row, path)
 
-index.write(open('cms/layout/footer.html').read())
+# index.write(open('cms/layout/footer.html').read())
 index.write('</body>\n</html>\n')

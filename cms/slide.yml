@@ -1,9 +1,3 @@
-about: 
-  title: 'Leon Denise'
-  text: "Hi 👋 I'm an indie game developer and freelancer technical artist, working with creative studios, programmers and artists to make virtual reality experiences, interactive installations, immersive projections and playful devices. Welcome to my website, you will find below the archives of my projects."
-  link:
-    - [ 'mailto:contact@neondelice.xyz', 'contact@neondelice.xyz' ]
-  media: [ 'leon-denise-2.png', 'neon_delice.jpg' ]
 
 crashboard: 
   title: 'Crashboard'
@@ -12,7 +6,15 @@ crashboard:
   text: 'Crashboard takes you through an epic ride among dancing bananas, sparkly butterflies and big yellow construction panels: an immersive surfing experience into the cyberspace.'
   with:
     - [ 'https://playful-machines.com/', 'Emilie Breslavetz' ]
-  media: [ '4.jpg', '3.jpg', '2.jpg', '1.jpg', '5.jpg' ]
+  cover: '3.jpg'
+  media: [ '4.jpg', '2.jpg', '1.jpg', '5.jpg' ]
+  
+about: 
+  title: 'Leon Denise'
+  text: "Hi 👋 I'm an indie game developer and freelancer technical artist, working with creative studios, programmers and artists to make virtual reality experiences, interactive installations, immersive projections and playful devices. Welcome to my website, you will find below the archives of my projects."
+  link:
+    - [ 'mailto:contact@neondelice.xyz', 'contact@neondelice.xyz' ]
+  cover: 'leon-denise-2.png'
 
 orbital: 
   title: 'Orbital'
@@ -27,7 +29,7 @@ miroir-arcade:
   title: 'Miroir Arcade'
   subtitle: 'Playful installation'
   date: 2022
-  text: 'Arcade Mirror is an interactive multiplayer projection controlled by a cluster of handcrafted gamepads. By sharing the controls, the participants manipulate buttons, potentiometers and switches to discover all the distorting filters.'
+  text: 'Orbital is a spherical bullet hell on rail controlled by a real globe. You play as a cyber criminal who hacked the security of a military satellite. You exploit this planetary device to harvest sensible data and sell it to the dark web.'
   with:
     - [ 'https://www.minuitdigital.com/', 'Dorian Rigal' ]
     - [ 'https://playful-machines.com/', 'Emilie Breslavetz' ]
@@ -56,6 +58,8 @@ cookie-collective:
   title: 'Cookie Collective'
   subtitle: 'Playful exhibition'
   text: 'With the members of the Cookie Collective, we organize digital art events that showcases talks, workshops, performances, playful installations, experimental video games, video mapping and live coding.'
+  link:
+    - [ 'https://www.cookie.paris/', 'Website' ]
   with:
     - [ 'https://www.cookie.paris/', 'Cookie Collective' ]
   media: [ '5.jpg', '4.png', '2.png', '1.png' ]
@@ -114,12 +118,3 @@ attrape-reve:
   with:
     - [ 'https://www.minuitdigital.com/', 'Dorian Rigal' ]
   media: [ '1.png', '2.png' ]
-
-les-confines: 
-  title: 'Les Confinés'
-  subtitle: 'Animated movie'
-  date: 2020
-  text: "Emmanuel Macron visits his French friends in a 14m² appartment. And tonight, it's Emmanuel who's cooking."
-  with:
-    - [ 'https://www.minuitdigital.com/', 'Dorian Rigal' ]
-  media: [ '1.png' ]

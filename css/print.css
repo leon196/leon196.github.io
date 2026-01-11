@@ -1,6 +1,6 @@
 
 :root {
-  --row-height: 300px;
+  --row-height: 33.333vh;
   --section-width: 300px;
 }
 
@@ -15,7 +15,8 @@
 
 body
 {
-  margin: 8px;
+  margin: 0;
+  /* margin-top: 2vh; */
   color: white;
   display: flex;
   flex-direction: column;
@@ -52,9 +53,9 @@ a:hover, a:active {
 
 .row {
   display: flex;
-  min-height: 300px;
   width: 100%;
-  margin-bottom: 8px;
+  height: var(--row-height);
+  /* margin-bottom: 8px; */
 }
 
 .row > * {
@@ -66,7 +67,7 @@ a:hover, a:active {
   display: flex;
   flex: 2;
   flex-direction: column;
-  padding: 0 20px;
+  padding: 20px;
 }
 
 .row img {
