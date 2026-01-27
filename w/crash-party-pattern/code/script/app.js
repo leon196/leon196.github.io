@@ -48,7 +48,7 @@ Object.keys(context).forEach(key => {
         resolution: [1920, 1080],
         bitmap_grid: [16, 10],
         bitmap: twgl.createTexture(gl, {
-            src: "/content/image/adlfont16x10.png",
+            src: "./content/image/adlfont16x10.png",
             minMag: gl.NEAREST,
             flipY: true,
         }),
