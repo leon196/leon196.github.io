@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta property="og:title" content="Crash Party Pattern Generator" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/content/image/icon.png" />
+    <meta property="og:description" content="Crash Party Pattern Generator" />
+    <meta property="og:url" content="" />
+    <link href="/content/image/smile.png" rel="shortcut icon" type="image/png">
+    <link rel="stylesheet" href="/code/style/style.css" />
+    <title>Crash Party Pattern Generator</title>
+</head>
+
+<body>
+    <canvas id="canvas_main"></canvas>
+
+    <!-- title -->
+     <div id="gui_top_center" class="panel">
+        <div id="title">Crash Party Pattern Generator</div>
+     </div>
+
+    <!-- settings -->
+    <div id="gui_top_left" class="panel">
+        <div id="gui_settings"></div>
+    </div>
+
+    <!-- mask -->
+    <div id="gui_top_right" class="panel">
+        <div class="row">
+            <canvas id="canvas_preview"></canvas>
+            <div id="gui_settings_mask"></div>
+        </div>
+        <input type="file" id="upload_image" accept="image/*"/> 
+        <input type="button" id="clear_image" value="clear image" style="align-self: flex-start; display: none"/>
+    </div>
+
+    <!-- export -->
+    <div id="gui_bottom_left" class="panel">
+        <div class="row">
+            <input type="text" id="image_width" value="1920" />
+            <input type="text" id="image_height" value="1080" />
+            <input type="button" id="export_image" value="export" />
+        </div>
+    </div>
+
+    <!-- credits -->
+    <div id="gui_bottom_right" class="panel">
+        <div class="info">bitmap by <a href="https://adelfaure.net/">Adel Faure</a></div>
+        <div class="info">shader by <a href="https://neondelice.xyz/">Leon Denise</a></div>
+        <div class="info">using <a href="https://twgljs.org/">twgl.js</a></div>
+    </div>
+</body>
+
+<script type="module" src="/code/script/app.js"></script>
+
+</html>
+
+
