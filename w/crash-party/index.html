@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta property="og:title" content="Crash Party" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="./content/image/icon.png" />
+    <meta property="og:description" content="Crash Party" />
+    <meta property="og:url" content="" />
+    <link href="./content/image/smile.png" rel="shortcut icon" type="image/png">
+    <link rel="stylesheet" href="./code/style/style.css" />
+    <title>Crash Party</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            font-family: monospace;
+        }
+        .slide {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        .slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .gui_center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .gui_bottom_center {
+            position: absolute;
+            left: 50%;
+            bottom: 20px;
+            transform: translate(-50%, 0);
+        }
+        .panel {
+            width: fit-content;
+            background-color: white;
+            box-shadow: 10px 10px 0 black;
+            padding: 5px 10px;
+        }
+        .column {
+            display: flex;
+            flex-direction: column;
+        }
+        .space {
+            margin-bottom: 20px;
+        }
+        .right {
+            align-self: end;
+        }
+        .little_cursor {
+            animation: move 1s alternate infinite ease-in-out;
+        }
+        @keyframes move {
+            to { transform: translatey(-20%); }
+        }
+    </style>
+</head>
+
+<body class="column">
+    <div class="slide">
+        <video src="./content/video/intro.mp4" muted loop autoplay></video>
+        <div class="gui_bottom_center">
+            <img class="little_cursor" src="./content/image/little_cursor.png"/>
+        </div>
+        <div class="gui_center">
+            <div class="column">
+                <div class="panel">
+                    <h1>Crash Party</h1>
+                </div>
+                <div class="space"></div>
+                <div class="panel">
+                    <p>Dans le cadre de l'appel à résidence de la Communale pour investir la salle immersive du Club, le Cookie Collective propose une après-midi d'installations ludiques et une soirée de performances audio-visuelles immersives orientées autour de la thématique du crash et de l'erreur créative. Venez célébrer le rôle inventif et perturbateur de l'erreur, du bazar numérique et de l'inattendu, que les artistes du collectif rencontrent dans leurs pratiques de création. Au rendez-vous : jeux vidéo expérimentaux, ASCII art panoramique et performances immersives de live coding.</p>
+                </div>
+                <div class="space"></div>
+                <div class="panel right">
+                    <h1>Cookie Collective</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide">
+        <video src="./content/video/party.mp4" muted loop autoplay></video>
+        <div class="gui_center">
+            <div class="column">
+                <div class="panel">
+                    <h1>Party</h1>
+                </div>
+                <div class="space"></div>
+                <div class="panel">
+                    <p>Le Cookie collectif débarque à Communale pour proposer une soirée algorave. Les biscuits deux fois cuits performerons images et sons à l'aide de code écrit à la volée. Plusieurs vitesses vont êtres invoquées, le contraste choisi guidera les oreilles de la douce enveloppante ambiante à la dingo techno. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
