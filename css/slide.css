@@ -51,9 +51,6 @@ a:hover, a:active {
     text-decoration: underline;
 }
 
-.slide {
-}
-
 .sub-row {
     display: flex;
 }
