@@ -38,6 +38,22 @@ a {
     position: absolute;
     top: 10px;
     right: 10px;
+    text-align: right;
+    align-items: end;
+}
+
+#gui_bottom_left {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+#gui_bottom_right {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    text-align: right;
+    align-items: end;
 }
 
 #gui_settings .row {
@@ -52,33 +68,16 @@ a {
     justify-content: right;
 }
 
-#gui_bottom_left {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-}
-
-#gui_bottom_right {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    text-align: right;
-}
-
-#upload_image {
-    margin-top: 5px;
-}
-
-#clear_image {
-    margin-top: 5px;
-}
-
 #image_width {
-    width: 50px;
+    width: 40px;
 }
 
 #image_height {
-    width: 50px;
+    width: 40px;
+}
+
+#gui_color > * {
+    width: 40px;
 }
 
 .column {
@@ -98,11 +97,30 @@ a {
 
 .panel {
     padding: 5px;
-    text-align: left;
-    z-index: 2;
+    width: fit-content;
     color: black;
     background: white;
     display: flex;
     flex-direction: column;
-    box-shadow: 5px 5px 0 black;
+}
+
+#gui_top_left .panel {
+    box-shadow: -5px 0 0 black;
+}
+
+#gui_top_right .panel {
+    box-shadow: 5px 0 0 black;
+}
+
+#gui_bottom_right .panel {
+    margin-left: 10px;
+    box-shadow: 5px 0 0 black;
+}
+
+#gui_bottom_left .panel {
+    box-shadow: -5px 0 0 black;
+}
+
+.space {
+    margin-bottom: 10px;
 }

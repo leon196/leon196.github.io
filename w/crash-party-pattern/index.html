@@ -16,40 +16,104 @@
 <body>
     <canvas id="canvas_main"></canvas>
 
-    <!-- title -->
-     <div id="gui_top_center" class="panel">
-        <div id="title">Crash Party Pattern Generator</div>
-     </div>
-
-    <!-- settings -->
-    <div id="gui_top_left" class="panel">
-        <div id="gui_settings"></div>
+    <div id="gui_top_center">
+        <div class="panel">Crash Party Pattern Generator</div>
     </div>
+    
+    <div id="gui_top_left" class="column">
+        
+        <div class="panel">palette</div>
 
-    <!-- mask -->
-    <div id="gui_top_right" class="panel">
-        <div class="row">
+        <!-- gradient -->
+        <div id="gui_gradient" class="panel">
+            <div class="row">
+                <div id="gui_color" class="row">
+                    <input type="color" value="#ef476f" />
+                    <input type="color" value="#ffd166" />
+                    <input type="color" value="#06d6a0" />
+                    <input type="color" value="#118ab2" />
+                    <input type="color" value="#073b4c" />
+                </div>
+            </div>
+            <select id="palettes">
+            </select>
+        </div>
+
+        <div class="space"></div>
+        
+        <div class="panel">effect settings</div>
+        
+        <!-- settings -->
+        <div id="gui_settings" class="panel"></div>
+        
+        <!-- reset -->
+        <div class="panel">
+            <input type="button" id="reset" name="reset" value="reset"/>
+        </div>
+    </div>
+    
+    <div id="gui_top_right" class="column">
+        <div class="panel">mask</div>
+        
+        <!-- mask preview -->
+        <div class="panel">
             <canvas id="canvas_preview"></canvas>
-            <div id="gui_settings_mask"></div>
         </div>
-        <input type="file" id="upload_image" accept="image/*"/> 
-        <input type="button" id="clear_image" value="clear image" style="align-self: flex-start; display: none"/>
-    </div>
 
-    <!-- export -->
-    <div id="gui_bottom_left" class="panel">
-        <div class="row">
-            <input type="text" id="image_width" value="1920" />
-            <input type="text" id="image_height" value="1080" />
-            <input type="button" id="export_image" value="export" />
+        <div class="space"></div>
+
+        <div class="panel">custom mask</div>
+
+        <!-- upload -->
+        <div class="panel">
+            <input type="file" id="upload_image" accept="image/*"/> 
+            <input type="button" id="clear_image" value="clear image" style="display: none"/>
+        </div>
+        
+        <!-- options -->
+        <div id="gui_options" class="panel"></div>
+
+        <div class="space"></div>
+
+        <div class="panel">mask settings</div>
+
+        <!-- mask settings -->
+        <div class="column">
+            <div class="panel">
+                <div id="gui_settings_mask"></div>
+            </div>
         </div>
     </div>
+    
+    <div id="gui_bottom_left">
+        
+        <div class="panel">export</div>
 
+        <!-- export -->
+        <div class="panel">
+            <div class="row">
+                <input type="text" id="image_width" value="1920" />
+                <input type="text" id="image_height" value="1080" />
+                <input type="button" id="export_image" value="save" />
+            </div>
+        </div>
+    </div>
+    
     <!-- credits -->
-    <div id="gui_bottom_right" class="panel">
-        <div class="info">bitmap by <a href="https://adelfaure.net/">Adel Faure</a></div>
-        <div class="info">shader by <a href="https://neondelice.xyz/">Leon Denise</a></div>
-        <div class="info">using <a href="https://twgljs.org/">twgl.js</a></div>
+    <div id="gui_bottom_right" class="column">
+        <div class="panel">Credits</div>
+        <div class="panel">
+            <div>bitmap by <a href="https://adelfaure.net/">Adel Faure</a></div>
+        </div>
+        <div class="panel">
+            <div>webgl by <a href="https://neondelice.xyz/">Leon Denise</a></div>
+        </div>
+        <div class="panel">
+            <div>palettes by <a href="https://coolors.co/palettes/">Coolors</a></div>
+        </div>
+        <div class="panel">
+            <div>made with <a href="https://twgljs.org/">twgl.js</a></div>
+        </div>
     </div>
 </body>
 

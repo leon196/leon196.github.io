@@ -4,17 +4,19 @@ precision mediump float;
 uniform vec2 resolution;
 uniform float time;
 
-// bitmap
+// images
 uniform sampler2D bitmap;
 uniform sampler2D custom_mask;
+uniform sampler2D gradient;
 uniform vec2 bitmap_grid;
 
 // options
-uniform bool fixed_aspect_ratio;
+uniform bool use_aspect_ratio;
 uniform bool use_custom_mask;
 
 // settings
 uniform float salt;
+uniform float treshold;
 uniform float start_size;
 uniform float subdivide;
 uniform float dither;
@@ -79,7 +81,7 @@ void main()
 	
 	// pattern mask
     vec2 aspect = ratio;
-    if (fixed_aspect_ratio) aspect = vec2(1);
+    if (use_aspect_ratio) aspect = vec2(1);
     vec2 cell_uv = (cell/scaling/aspect+1.)/2. + 0.25/scaling;
     float mask = smoothstep(level_white, level_black, length(cell_uv-.5));
     if (use_custom_mask)
@@ -92,8 +94,8 @@ void main()
 	vec3 noise = hash33(vec3(cell,0))-.5;
 	atlas /= bitmap_grid;
     vec4 map = texture2D(bitmap, atlas);
-    vec3 tint = .5+.5*cos(vec3(1,2,3)*4.5+floor(rng.x*5.));
-	// vec3 tint = texture(gradient, vec2(rng.x)).rgb;
+    // vec3 tint = .5+.5*cos(vec3(1,2,3)*4.5+floor(rng.x*5.));
+    vec3 tint = texture2D(gradient, vec2(rng.x, 0.5)).rgb;
 	
 	map.rgb *= crop;
 
@@ -101,7 +103,7 @@ void main()
 	vec3 black = map.rgb*map.a;
 	vec3 tinted = tint * (1.-map.r*map.a);
     vec4 color = vec4(tinted, 1.0);
-	color = mix(color, vec4(map.r), step(mask, 0.75+noise.x*dither));
+	color = mix(color, vec4(map.r), step(mask, treshold+noise.x*dither));
 	color = mix(color, vec4(0), step(mask, 0.1-noise.y*dither));
 
 	gl_FragColor = vec4(color.rgb,1);

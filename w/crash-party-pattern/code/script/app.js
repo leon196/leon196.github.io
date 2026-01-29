@@ -5,55 +5,76 @@ import { quad } from "./mesh.js"
 
 var dom = (selector) => { return document.querySelector(selector) }
 var print = (log) => { return console.log(log) }
-
-const context = {
-    main: {
-        gl: dom("#canvas_main").getContext("webgl", { preserveDrawingBuffer: true }),
-        filter: "effect.frag",
-    },
-    preview: {
-        gl: dom("#canvas_preview").getContext("webgl"),
-        filter: "mask.frag",
-    }
+var hexToRgb = (hex) => {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16),
+        255
+    ] : null;
 }
 
-const options = {
-    fixed_aspect_ratio: false,
+
+export const options = {
+    use_aspect_ratio: false,
 }
 
-const settings = {
+export const settings = {
+    treshold: 0.75,
+    dither: 0.25,
     start_size: 0.5,
     subdivide: 0.5,
-    dither: 0.25,
     padding: 0.2,
     salt: 0.5,
 }
 
-const settings_mask = {
+export const settings_mask = {
     level_black: 0.5,
     level_white: 0.0,
     level_min: 0.,
     level_max: 1.0,
 }
 
-Object.keys(context).forEach(key => {
-    
+export const defaults = {}
+Object.keys(options).forEach(key => defaults[key] = options[key])
+Object.keys(settings).forEach(key => defaults[key] = settings[key])
+Object.keys(settings_mask).forEach(key => defaults[key] = settings_mask[key])
+
+export function init(context)
+{
     // setup content per context
-    const filter = context[key].filter
-    const gl = context[key].gl
+    const filter = context.filter
+    const gl = context.gl
+    
+    // gradient array
+    const colors = dom("#gui_color").children
+    let gradient_array = []
+    for (let i = 0; i < colors.length; ++i) {
+        gradient_array = gradient_array.concat(hexToRgb(colors[i].value))
+    }
 
     // settings
     const uniforms = {
+
+        // common
         time: 0.0,
         resolution: [1920, 1080],
+
+        // bitmap
         bitmap_grid: [16, 10],
         bitmap: twgl.createTexture(gl, {
             src: "./content/image/adlfont16x10.png",
             minMag: gl.NEAREST,
             flipY: true,
         }),
+
+        // mask
         custom_mask: twgl.createTexture(gl, { src: [255, 255, 255, 255] }),
         use_custom_mask: false,
+
+        // gradient
+        gradient: twgl.createTexture(gl, { src: gradient_array }),
     }
 
     // load image from previous session
@@ -63,16 +84,19 @@ Object.keys(context).forEach(key => {
         uniforms.custom_mask = twgl.createTexture(gl, {
             src: image,
             minMag: gl.NEAREST,
+            wrap: gl.CLAMP_TO_EDGE,
             flipY: true,
         })
         gui.set_visible(dom("#upload_image"), false)
         gui.set_visible(dom("#clear_image"), true)
     }
 
-    context[key].buffer = twgl.createBufferInfoFromArrays(gl, quad)
-    context[key].program = twgl.createProgramInfo(gl, [shaders["vertex.vert"], shaders[filter]])
-    context[key].uniforms = uniforms
-})
+    context.uniforms = uniforms
+    context.buffer = twgl.createBufferInfoFromArrays(gl, quad)
+    context.program = twgl.createProgramInfo(gl, [
+        shaders["vertex.vert"],
+        shaders[filter]])
+}
 
 export function render(context, time)
 {
@@ -94,13 +118,26 @@ export function render(context, time)
     twgl.drawBufferInfo(gl, buffer)
 }
 
-// gui
-gui.build_list(settings, dom("#gui_settings"))
-gui.build_options(options, dom("#gui_settings"))
-gui.build_list(settings_mask, dom("#gui_settings_mask"))
-gui.build_image_upload(context, dom("#upload_image"))
-gui.build_image_clear(context, dom("#clear_image"))
-gui.build_image_export(context.main, dom("#export_image"))
+// viewports
+export const context = {
+    main: {
+        gl: dom("#canvas_main").getContext("webgl", { preserveDrawingBuffer: true }),
+        filter: "effect.frag",
+    },
+    preview: {
+        gl: dom("#canvas_preview").getContext("webgl"),
+        filter: "mask.frag",
+    }
+}
+
+function build_ui()
+{
+    gui.build_list(settings, dom("#gui_settings"))
+    gui.build_options(options, dom("#gui_options"))
+    gui.build_list(settings_mask, dom("#gui_settings_mask"))
+    gui.build_palette()
+
+}
 
 // loop
 function main(time)
@@ -109,4 +146,7 @@ function main(time)
     requestAnimationFrame(main)
 }
 
+// start
+Object.keys(context).forEach(key => init(context[key]))
+build_ui()
 requestAnimationFrame(main)
