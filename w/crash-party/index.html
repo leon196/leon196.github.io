@@ -11,101 +11,236 @@
     <link href="./content/image/smile.png" rel="shortcut icon" type="image/png">
     <link rel="stylesheet" href="./code/style/style.css" />
     <title>Crash Party</title>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
-        html, body {
-            font-family: monospace;
-        }
-        .slide {
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-            position: relative;
-        }
-        .slide video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .gui_center {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .gui_bottom_center {
-            position: absolute;
-            left: 50%;
-            bottom: 20px;
-            transform: translate(-50%, 0);
-        }
-        .panel {
-            width: fit-content;
-            background-color: white;
-            box-shadow: 10px 10px 0 black;
-            padding: 5px 10px;
-        }
-        .column {
-            display: flex;
-            flex-direction: column;
-        }
-        .space {
-            margin-bottom: 20px;
-        }
-        .right {
-            align-self: end;
-        }
-        .little_cursor {
-            animation: move 1s alternate infinite ease-in-out;
-        }
-        @keyframes move {
-            to { transform: translatey(-20%); }
-        }
-    </style>
 </head>
 
 <body class="column">
-    <div class="slide">
-        <video src="./content/video/intro.mp4" muted loop autoplay></video>
+
+    <!-- INTRO -->
+
+    <div id="intro" class="slide">
+
+        <video class="background" src="./content/video/intro.mp4" muted loop autoplay></video>
+
         <div class="gui_bottom_center">
-            <img class="little_cursor" src="./content/image/little_cursor.png"/>
-        </div>
-        <div class="gui_center">
             <div class="column">
-                <div class="panel">
-                    <h1>Crash Party</h1>
+                <div class="row words">
+                    <div class="panel"><h1>Crash</h1></div>
+                    <div class="panel"><h1>Party</h1></div>
                 </div>
                 <div class="space"></div>
                 <div class="panel">
-                    <p>Dans le cadre de l'appel à résidence de la Communale pour investir la salle immersive du Club, le Cookie Collective propose une après-midi d'installations ludiques et une soirée de performances audio-visuelles immersives orientées autour de la thématique du crash et de l'erreur créative. Venez célébrer le rôle inventif et perturbateur de l'erreur, du bazar numérique et de l'inattendu, que les artistes du collectif rencontrent dans leurs pratiques de création. Au rendez-vous : jeux vidéo expérimentaux, ASCII art panoramique et performances immersives de live coding.</p>
+                    <p>Dans le cadre de l'appel à résidence pour investir l'espace immersif du <a href="https://communalesaintouen.com/espaces/club-immersif/">Club de la Communale</a>, le <a href="https://www.cookie.paris/">Cookie Collective</a> a proposé une après-midi d'installations ludiques et une soirée de performances audio-visuelles immersives orientées autour de la thématique du crash et de l'erreur créative. Le samedi 24 janvier 2026, de nombreuse personnes sont venu célébrer le rôle inventif et perturbateur de l'erreur, du bazar numérique et de l'inattendu, que les artistes du collectif rencontrent dans leurs pratiques de création. Au rendez-vous : jeux vidéo expérimentaux, ASCII art panoramique et performances immersives de live coding.</p>
                 </div>
                 <div class="space"></div>
-                <div class="panel right">
-                    <h1>Cookie Collective</h1>
+                <div class="space"></div>
+                <div class="space"></div>
+                <div class="scroll_cursor">
+                    <a href="#party" class="linkless">
+                        <img class="moving_cursor" src="./content/image/little_cursor.png"/>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-    <div class="slide">
-        <video src="./content/video/party.mp4" muted loop autoplay></video>
+
+    <!-- PARTY -->
+
+    <div id="party" class="slide">
+
+        <video class="background" src="./content/video/party.mp4" muted loop autoplay></video>
+
+        <div class="gui_top_center">
+            <div class="scroll_cursor">
+                <a href="#intro" class="linkless">
+                    <img class="moving_cursor_180" src="./content/image/little_cursor_180.png"/>
+                </a>
+            </div>
+        </div>
+
         <div class="gui_center">
             <div class="column">
-                <div class="panel">
-                    <h1>Party</h1>
+                <div class="row words">
+                    <div class="panel"><h1>Live Coding</h1></div>
+                    <div class="panel"><h1>Party</h1></div>
                 </div>
                 <div class="space"></div>
                 <div class="panel">
-                    <p>Le Cookie collectif débarque à Communale pour proposer une soirée algorave. Les biscuits deux fois cuits performerons images et sons à l'aide de code écrit à la volée. Plusieurs vitesses vont êtres invoquées, le contraste choisi guidera les oreilles de la douce enveloppante ambiante à la dingo techno. </p>
+                    <p>Le Cookie collectif a débarqué au Club de la Communale pour proposer une soirée algorave. Les biscuits deux fois cuits ont performé images et sons à l'aide de code écrit à la volée. Plusieurs vitesses ont été invoquées, le contraste choisi a emporté les oreilles en partant de la douce enveloppante ambiante à la dingo techno.</p>
+                </div>
+                <div class="panel" style="width: inherit;">
+                    <audio controls src="./content/audio/audio.mp3" style="width: 100%;">
+                </div>
+                <div class="space"></div>
+                <div class="space"></div>
+                <div class="panel self_center"><h2>Artistes musicaux</h2></div>
+                <div class="space"></div>
+                <div class="row lot_of_words flex_center not_large">
+                    <div class="panel"><a href="https://allmylinks.com/afalfl">afalfl</a></div>
+                    <div class="panel"><a href="https://azertype.fr">azertype</a></div>
+                    <div class="panel"><a href="https://raphaelforment.fr">BuboBubo</a></div>
+                    <div class="panel"><a href="https://soundcloud.com/fronssons">Fronssons</a></div>
+                    <div class="panel"><a href="https://bleuje.com">Etienne Jacob</a></div>
+                    <div class="panel"><a href="https://linktr.ee/marlen_b">Marlen</a></div>
+                    <div class="panel"><a href="https://instagram.com/peregrine.viz">Pérégrine</a></div>
+                    <div class="panel"><a href="https://ralt144mi.remigeorges.fr">Ralt144MI</a></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gui_bottom_center">
+            <div class="scroll_cursor">
+                <a href="#games" class="linkless">
+                    <img class="moving_cursor" src="./content/image/little_cursor.png"/>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAMES -->
+
+    <div id="games" class="slide">
+
+        <video class="background" src="./content/video/games.mp4" muted loop autoplay></video>
+
+        <div class="gui_top_center">
+            <div class="scroll_cursor">
+                <a href="#party" class="linkless">
+                    <img class="moving_cursor_180" src="./content/image/little_cursor_180.png"/>
+                </a>
+            </div>
+        </div>
+
+        <div class="gui_center">
+            <div class="column">
+                <div class="row words">
+                    <div class="panel"><h1>Playful</h1></div>
+                    <div class="panel"><h1>Party</h1></div>
+                </div>
+                <div class="space"></div>
+                <div class="panel">
+                    <p>Le public a expérimenter une exposition ludique avec une collection de mini-jeux qui joue de rapport au numérique. Entre une parodie de captcha où l'on doit prouver à une machine que nous somme humain, un jeu de mini golf où l'on doit envoyer des curseurs pour cliquer sur une boîte mail remplie de messages urgents et un bouquet de buzzword à secouer pour faire éclater la bulle spéculative de l'IA.</p>
+                </div>
+                <div class="space"></div>
+                <div class="space"></div>
+                <div class="space"></div>
+                <div class="panel self_center"><h2>Artistes ludiques</h2></div>
+                <div class="space"></div>
+                <div class="row lot_of_words flex_center not_large">
+                    <a href="https://playful-machines.com"><div class="panel">Emilie Breslavetz</div></a>
+                    <a href="https://neondelice.xyz"><div class="panel">Léon Denise</div></a>
+                    <a href="https://koltes.digital"><div class="panel">Jonathan Giroux</div></a>
+                    <a href="https://bleuje.com"><div class="panel">Etienne Jacob</div></a>
+                    <a href="https://nusan.fr"><div class="panel">Alice "NuSan" Zanuttini</div></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="gui_bottom_center">
+            <div class="scroll_cursor">
+                <a href="#immersive" class="linkless">
+                    <img class="moving_cursor" src="./content/image/little_cursor.png"/>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- IMMERSIVE -->
+
+    <div id="immersive" class="slide">
+
+        <img class="background" src="./content/photo/immersive.jpg" />
+
+        <div class="gui_top_center">
+            <div class="scroll_cursor">
+                <a href="#games" class="linkless">
+                    <img class="moving_cursor_180" src="./content/image/little_cursor_180.png"/>
+                </a>
+            </div>
+        </div>
+
+        <div class="gui_center">
+            <div class="column">
+                <div class="row words">
+                    <div class="panel"><h1>Immersive</h1></div>
+                    <div class="panel"><h1>Party</h1></div>
+                </div>
+                <div class="space"></div>
+                <div class="panel">
+                    <p>Texte à propos des visuels panoramiques et du son spatialisé.</p>
+                </div>
+                <div class="space"></div>
+                <div class="space"></div>
+                <div class="space"></div>
+                <div class="panel self_center"><h2>Artistes immersifs</h2></div>
+                <div class="space"></div>
+                <div class="row lot_of_words flex_center not_large">
+                    <a href="https://neondelice.xyz"><div class="panel">Léon Denise</div></a>
+                    <div class="panel"><a href="https://soundcloud.com/deluge_jules">déluge</a></div>
+                    <div class="panel"><a href="https://adelfaure.net">Adel Faure</a></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gui_bottom_center">
+            <div class="scroll_cursor">
+                <a href="#made_with" class="linkless">
+                    <img class="moving_cursor" src="./content/image/little_cursor.png"/>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MADE WITH -->
+
+    <div id="made_with" class="slide">
+
+        <video class="background" src="./content/video/godot.mp4" muted loop autoplay></video>
+
+        <div class="gui_top_center">
+            <div class="scroll_cursor">
+                <a href="#immersive" class="linkless">
+                    <img class="moving_cursor_180" src="./content/image/little_cursor_180.png"/>
+                </a>
+            </div>
+        </div>
+
+        <div class="gui_center">
+            <div class="column">
+                <div class="row words">
+                    <div class="panel"><h1>Open Source</h1></div>
+                    <div class="panel"><h1>Party</h1></div>
+                </div>
+                <div class="space"></div>
+                <div class="panel">
+                    <p>Texte à propos des outils utilisés, de l'infrastructure mise en place, et le fait que tout soit open source.</p>
+                </div>
+                <div class="space"></div>
+                <div class="space"></div>
+                <div class="space"></div>
+                <div class="panel self_center"><h2>Logiciels</h2></div>
+                <div class="space"></div>
+                <div class="row lot_of_words flex_center not_large">
+                    <div class="panel">Godot</div>
+                    <div class="panel">Super Collider</div>
+                    <div class="panel">Arduino</div>
+                    <div class="panel">NDI</div>
+                    <div class="panel">OSC</div>
                 </div>
             </div>
         </div>
     </div>
 </body>
-
+<script>
+    const dom = (t) => document.querySelector(t)
+    const nodes = (t) => document.querySelectorAll(t)
+    const print = (t) => console.log(t)
+    nodes(".scroll_down").forEach(t => t.addEventListener("click", (e) => {
+        window.scrollBy(0, window.innerHeight)
+    }))
+    nodes(".scroll_up").forEach(t => t.addEventListener("click", (e) => {
+        window.scrollBy(0, -window.innerHeight)
+    }))
+</script>
 </html>
 
 
