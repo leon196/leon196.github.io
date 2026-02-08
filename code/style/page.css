@@ -1,0 +1,60 @@
+a {
+    color: white;
+    font-weight: bolder;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+video {
+    max-width: 100%;
+}
+
+p {
+    filter: drop-shadow(0 0 4px black);
+}
+
+.shadow {
+    box-shadow: 0 0 20px black;
+}
+
+.wide {
+    padding: 40px 0;
+    max-width: 800px;
+    margin: auto;
+}
+
+.gallery {
+    min-height: 400px;
+    height: 400px;
+    overflow: hidden;
+}
+
+.gallery > * {
+    height: 100%;
+    overflow: auto;
+}
+
+.slide {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    overflow: auto;
+}
+
+.gui_center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+@media screen and (max-width: 800px) {
+    .wide {
+        max-width: calc(100% - 20px);
+    }
+    body {
+        padding: 0;
+    }
+}

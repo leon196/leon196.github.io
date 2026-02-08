@@ -1,0 +1,79 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    margin: 80px 5px;
+    color: white;
+    background-image: url('/content/image/background.jpg');
+}
+h1, h2, p {
+    max-width: 100%;
+    display: block;
+    max-width: 400px;
+    /* overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; */
+}
+h2 {
+    padding-top: 10px;
+}
+section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+section > * {
+    display: inline-flex;
+    width: fit-content;
+}
+a {
+    color: white;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+.row {
+    display: flex;
+    flex-direction: row;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+}
+.break {
+  flex-basis: 100%;
+  height: 0;
+}
+.grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.cell {
+    /* flex: 1; */
+    margin: 5px;
+    padding: 5px;
+    /* color: black; */
+    /* background-color: white; */
+    max-width: calc(100% - 20px);
+}
+.shadow {
+    box-shadow: 0 0 20px black;
+}
+.thumbnail {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    margin-top: 5px;
+}
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+    min-width: 200px;
+    max-width: 400px;
+    max-height: 300px;
+    object-fit: cover;
+}

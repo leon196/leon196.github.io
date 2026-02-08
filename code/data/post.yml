@@ -1,0 +1,86 @@
+about: 
+  title: 'Leon Denise'
+  tagline: weird designer and experimental developer
+
+orbital: 
+  title: 'Orbital'
+  category: 'game'
+  tagline: 'spherical bullet hell cybercrime'
+  date: 2024
+
+crashboard: 
+  title: 'Crashboard'
+  category: 'game'
+  tagline: 'immersive cyberspace surfing'
+  date: 2023
+
+miroir-arcade: 
+  title: 'Miroir Arcade'
+  category: 'project'
+  tagline: 'playful digital mirror'
+  date: 2022
+
+crash-party: 
+  title: 'Crash Party'
+  category: 'project'
+  tagline: 'cheeky playful exhibition'
+  date: 2023
+
+cookie-collective: 
+  title: 'Cookie Collective'
+  category: 'project'
+  tagline: 'hors norme digital artists'
+
+matiere-numerique: 
+  title: 'Matière Numérique'
+  category: 'project'
+  tagline: 'digital art exhibition'
+  date: 2024
+
+mapping-inverse: 
+  title: 'Mapping Inversé'
+  category: 'project'
+  tagline: 'digital mapping sculpture'
+  date: 2022
+
+calculateur-particulier: 
+  title: 'Calculateur Particulier'
+  category: 'project'
+  tagline: 'digital hardware sculpture'
+  date: 2022
+
+les-confines: 
+  title: 'Les Confiné-es'
+  category: 'project'
+  tagline: 'pandemic ersatz'
+  date: 2020
+
+frequency: 
+  title: 'Frequency'
+  category: 'project'
+  tagline: 'immersive live show'
+  date: 2020
+
+heterotopia-mp: 
+  title: 'Heterotopia, Miroirs et Perspectives'
+  category: 'xr'
+  tagline: 'immersive point cloud'
+  date: 2020
+
+heterotopia: 
+  title: 'Heterotopia'
+  category: 'xr'
+  tagline: 'kinectic experience'
+  date: 2020
+
+matiere-souvenir: 
+  title: 'La Matière des Souvenirs'
+  category: 'project'
+  tagline: 'fuldome movie'
+  date: 2019
+
+attrape-reve: 
+  title: 'Attrape Rêve'
+  category: 'project'
+  tagline: 'live fuldome experience'
+  date: 2019

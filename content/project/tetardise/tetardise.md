@@ -1,0 +1,24 @@
+---
+title: 'Tetardise'
+category: 'project'
+tagline: 'digital swamp scrolling'
+date: 2023
+---
+<div class="column wide">
+    <h1>Tetardise</h1>
+    <h2>Digital swamp scrolling (2023)</h2>
+    <div class="space"></div>
+    <img class="shadow" src="media/1.webp" />
+    <div class="space"></div>
+    <p>A project made for <a href="https://www.sickhouse.nl/">Sickhouse</a> festival <a href="https://2023.theoverkill.nl/">Overkill</a> of 2023. The "The Outburst of the Digital Swamp" theme inspired us the concept of scrolling through a rotting website, where code source of pages would slowly melt and be decomposed into floating components. While digital tadpoles would swim between images and texts, commenting and reacting with emojis to the content, like a wild natural social network.</p>
+    <div class="space"></div>
+    <p>Made with <a href="https://playful-machines.com/">Emilie Breslavetz</a>.</p>
+    <div class="space"></div>
+    <div class="gallery shadow">
+        <div class="slide">
+            <img src="media/cover.webp" />
+            <img src="media/2.webp" />
+            <img src="media/3.webp" />
+        </div>
+    </div>
+</div>
