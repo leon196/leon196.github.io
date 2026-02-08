@@ -14,7 +14,7 @@ date: 2025
     <div class="space"></div>
     <p>In Dusted, the user explores fragmented memories, thrust into a quest to rebuild identity. This journey is woven into the project through vibrant aesthetics and dynamic interactions enabled by Kinect technology: gestures triggers a swirl of particles, fragments of memory rising and vanishing in a visual explosion.</p>
     <div class="space"></div>
-    <p>With <a href="https://celinesignoret.jimdofree.com/">Céline Signoret</a>, Pénélope Biessy, Jean Kapsa, Rodolphe Macabéo</p>
+    <p>With <a href="https://celinesignoret.jimdofree.com/">Céline Signoret</a>, Pénélope Biessy, <a href="https://jeankapsa.com">Jean Kapsa</a>, <a href="https://rodolphe.bandcamp.com/">Rodolphe Macabéo</a></p>
     <div class="space"></div>
     <div class="shadow gallery">
         <div class="slide">
