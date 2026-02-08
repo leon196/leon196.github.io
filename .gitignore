@@ -1,1 +1,5 @@
 p/gif/gallery/*
+source/
+.venv/
+.vscode/
+**/__pycache__/**

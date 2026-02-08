@@ -1,0 +1,26 @@
+---
+title: L'Attrape Rêve
+category: project
+tagline: live fuldome experience
+date: 2019
+background-color: '#5A2763'
+---
+<div class="column wide">
+    <h1>L'Attrape Rêve</h1>
+    <h2>Live fuldome experience (2019)</h2>
+    <div class="space"></div>
+    <video class="shadow" src="video.mp4" controls poster="media/poster.webp"></video>
+    <div class="space"></div>
+    <p>The Dreamcatcher is a participatory digital performance and installation, a video and audio work in which the public is invited to explore the world of dreams. A project that originally made for an open call to make a live performance in a fuldome at the <a href="https://sat.qc.ca/">Société des Arts Téchnologiques</a>.</p>
+    <div class="space"></div>
+    <p>Made with <a href="https://www.minuitdigital.com/">Dorian Rigal</a><br/>
+    Music by <a href="https://www.flore-music.com/">Flore</a></p>
+    <div class="space"></div>
+    <div class="shadow gallery">
+        <div class="slide">
+            <img src="media/1.webp" />
+            <img src="media/2.webp" />
+            <img src="media/3.webp" />
+        </div>
+    </div>
+</div>
