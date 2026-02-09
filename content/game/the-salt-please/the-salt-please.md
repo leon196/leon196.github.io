@@ -1,0 +1,17 @@
+---
+title: 'The Salt Please'
+category: 'game'
+tagline: 'exchanging condiments puzzle'
+date: 2014
+order: 0.5
+---
+<div class="column wide">
+    <h1>The Salt Please</h1>
+    <h2>Information circulation puzzle (2014)</h2>
+    <div class="space"></div>
+    <video class="shadow" src="video.mp4" controls poster="media/poster.webp"></video>
+    <div class="space"></div>
+    <p>The Salt Pleeease is a puzzle game about exchanging condiments. It was made for Ludum Dare 30 in August 2014, it's a prototype made in 3 days in html5 with Pixi.js.</p>
+    <div class="space"></div>
+    <p><a href="https://github.com/leon196/TheSaltPlease/tree/9c0447a8705a65a8a83815dc964e9ef5f452ff48/">Github repository</a></p>
+</div>

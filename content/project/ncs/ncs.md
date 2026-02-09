@@ -2,7 +2,7 @@
 title: 'No Control Story'
 category: 'project'
 tagline: 'weird zine'
-date: 2018
+date: 2013
 ---
 <div class="column wide">
     <h1>No Control Story</h1>

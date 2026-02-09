@@ -12,7 +12,7 @@ while True:
         files = cms.get_files_path('content/', 'md')
         for file in files:
             stamp = os.stat(file).st_mtime
-            if file not in files:
+            if file in files == False:
                 cache[file] = 0
             if stamp != cache[file]:
                 cache[file] = stamp
