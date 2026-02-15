@@ -1,6 +1,6 @@
 
 :root {
-  --row-height: 300px;
+  --row-height: 33.33vh;
   --section-width: 300px;
 }
 
@@ -11,15 +11,17 @@
 
 * {
   font-family: 'Nunito', Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 body
 {
-  margin: 8px;
-  color: white;
+  /* margin: 8px; */
+  background-color: white;
   display: flex;
   flex-direction: column;
-  background: url('background.jpg');
+  /* background: url('background.jpg'); */
 }
 
 a {
@@ -52,9 +54,9 @@ a:hover, a:active {
 
 .row {
   display: flex;
-  min-height: 300px;
+  min-height: 33.333vh;
   width: 100%;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
 }
 
 .row > * {
@@ -66,6 +68,7 @@ a:hover, a:active {
   display: flex;
   flex: 2;
   flex-direction: column;
+  justify-content: center;
   padding: 0 20px;
 }
 
