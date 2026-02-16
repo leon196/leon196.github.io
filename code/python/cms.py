@@ -27,7 +27,7 @@ def write_cell(page, data):
     page.write('\t<a href="'+path+'/" class="cell column">\n')
     page.write('\t\t<div class="thumbnail row">\n')
     thumbnail = path+'/media/cover.webp'
-    page.write('\t\t\t<img class="shadow" loading="lazy" draggable="false" src="'+thumbnail+'"/>\n')
+    page.write('\t\t\t<img class="shadow" draggable="false" src="'+thumbnail+'"/>\n')
     page.write('\t\t</div>\n')
     page.write('\t\t<section>\n')
     page.write('\t\t\t<h2>'+yml['title']+'</h2>\n')
@@ -89,13 +89,6 @@ def make():
 
         header = open('code/template/header.html').read()
         header += '\t<link rel="stylesheet" href="/code/style/page.css" />\n'
-        # header += '\t<base href="'+slug+'/">\n'
-        # header += '\t<style>\n\t\t:root {\n'
-        # if 'color' in data:
-        #     header += '\t\t\t--color:'+data['color']+';\n'
-        # if 'background-color' in data:
-        #     header += '\t\t\t--background-color:'+data['background-color']+';\n'
-        # header += '\t\t}\n\t</style>\n'
         page.write(header)
 
         page.write('<head>\n')
