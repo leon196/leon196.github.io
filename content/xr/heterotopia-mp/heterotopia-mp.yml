@@ -1,0 +1,21 @@
+title: Heterotopia, Miroirs et Perspectives
+category: [ vr, kinect, pointcloud ]
+tagline: immersive point cloud
+date: 2020
+order: 0.5
+info:
+    - Heterotopia is a 15-minute VR experience for one participant exploring imaginary places, their creation, sharing, and disappearance.
+    - Children, writers, and many others wander through places they construct according to their imagination. We want to open the door to this world by offering an adaptation of a collection of letters from two architects imagining a place, Chamber for a Memory Palace.
+    - To give form to this immaterial concept, the experience takes the form of a model of a fantastical city built with real buildings. It is made possible by an innovative system that combines VR, Kinect, and photogrammetry. This system offers a level of interaction that allows the participant to raise and lower buildings at will with their fingertips, interactively recreating the demiurgic feeling of creation.
+    - "Using a Kinect to provide detailed information about the exhibition space, the participant is immersed in an environment similar to their own. The VR headset adds an object to their reality: an architect's table. Thanks to the dust on the table, they can build an entire city on a 3D scale. But the experience extends beyond the table itself: the participant invites their creation to spill over its frame and invade the real world around them."
+    - "Using a Kinect to provide detailed information about the exhibition space, the participant is immersed in an environment similar to their own. The VR headset adds an object to their reality: an architect's table. Thanks to the dust on the table, they can build an entire city on a 3D scale. But the experience extends beyond the table itself: the participant invites their creation to spill over its frame and invade the real world around them."
+with:
+    - Dorian Rigal
+    - Samuel Lecoeur
+    - Rémi Large
+    - Antoine Wert
+    - Alexandre Bobe
+    - Claire Saumande
+media:
+    - video.mp4
+    - [ 1.webp, cover.webp ]

@@ -1,0 +1,11 @@
+title: Colonia
+category: [ kinect, pointcloud ]
+tagline: interactive installation
+date: 2019
+info:
+  - Colonia is an interactive device that asks the user to assume the position of a figure projected onto the screen. Once the figure has been reproduced, the user enters a digital space where their body is projected in front of a statue. They can then interact with the statue by positioning their body inside it. Each movement agitates the point cloud and recreates an abstract tableau combining the two bodies, that of the statue and that of the user. Then the device returns to its initial state and proposes another silhouette.
+with:
+  - Dorian Rigal
+media:
+  - video.mp4
+  - [ 2.webp, 3.webp ]

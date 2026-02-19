@@ -1,0 +1,11 @@
+title: Matière Numérique
+category: [ exhibition ]
+tagline: digital art exhibition
+date: 2024
+info:
+    - Exhibition of our work with <a href="https://www.minuitdigital.com/">Dorian Rigal</a>, through our collective <a href="https://www.neonminuit.xyz/">Neon Minuit</a>. Showcased during the <a href="https://formats-festival.org/">Format(s)</a> festival in Strasbourg, France.
+with:
+    - Dorian Rigal
+media:
+    - cover.webp
+    - [ 1.webp, 2.webp, 3.webp, 4.webp, 5.webp ]

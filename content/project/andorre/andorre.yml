@@ -1,0 +1,14 @@
+title: "La Nuit des Montagnes"
+category: [ "videomapping", "kinect", "pointcloud" ]
+tagline: "video mapping"
+date: 2021
+info:
+  - "Andorra, La Nuit des Montagnes is a film that takes viewers on a dialogue between two characters who imagine and dream themselves in the Andorran landscape."
+with:
+  - "Dorian Rigal"
+  - "Raphaël Foulon"
+media:
+  - "video.mp4"
+  - "1.webp"
+  - "3.webp"
+  - "2.webp"

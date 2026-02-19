@@ -1,0 +1,12 @@
+title: Miroir Arcade
+category: [ kinect, altctrl, playful ]
+tagline: playful digital mirror
+date: 2022
+info:
+    - Arcade Mirror is an interactive multiplayer projection controlled by a cluster of handcrafted gamepads. By sharing the controls, the participants manipulate buttons, potentiometers and switches to discover all the distorting filters.
+with:
+    - Dorian Rigal
+    - Emilie Breslavetz
+media:
+    - cover.webp
+    - [ 1.webp, 2.webp, 3.webp ]
