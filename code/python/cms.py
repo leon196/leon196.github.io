@@ -115,7 +115,9 @@ def make():
         title = yml['title']
         tagline = yml['tagline']
         category = yml['category']
-        date = str(yml['date'])
+        date = None
+        if 'date' in yml:
+            date = str(yml['date'])
         info = None
         if 'info' in yml:
             info = yml['info']
@@ -154,7 +156,9 @@ def make():
         page.write('</p>\n')
 
         # date
-        page.write('\t\t<p>'+date+'</p>\n')
+        if date:
+            page.write('\t\t<p>'+date+'</p>\n')
+        
         page.write('\t\t</div>\n')
 
         # media

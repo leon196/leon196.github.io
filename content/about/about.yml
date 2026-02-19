@@ -1,0 +1,11 @@
+title: Leon Denise
+category: [ about ]
+tagline: designer and developer
+order: 9999
+info:
+    - Hi 👋 I'm a developer and designer, working on virtual reality experiences, interactive installations, immersive projections and playful devices.
+    - Welcome to my website, where you will find archives of my projects.
+    - Contact me at <a href="mailto:contact@neondelice.xyz">contact@neondelice.xyz</a>.
+media:
+    - cover.webp
+    - [ 1.webp, 4.webp, neon_delice.webp ]

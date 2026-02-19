@@ -1,0 +1,13 @@
+title: Crashboard
+category: [ game, altctrl ]
+tagline: cybersurfing experience
+date: 2023
+info:
+    - Crashboard is a surfing cyberspace game controlled by a skateboard.
+    - It is the first game of my collaboration with <a href="https://playful-machines.com/">Emilie Breslavetz</a> which emerge from the first <a href="/content/project/crash-party/">Crash Party</a> in 2023. From it's first prototype to it's final form today, Crashboard is a tribute to the early imagination of cyberspace culture.
+with:
+    - Emilie Breslavetz
+media:
+    - video.mp4
+    - 3.webp
+    - [ 2.webp, 1.webp, 4.webp, cover.webp ]

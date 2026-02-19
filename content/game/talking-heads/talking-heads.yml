@@ -1,0 +1,9 @@
+title: Talking Heads
+category: [ game ]
+tagline: information circulation puzzle
+date: 2014
+info:
+    - A game about information circulation. Drag and drop heads to build a circuit that translates letters. Made for Ludum Dare 31.
+    - <a href="https://github.com/leon196/TalkingHeads">Github repository</a>
+media:
+    - video.mp4
