@@ -1,7 +1,7 @@
 import sys, time, os
-import cms
+import cms_slides
 
-files = cms.get_files_path('content/', 'yml')
+files = cms_slides.get_files_path('content/', 'yml')
 cache = {}
 for file in files:
     cache[file] = os.stat(file).st_mtime
@@ -9,7 +9,7 @@ for file in files:
 while True:
     # try:
     #     time.sleep(1)
-    #     files = cms.get_files_path('content/', 'yml')
+    #     files = cms_slides.get_files_path('content/', 'yml')
     #     changed = False;
     #     for file in files:
     #         stamp = os.stat(file).st_mtime
@@ -18,7 +18,7 @@ while True:
     #             changed = True
     #             # print('updated: '+file+' at ' + str(stamp) + ' \n')
     #     if changed:    
-    #         cms.make()
+    #         cms_slides.make()
 
     # except KeyboardInterrupt:
     #     print('\nDone')
@@ -28,17 +28,17 @@ while True:
     #     break
 
     time.sleep(1)
-    new_files = cms.get_files_path('content/', 'yml')
+    new_files = cms_slides.get_files_path('content/', 'yml')
     if len(new_files) != len(files):
         for file in files:
             cache[file] = os.stat(file).st_mtime
-        cms.make()
+        cms_slides.make()
     files = new_files
     for file in files:
         stamp = os.stat(file).st_mtime
         if stamp != cache[file]:
             cache[file] = stamp
-            cms.make()
+            cms_slides.make()
             
             # print('updated: '+file+' at ' + str(stamp) + ' \n')
         

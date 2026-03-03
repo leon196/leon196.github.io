@@ -86,7 +86,6 @@ def make():
 
     link = yaml.safe_load(open('code/data/link.yml'))
     
-    
     # make pages for each projects
     for data in pages_data:
         path = data['path']

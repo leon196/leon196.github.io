@@ -20,6 +20,15 @@ body {
     font-size: 16px;
 }
 
+a {
+    color: white;
+    font-weight: bolder;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
 .blur {
     filter: blur(10px) brightness(30%) ;
 }
