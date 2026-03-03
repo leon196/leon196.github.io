@@ -89,8 +89,8 @@ def make():
         page.write('>\n')
 
         page.write('\t\t<div class="info">\n')
-        # page.write('\t\t\t<h1>'+title+'</h1>\n')
-        page.write('\t\t\t<h1><a href="#'+slug+'">'+title+'</a></h1>\n')
+        page.write('\t\t\t<h1>'+title+'</h1>\n')
+        # page.write('\t\t\t<h1><a href="#'+slug+'">'+title+'</a></h1>\n')
         # page.write('\t\t\t<h2>'+tagline+'</h2>\n')
 
         # category
