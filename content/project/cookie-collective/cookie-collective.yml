@@ -5,6 +5,7 @@ order: 1000
 date: 2016
 info: 
   - Cookie Collective gathers digital artists involved in real-time creation. This covers video games, art installations, video mapping, demoscene, live coding, etc.
+link:
   - <a href="https://www.cookie.paris/">Website</a> <a href="https://discord.com/invite/VZQGhUC/">Discord</a>
 media:
   - cover.webp

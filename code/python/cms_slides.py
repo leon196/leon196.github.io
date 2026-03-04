@@ -78,19 +78,28 @@ def make():
         info = None
         authors = None
         width = None
+        color = None
+        background = None
         if 'date' in yml: date = str(yml['date'])
         if 'info' in yml: info = yml['info']
         if 'with' in yml: authors = yml['with']
         if 'width' in yml: width = yml['width']
+        if 'color' in yml: color = yml['color']
+        if 'background' in yml: background = yml['background']
 
         page.write('\t<div id="'+slug+'" class="slide column"')
-        if width:
-            page.write(' style="min-width:'+str(width)+'px;" ')
+        page.write(' style="')
+        # if width:
+        #     page.write(' style="min-width:'+str(width)+'px;" ')
+        if background:
+            page.write('color:'+color+'; background:'+background+'')
+
+        page.write('" ')
         page.write('>\n')
 
         page.write('\t\t<div class="info">\n')
-        page.write('\t\t\t<h1>'+title+'</h1>\n')
-        # page.write('\t\t\t<h1><a href="#'+slug+'">'+title+'</a></h1>\n')
+        # page.write('\t\t\t<h1>'+title+'</h1>\n')
+        page.write('\t\t\t<h1><a href="#'+slug+'">'+title+'</a></h1>\n')
         # page.write('\t\t\t<h2>'+tagline+'</h2>\n')
 
         # category
@@ -137,14 +146,14 @@ def make():
                 page.write('\t\t<div class="media">\n')
                 if "mp4" in line:
                     # pass
-                    page.write('\t\t\t<video preload="none" src="'+path+'/media/'+line+'" controls poster="'+path+'/media/poster.webp"></video>\n')
+                    page.write('\t\t\t<video preload="none" src="'+path+'/media/'+line+'" controls playsinline poster="'+path+'/media/poster.webp"></video>\n')
                 else:
                     page.write('\t\t\t<img alt="image" loading="lazy" src="'+path+'/media/'+line+'">\n')
                 page.write('\t\t</div>\n')
 
         page.write('\t</div>\n')
     page.write('\t</div>\n')
-    page.write('\t<script src="/code/js/scroll.js"></script>\n')
+    # page.write('\t<script src="/code/js/scroll.js"></script>\n')
     page.write('</body>\n')
 
 make()
