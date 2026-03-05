@@ -1,0 +1,13 @@
+title: Robogotchi
+category: [ game, altctrl ]
+tagline: playful arcade machine sculpture
+date: 2026
+info: 
+  - A playful arcade machine sculpture made for <a href="https://www.sickhouse.nl/">Sickhouse</a>
+with:
+  - Emilie Breslavetz
+  - Vincent Schoutsen
+  - Wouter van Veldhoven
+media:
+  - robogotchi.mp4
+  - [ 2.webp, 3.webp, 4.webp ]

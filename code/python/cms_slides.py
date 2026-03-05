@@ -80,17 +80,23 @@ def make():
         width = None
         color = None
         background = None
+        flex = None
+        ignore = None
         if 'date' in yml: date = str(yml['date'])
         if 'info' in yml: info = yml['info']
         if 'with' in yml: authors = yml['with']
         if 'width' in yml: width = yml['width']
         if 'color' in yml: color = yml['color']
         if 'background' in yml: background = yml['background']
+        if 'flex' in yml: flex = yml['flex']
+        if 'ignore' in yml: continue
 
         page.write('\t<div id="'+slug+'" class="slide column"')
         page.write(' style="')
         # if width:
         #     page.write(' style="min-width:'+str(width)+'px;" ')
+        if flex:
+            page.write(' style="flex:'+str(flex)+';" ')
         if background:
             page.write('color:'+color+'; background:'+background+'')
 
