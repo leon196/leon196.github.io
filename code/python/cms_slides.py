@@ -103,8 +103,26 @@ def make():
         page.write('" ')
         page.write('>\n')
 
+        # media
+        for line in media:
+            if isinstance(line, list):
+                page.write('\t\t<div class="gallery row">\n')
+                for l in line:
+                    page.write('\t\t\t<img alt="image" loading="lazy" src="'+path+'/media/'+l+'">\n')
+                page.write('\t\t</div>\n')
+            else:
+                page.write('\t\t<div class="media">\n')
+                if "mp4" in line:
+                    # pass
+                    page.write('\t\t\t<video preload="none" src="'+path+'/media/'+line+'" controls playsinline poster="'+path+'/media/poster.webp"></video>\n')
+                else:
+                    page.write('\t\t\t<img alt="image" loading="lazy" src="'+path+'/media/'+line+'">\n')
+                page.write('\t\t</div>\n')
+
         page.write('\t\t<div class="info">\n')
         page.write('\t\t\t<h1>'+title+'</h1>\n')
+        if date:
+            page.write('\t\t\t<p>('+str(date)+')</p>\n')
         # page.write('\t\t\t<h1><a href="#'+slug+'">'+title+'</a></h1>\n')
         # page.write('\t\t\t<h2>'+tagline+'</h2>\n')
 
@@ -140,22 +158,6 @@ def make():
                 number += 1
             page.write('\n\t\t\t</p>\n')
         page.write('\t\t</div>\n')
-
-        # media
-        for line in media:
-            if isinstance(line, list):
-                page.write('\t\t<div class="gallery row">\n')
-                for l in line:
-                    page.write('\t\t\t<img alt="image" loading="lazy" src="'+path+'/media/'+l+'">\n')
-                page.write('\t\t</div>\n')
-            else:
-                page.write('\t\t<div class="media">\n')
-                if "mp4" in line:
-                    # pass
-                    page.write('\t\t\t<video preload="none" src="'+path+'/media/'+line+'" controls playsinline poster="'+path+'/media/poster.webp"></video>\n')
-                else:
-                    page.write('\t\t\t<img alt="image" loading="lazy" src="'+path+'/media/'+line+'">\n')
-                page.write('\t\t</div>\n')
 
         page.write('\t</div>\n')
     page.write('\t</div>\n')
