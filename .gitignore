@@ -4,4 +4,3 @@ source/
 .vscode/
 **/__pycache__/**
 **/BL_proxy/**
-video/
