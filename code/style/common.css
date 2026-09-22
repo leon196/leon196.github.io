@@ -1,0 +1,85 @@
+:root {
+  --color: rgb(240,240,240);
+  --background-color: rgb(10,10,10);
+}
+
+@font-face {
+  font-family: "Noto";
+  src: url("/content/font/NotoSans-VariableFont_wdth\,wght.ttf");
+}
+
+
+html, body, p {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: var(--color);
+  background-color: var(--background-color);
+  background-image: url('/content/image/background.jpg');
+  font-family: "Noto";
+  font-size: 18px;
+}
+
+a {
+  color: var(--color);
+  font-weight: bolder;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.top_left {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.top_center {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translate(-50%,0);
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.top_right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    text-align: right;
+    align-items: end;
+}
+
+.bottom_left {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.bottom_center {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%,0);
+}
+
+.bottom_right {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    text-align: right;
+    align-items: end;
+}

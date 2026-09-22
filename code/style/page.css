@@ -1,0 +1,97 @@
+
+html {
+  scroll-behavior: smooth;
+}
+
+h1 {
+    display: inline;
+    color: var(--background-color);
+    background-color: var(--color);
+    border: 5px solid var(--color);
+    font-size: 30px;
+    line-height: 50px;
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    font-size: 18px;
+    line-height: 30px;
+    display: inline;
+}
+
+a:hover {
+    color: var(--background-color);
+    background-color: var(--color);
+}
+
+.page
+{
+	position: relative;
+	width: 100%;
+	height: 100vh;
+}
+
+.cover
+{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+    cursor: pointer;
+}
+
+.top_left {
+    width: 800px;
+    max-width: 90%;
+}
+
+.bottom_center {
+    bottom: 40px;
+}
+
+.move {
+  animation: move_down 0.5s alternate infinite ease-in-out;
+}
+
+.img-link:hover {
+    background-color: inherit !important;
+    filter: invert(100%);
+}
+
+@keyframes move_down {
+  from {
+    transform: translatey(0%);
+  }
+  to {
+    transform: translatey(-20%);
+  }
+}
+
+#logo {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 100px;
+    height: 100px;
+    z-index: 1;
+    filter: drop-shadow(0 0 10px black);
+}
+
+#logo img {
+    width: 100%;
+}
+
+@media screen and (max-width: 800px) {
+    h1 {
+        font-size: 20px;
+        line-height: 40px;
+    }
+    p {
+        font-size: 15px;
+        line-height: 12px;
+    }
+    #logo {
+        width: 50px;
+        height: 50px;
+    }
+}

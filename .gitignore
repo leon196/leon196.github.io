@@ -1,0 +1,7 @@
+p/gif/gallery/*
+source/
+.venv/
+.vscode/
+**/__pycache__/**
+**/BL_proxy/**
+video/

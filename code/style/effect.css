@@ -1,0 +1,26 @@
+
+
+.glass {
+  backdrop-filter: blur(20px) brightness(80%);
+}
+
+.blur {
+  filter: blur(10px) brightness(30%);
+}
+
+.blur-background {
+  backdrop-filter: blur(10px) brightness(30%);
+}
+
+.shadow {
+  box-shadow: 0 0 20px black;
+}
+
+.text-shadow {
+  text-shadow: 0 0 10px black;
+}
+
+.filled {
+  background-color: var(--background-color);
+  border: 5px solid var(--background-color);
+}
